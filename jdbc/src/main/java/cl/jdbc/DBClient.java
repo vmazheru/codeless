@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 
 import cl.core.function.FunctionWithException;
 import cl.core.util.Reflections;
+import cl.jdbc.impl.DBClientImpl;
 
 /**
  * This class allows for easier execution of SQL statement against a JDBC-enabled data source.<br/>
