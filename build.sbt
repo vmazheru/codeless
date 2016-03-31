@@ -7,8 +7,7 @@ lazy val commonSettings = Seq(
   javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
   libraryDependencies ++= Seq(
     "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test",
-    "junit" % "junit" % "4.11" % "test",
-    "org.xerial" % "sqlite-jdbc" % "3.8.11.1" % "test"
+    "junit" % "junit" % "4.11" % "test"
   )
 )
 
@@ -22,7 +21,20 @@ lazy val jdbc = project.
   dependsOn(core).
   settings(commonSettings: _*).
   settings(
-    name := "cl.jdbc"
+    name := "cl.jdbc",
+    libraryDependencies += "org.xerial" % "sqlite-jdbc" % "3.8.11.1"
+  )
+
+lazy val json = project.
+  dependsOn(core).
+  settings(commonSettings: _*).
+  settings(
+    name := "cl.json",
+    libraryDependencies ++= Seq(
+      "com.fasterxml.jackson.core" % "jackson-core"        %  "2.5.1",
+      "com.fasterxml.jackson.core" % "jackson-databind"    %  "2.5.1",
+      "com.fasterxml.jackson.core" % "jackson-annotations" %  "2.5.1"
+    )
   )
 
 lazy val ugly = project.
