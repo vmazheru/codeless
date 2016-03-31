@@ -1,0 +1,14 @@
+1) clone the project from the remote repo
+2) cd <top project dir>
+3) sbt eclipse
+4) import projects into eclipse
+
+In case when code sources don't show up try:
+
+cd <top project dir>
+rm -Rf ~/.ivy2/cache
+sbt update-classifiers
+sbt eclipse
+
+and then refresh and clean projects in Eclpse
+
