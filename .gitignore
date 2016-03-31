@@ -1,0 +1,10 @@
+.classpath
+.project
+.settings
+.externalToolBuilders
+.cache-main
+.cache-tests
+target
+.DS_Store
+/bin/
+/classes/
