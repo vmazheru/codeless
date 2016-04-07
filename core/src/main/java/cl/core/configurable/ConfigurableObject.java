@@ -34,7 +34,8 @@ public abstract class ConfigurableObject<C extends Configurable<C>> implements C
     @Override
     @SuppressWarnings("unchecked")
     public <T> T get(Key<T> key) {
-        return (T)configuration.get(key);
+        T value = (T)configuration.get(key);
+        return value != null ? value : key.getDefaultValue();
     }
     
     @Override
@@ -49,13 +50,5 @@ public abstract class ConfigurableObject<C extends Configurable<C>> implements C
      */
     protected void requireLock() {
         if (!locked) throw new ConfigurableException("configurable object not locked");
-    }
-    
-    /**
-     * Get value from configuration, or some default value if the value in configuration is NULL
-     */
-    @SuppressWarnings("unchecked")
-    protected <T> T get(Key<T> key, T defaultValue) {
-        return (T)configuration.getOrDefault(key, defaultValue);
     }
 }

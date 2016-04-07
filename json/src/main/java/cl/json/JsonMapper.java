@@ -50,30 +50,30 @@ public interface JsonMapper extends Configurable<JsonMapper> {
      * Possible values are {@code Visibility.FIELD} and {@code Visibility.METHOD}.
      * Default value is {@code Visibility.FIELD}.
      */
-    static Key<Visibility> visibility                = new Key<Visibility>(){};
+    static Key<Visibility> visibility = new Key<>(Visibility.FIELD);
     
     /**
      * Configuration key which instructs the mapper to fail/not fail when it finds unknown properties
      * in a JSON string.  Default value is {@code false} (don't fail).
      */
-    static Key<Boolean>    failOnUnknownProperties   = new Key<Boolean>(){};
+    static Key<Boolean> failOnUnknownProperties = new Key<>(false);
     
     /**
      * Configuration key which enables/disables JSON indentation. Default value is {@code false} (no pretty printing).
      */
-    static Key<Boolean>    prettyPrinting            = new Key<Boolean>(){};
+    static Key<Boolean> prettyPrinting = new Key<>(false);
     
     /**
      * Configuration key which instructs the mapper to wrap JSON string into a root element, the name
      * of which is usually an object's class name.  Default value is {@code false} (don't wrap).
      */
-    static Key<Boolean>    wrapRootValue             = new Key<Boolean>(){};
+    static Key<Boolean> wrapRootValue = new Key<>(false);
     
     /**
      * Configuration key which instructs the mapper to unwrap single-element arrays into standalone values.
      * Default value is {@code false} (don't unwrap).
      */
-    static Key<Boolean>    unwrapSingleElementArrays = new Key<Boolean>(){};
+    static Key<Boolean> unwrapSingleElementArrays = new Key<>(false);
     
     /**
      * Unchecked exception which might be thrown by the class operations, unless these operations

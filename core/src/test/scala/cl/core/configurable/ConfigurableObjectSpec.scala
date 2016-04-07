@@ -17,13 +17,15 @@ class ConfigurableObjectSpec extends FlatSpec with Matchers with GivenWhenThen {
   class CustomKeyType (val name: String)
   class UsefulClass extends ConfigurableObject[UsefulClass]
   object UsefulClass {
-    val booleanKey = new Key[Boolean]{}
-    val stringKey  = new Key[String]{}
-    val intKey     = new Key[Integer]{}
-    val customKey  = new Key[CustomKeyType]{}
+    val booleanKey = new Key[Boolean](false)
+    val stringKey  = new Key[String]("foo")
+    val intKey     = new Key[Integer](0)
+    val customKey  = new Key[CustomKeyType](new CustomKeyType("bar"))
   }
   import UsefulClass._
   
+  
+
   it should "retain values of properties set" in {
     
     When("properties are set")
@@ -42,6 +44,22 @@ class ConfigurableObjectSpec extends FlatSpec with Matchers with GivenWhenThen {
     c.get(intKey)         should be (new Integer(5))
     c.get(customKey).name should be ("foo")
   
+  }
+  
+  
+  
+  it should "use default property values" in {
+  
+    When("properties are not set")
+    Then("the  default property values should be accessible via get()")
+
+    val c = new UsefulClass().locked
+    
+    c.get(booleanKey)     should be (false)
+    c.get(stringKey)      should be ("foo")
+    c.get(intKey)         should be (new Integer(0))
+    c.get(customKey).name should be ("bar")
+
   }
   
   it should "not allow setting properties after being locked" in {

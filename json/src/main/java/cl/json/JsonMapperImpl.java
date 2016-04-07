@@ -58,11 +58,11 @@ final class JsonMapperImpl extends ConfigurableObject<JsonMapper> implements Jso
         objectMapper = new ObjectMapper();
         
         // get configurable property values
-        Visibility v          = get(visibility, Visibility.FIELD);
-        boolean failOnUnknown = get(failOnUnknownProperties, Boolean.FALSE);
-        boolean pretty        = get(prettyPrinting, Boolean.FALSE);
-        boolean wrapRoot      = get(wrapRootValue, Boolean.FALSE);
-        boolean unwrapArr     = get(unwrapSingleElementArrays, Boolean.FALSE);
+        Visibility v          = get(visibility);
+        boolean failOnUnknown = get(failOnUnknownProperties);
+        boolean pretty        = get(prettyPrinting);
+        boolean wrapRoot      = get(wrapRootValue);
+        boolean unwrapArr     = get(unwrapSingleElementArrays);
                 
         JsonAutoDetect.Visibility methodVisibility = v == Visibility.METHOD ? JsonAutoDetect.Visibility.ANY : JsonAutoDetect.Visibility.NONE;
         JsonAutoDetect.Visibility fieldVisibility  = v != Visibility.METHOD ? JsonAutoDetect.Visibility.ANY : JsonAutoDetect.Visibility.NONE;

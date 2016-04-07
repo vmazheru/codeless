@@ -10,4 +10,15 @@ package cl.core.configurable;
  * 
  * @see Configurable
  */
-public interface Key<T> {}
+public class Key<T> {
+    
+    private final T defaultValue;
+    
+    public Key(T defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+    
+    public T getDefaultValue() {
+        return defaultValue;
+    }
+}
