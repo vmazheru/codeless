@@ -1,4 +1,4 @@
-package cl.jdbc.impl
+package cl.jdbc
 
 import javax.sql.DataSource
 import java.sql.Connection
