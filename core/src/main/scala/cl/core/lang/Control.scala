@@ -12,7 +12,7 @@ object Control {
     try {
       f(resource)
     } finally {
-      resource.close()
+      if (resource != null) resource.close()
     }
     
 }

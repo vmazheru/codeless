@@ -25,6 +25,13 @@ lazy val jdbc = project.
     libraryDependencies += "org.xerial" % "sqlite-jdbc" % "3.8.11.1"
   )
 
+lazy val cfg = project.
+  dependsOn(core).
+  settings(commonSettings: _*).
+  settings(
+    name := "cl.cfg"
+  )
+
 lazy val json = project.
   dependsOn(core).
   settings(commonSettings: _*).
