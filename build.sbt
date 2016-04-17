@@ -45,6 +45,23 @@ lazy val json = project.
     )
   )
 
+lazy val logging = project.
+  dependsOn(core).
+  settings(commonSettings: _*).
+  settings(
+    name := "cl.logging"
+  )
+
+lazy val logging_log4j = project.
+  dependsOn(logging).
+  settings(commonSettings: _*).
+  settings(
+    name := "cl.logging.log4j",
+    libraryDependencies ++= Seq(
+      "log4j" % "log4j" % "1.2.17"
+    )
+  )
+
 lazy val ugly = project.
   dependsOn(core).
   settings(commonSettings: _*).
