@@ -81,9 +81,11 @@ public interface Log {
      */
     static Log getLog(Class<?> klass) {
         try {
-            return (Log)Class.forName("cl.logging.log4j.Log4jLog")
-                .getConstructor(String.class).newInstance(klass);
+            return (Log)Class.forName("cl.logging.Log4jLog")
+                .getConstructor(Class.class).newInstance(klass);
         } catch (Exception e) {
+            System.out.println("Log4j log implementation class 'cl.logging.Log4jLog' is not found in the classpath. "
+                    + "Will default to Java logging implementation.");
             return new JavaLog(klass);
         }
     }
@@ -94,9 +96,11 @@ public interface Log {
      */
     static Log getLog(String name) {
         try {
-            return (Log)Class.forName("cl.logging.log4j.Log4jLog")
+            return (Log)Class.forName("cl.logging.Log4jLog")
                 .getConstructor(String.class).newInstance(name);
         } catch (Exception e) {
+            System.out.println("Log4j log implementation class 'cl.logging.Log4jLog' is not found in the classpath. "
+                    + "Will default to Java logging implementation.");
             return new JavaLog(name);
         }
     }

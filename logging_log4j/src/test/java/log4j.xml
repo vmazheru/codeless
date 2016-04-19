@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="./target/test.log"/>
+        <!-- <param name="Append" value="true"/>  -->
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <param name="Threshold" value="TRACE"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-5p [%d{dd-MMM-yy HH:mm:ss}] [%t] %-20c %-3x:%m%n"/>
+        </layout>
+    </appender>
+
+    <category name="cl.logging.trace">
+        <priority value="TRACE"/>
+        <appender-ref ref="FILE"/>
+    </category>
+
+    <category name="cl.logging.debug">
+        <priority value="DEBUG"/>
+        <appender-ref ref="FILE"/>
+    </category>
+    
+    <category name="cl.logging.info">
+        <priority value="INFO"/>
+        <appender-ref ref="FILE"/>
+    </category>
+    
+    <category name="cl.logging.warn">
+        <priority value="WARN"/>
+        <appender-ref ref="FILE"/>
+    </category>    
+    
+    <category name="cl.logging.error">
+        <priority value="ERROR"/>
+        <appender-ref ref="FILE"/>
+    </category>    
+        
+</log4j:configuration>

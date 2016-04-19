@@ -3,7 +3,6 @@ package cl.jdbc
 import javax.sql.DataSource
 import java.sql.Connection
 import cl.core.lang.Control.using
-import cl.jdbc.DBClient;
 import scala.collection.mutable.ListBuffer
 import java.sql.DriverManager
 import java.io.PrintWriter

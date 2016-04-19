@@ -8,7 +8,7 @@ import java.util.Properties
 
 import cl.cfg.Configuration.ConfigurationException
 import cl.core.function.ScalaToJava.toConsumer
-import cl.core.lang.Control.using
+import cl.core.lang.Control._
 
 protected object CfgImpl {
   
@@ -55,21 +55,21 @@ protected class CfgImpl(val fileName: String) extends Configuration {
     this(null)
   }
 
-  override def getString(key: String) = get(key)
-  override def getInt(key: String) = check(getString(key), _.toInt)
-  override def getDouble(key: String) = check(getString(key), _.toDouble)
-  override def getBoolean(key: String) = check(getString(key), _.toBoolean)
-  override def getStringArray(key: String) = check(getString(key), split)
-  override def getIntArray(key: String) = check(getString(key), split(_).map(_.toInt))
-  override def getDoubleArray(key: String) = check(getString(key), split(_).map(_.toDouble))
+  override def getString(key: String): String = get(key)
+  override def getInt(key: String): Int = check(getString(key), _.toInt)
+  override def getDouble(key: String): Double = check(getString(key), _.toDouble)
+  override def getBoolean(key: String): Boolean = check(getString(key), _.toBoolean)
+  override def getStringArray(key: String): Array[String] = check(getString(key), split)
+  override def getIntArray(key: String): Array[Int] = check(getString(key), split(_).map(_.toInt))
+  override def getDoubleArray(key: String): Array[Double] = check(getString(key), split(_).map(_.toDouble))
 
-  override def getString(key: String, default: String) = opt(() => getString(key), default)
-  override def getInt(key: String, default: Int) = opt(() => getInt(key), default)
-  override def getDouble(key: String, default: Double) = opt(() => getDouble(key), default)
-  override def getBoolean(key: String, default: Boolean) = opt(() => getBoolean(key), default)
-  override def getStringArray(key: String, default: Array[String]) = opt(() => getStringArray(key), default)
-  override def getIntArray(key: String, default: Array[Int]) = opt(() => getIntArray(key), default)
-  override def getDoubleArray(key: String, default: Array[Double]) = opt(() => getDoubleArray(key), default)
+  override def getString(key: String, default: String): String = opt(() => getString(key), default)
+  override def getInt(key: String, default: Int): Int = opt(() => getInt(key), default)
+  override def getDouble(key: String, default: Double): Double = opt(() => getDouble(key), default)
+  override def getBoolean(key: String, default: Boolean): Boolean = opt(() => getBoolean(key), default)
+  override def getStringArray(key: String, default: Array[String]): Array[String] = opt(() => getStringArray(key), default)
+  override def getIntArray(key: String, default: Array[Int]): Array[Int] = opt(() => getIntArray(key), default)
+  override def getDoubleArray(key: String, default: Array[Double]): Array[Double] = opt(() => getDoubleArray(key), default)
   
   private def check[T](value: String, f: String => T) =
     try {
