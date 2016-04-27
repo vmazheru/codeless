@@ -39,22 +39,8 @@ final class JsonMapperImpl extends ConfigurableObject<JsonMapper> implements Jso
         return withLockCheck(() -> objectMapper.readValue(json, klass));
     }
 
-    /**
-     * Calling lock() is required for JsonMapper. If not locked before using, the mapper will
-     * throw {@code ConfigurableException}
-     */
     @Override
-    public JsonMapper locked() {
-        buildMapper();
-        return super.locked();
-    }
-    
-    private <R> R withLockCheck(SupplierWithException<R> f) {
-        requireLock();
-        return uncheck(JsonMapperException.class, f);
-    }
-    
-    private ObjectMapper buildMapper() {
+    protected void build() {
         objectMapper = new ObjectMapper();
         
         // get configurable property values
@@ -92,7 +78,11 @@ final class JsonMapperImpl extends ConfigurableObject<JsonMapper> implements Jso
                     .addSerializer(LocalDate.class, ToStringSerializer.instance)
                     .addDeserializer(LocalDateTime.class, LocalDateTimeDeserializer.INSTANCE)
                     .addDeserializer(LocalDate.class, LocalDateDeserializer.INSTANCE));
-        
-        return objectMapper;
     }
+    
+    private <R> R withLockCheck(SupplierWithException<R> f) {
+        requireLock();
+        return uncheck(JsonMapperException.class, f);
+    }
+
 }

@@ -41,9 +41,16 @@ public abstract class ConfigurableObject<C extends Configurable<C>> implements C
     @Override
     @SuppressWarnings("unchecked")
     public C locked() {
+        build();
         locked = true;
         return (C)this;
     }
+    
+    /**
+     * This method is called from {@code locked()} in order to make sure the object is
+     * properly built before being locked.  The default implementation does nothing.
+     */
+    protected void build() {}
     
     /**
      * Use this method in subclasses to make sure the configuration is locked before an object's method is in use. 

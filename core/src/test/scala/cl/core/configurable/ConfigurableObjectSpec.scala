@@ -24,8 +24,6 @@ class ConfigurableObjectSpec extends FlatSpec with Matchers with GivenWhenThen {
   }
   import UsefulClass._
   
-  
-
   it should "retain values of properties set" in {
     
     When("properties are set")
@@ -43,10 +41,7 @@ class ConfigurableObjectSpec extends FlatSpec with Matchers with GivenWhenThen {
     c.get(stringKey)      should be ("test")
     c.get(intKey)         should be (new Integer(5))
     c.get(customKey).name should be ("foo")
-  
   }
-  
-  
   
   it should "use default property values" in {
   

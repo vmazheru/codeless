@@ -28,8 +28,7 @@ public interface JsonMapper extends Configurable<JsonMapper> {
      */
     static JsonMapper getJsonMapper(boolean lockConfiguration) {
         JsonMapper m  = new JsonMapperImpl();
-        if (lockConfiguration) m.locked();
-        return m;
+        return lockConfiguration ? m.locked() : m;
     }
 
     /**
