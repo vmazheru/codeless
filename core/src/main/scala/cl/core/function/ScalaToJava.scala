@@ -1,14 +1,13 @@
 package cl.core.function
 
 import scala.language.implicitConversions
-
 import java.util.function.BiConsumer
 import java.util.function.BiFunction
 import java.util.function.Consumer
 import java.util.function.Supplier
-
 import scala.collection.JavaConverters._
 import scala.collection.SortedSet
+import java.util.function.Predicate
 
 /**
  * Implicit conversions between Scala function types and Java 8 functional interfaces.
@@ -25,6 +24,10 @@ object ScalaToJava {
   // converting functions
   implicit def toRunnable(f: () => Unit) = new Runnable() {
     override def run() = f.apply()
+  }
+  
+  implicit def toPredicate[T](f: T => Boolean) = new Predicate[T] {
+    override def test(t: T) = f.apply(t)
   }
   
   implicit def toSupplier[R](f: () => R) = new Supplier[R]() {

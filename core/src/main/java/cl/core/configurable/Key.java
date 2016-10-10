@@ -1,5 +1,7 @@
 package cl.core.configurable;
 
+import java.util.function.Supplier;
+
 /**
  * A strongly-typed key for {@code Configurable} objects.
  * 
@@ -12,13 +14,13 @@ package cl.core.configurable;
  */
 public class Key<T> {
     
-    private final T defaultValue;
+    private final Supplier<T> defaultValue;
     
-    public Key(T defaultValue) {
+    public Key(Supplier<T> defaultValue) {
         this.defaultValue = defaultValue;
     }
     
     public T getDefaultValue() {
-        return defaultValue;
+        return defaultValue.get();
     }
 }

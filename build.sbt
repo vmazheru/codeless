@@ -10,7 +10,8 @@ lazy val commonSettings = Seq(
     "org.scalatest" % "scalatest_2.11" % "2.2.1" % "test",
     "junit" % "junit" % "4.12" % "test",
     "com.novocode" % "junit-interface" % "0.11" % "test"
-  )
+  ),
+  testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v", "-a")
 )
 
 lazy val core = project.
@@ -62,6 +63,14 @@ lazy val logging_log4j = project.
     libraryDependencies ++= Seq(
       "log4j" % "log4j" % "1.2.17"
     )
+  )
+
+lazy val files = project.
+  dependsOn(core).
+  dependsOn(json).
+  settings(commonSettings: _*).
+  settings(
+    name := "cl.files"
   )
 
 lazy val ugly = project.

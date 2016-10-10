@@ -62,71 +62,71 @@ public interface BatchDecorators {
     
     ///////////////////////// decorator applications ////////////////
     
-    static <T> void batch(
+    static <T,I extends Iterable<T>> void batch(
             int batchSize,
-            Iterable<T> col,
-            Consumer<Iterable<T>> f) {
+            I col,
+            Consumer<I> f) {
         batched(batchSize, f).accept(col);
     }
     
-    static <T, C extends Comparable<C>> void batch(
+    static <T,C extends Comparable<C>,I extends Iterable<T>> void batch(
             int batchSize,
-            Iterable<T> col,
+            I col,
             boolean inputSorted,
             Function<T,C> groupFunction,
-            Consumer<Iterable<T>> f) {
+            Consumer<I> f) {
         batched(batchSize, inputSorted, groupFunction, f).accept(col);
     }
     
-    static <T,U> void batch(
+    static <T,U,I extends Iterable<T>> void batch(
             int batchSize,
-            Iterable<T> col,
+            I col,
             U param,
-            BiConsumer<Iterable<T>,U> f) {
+            BiConsumer<I,U> f) {
         batched(batchSize, f).accept(col, param);
     }
     
-    static <T,U,C extends Comparable<C>> void batch(
+    static <T,U,C extends Comparable<C>,I extends Iterable<T>> void batch(
             int batchSize,
-            Iterable<T> col,
+            I col,
             U param,
             boolean inputSorted,
             Function<T,C> groupFunction,
-            BiConsumer<Iterable<T>,U> f) {
+            BiConsumer<I,U> f) {
         batched(batchSize, inputSorted, groupFunction, f).accept(col, param);
     }
     
-    static <T,R> List<R> batch(
+    static <T,R,I extends Iterable<T>> List<R> batch(
             int batchSize,
-            Iterable<T> col,
-            Function<Iterable<T>,List<R>> f) {
+            I col,
+            Function<I,List<R>> f) {
         return batched(batchSize, f).apply(col);
     }
     
-    static <T,R,C extends Comparable<C>> List<R> batch(
+    static <T,R,C extends Comparable<C>,I extends Iterable<T>> List<R> batch(
             int batchSize,
-            Iterable<T> col,
+            I col,
             boolean inputSorted,
             Function<T,C> groupFunction,
-            Function<Iterable<T>,List<R>> f) {
+            Function<I,List<R>> f) {
         return batched(batchSize, inputSorted, groupFunction, f).apply(col);
     }
 
-    static <T,U,R> List<R> batch(
+    static <T,U,R,I extends Iterable<T>> List<R> batch(
             int batchSize,
-            Iterable<T> col,
+            I col,
             U param,
-            BiFunction<Iterable<T>,U,List<R>> f) {
+            BiFunction<I,U,List<R>> f) {
         return batched(batchSize, f).apply(col, param);
     }
     
-    static <T,U,R,C extends Comparable<C>> List<R> batch(
+    static <T,U,R,C extends Comparable<C>,I extends Iterable<T>> List<R> batch(
             int batchSize,
-            Iterable<T> col,
+            I col,
             U param,
             boolean inputSorted,
             Function<T,C> groupFunction,
-            BiFunction<Iterable<T>,U,List<R>> f) {
+            BiFunction<I,U,List<R>> f) {
         return batched(batchSize, inputSorted, groupFunction, f).apply(col, param);
     }
 }
@@ -248,6 +248,7 @@ class BatchDecorator<T,U,R,C extends Comparable<C>,I extends Iterable<T>> implem
     }
    
     private List<T> sort(Iterable<T> input) {
+        //TODO: check if the input is already a list
         List<T> l = new ArrayList<>();
         for (T t : input) l.add(t);
         Comparator<T> c = (t1, t2) -> groupFunction.apply(t1).compareTo(groupFunction.apply(t2));

@@ -46,7 +46,7 @@ public class DecoratorsExample {
         // now, wrap our unchecked call into a retry, it still throws because we use
         // batches which exceed the size limit
         try {
-            retried(3, 100, unchecked(() -> api.process(request))).get();
+            retry(3, 100, unchecked(() -> api.process(request)));
             fail("RuntimeException is supposed to be thrown caused by SomeAPIException");
         } catch (RuntimeException e) {
             assertEquals(SomeAPIException.class, e.getCause().getClass());

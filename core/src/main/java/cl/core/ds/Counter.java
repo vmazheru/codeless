@@ -31,6 +31,12 @@ public final class Counter {
         return i;
     }
     
+    public int getValueAndIncrement() {
+        int n = i;
+        i++;
+        return n;
+    }
+    
     public int getValueAndReset() {
         int result = getValue();
         reset();
