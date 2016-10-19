@@ -34,7 +34,7 @@ public final class FileUtils {
     }
     
     /**
-     * Close an array of {@Closeable} objects.  Each object is closed in its own try-catch block, so
+     * Close an array of {@code Closeable} objects.  Each object is closed in its own try-catch block, so
      * if there is a problem closing one object, the others should still be closed.  If {@code IOException}
      * is thrown while closing any object, the method will throw an {@code UncheckedIOException} (after
      * it tries to close the other objects). This exception object may contain other exception in it

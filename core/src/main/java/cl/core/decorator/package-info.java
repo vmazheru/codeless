@@ -12,28 +12,24 @@
  * methods will delegate to it.
  * 
  * <p>Here is an example of a simple decorator:
- * 
  * <pre>{@code
- *    
-   public static class DelayDecorator implements Decorator {
-        @Override
-        public <T, U, R> BiFunction<T, U, R> decorate(BiFunction<T, U, R> f) {
-            return (t,u) -> {
-              try { Thread.sleep(1000); } catch (InterruptedException e) { }
-              return f.apply(t, u);
-            };
-        }
-    
-        public static void withDelay(Runnable r) {
-            new DelayDecorator().decorate(r).run();
-        }
-        
-        public static void main(String[] args) {
-            withDelay(() -> System.out.prinltn("Hello, world!"));
-        }
-   }
-   
-   }</pre>
+ *   public static class DelayDecorator implements Decorator {
+ *       public <T, U, R> BiFunction<T, U, R> decorate(BiFunction<T, U, R> f) {
+ *           return (t,u) -> {
+ *             try { Thread.sleep(1000); } catch (InterruptedException e) { }
+ *             return f.apply(t, u);
+ *           };
+ *       }
+ *   
+ *       public static void withDelay(Runnable r) {
+ *           new DelayDecorator().decorate(r).run();
+ *       }
+ *       
+ *       public static void main(String[] args) {
+ *           withDelay(() -> System.out.prinltn("Hello, world!"));
+ *       }
+ *   }
+ * }</pre>
  * 
  */
 package cl.core.decorator;

@@ -33,8 +33,8 @@ public interface Configurable<C extends Configurable<C>> {
     
     /**
      * Set all configuration values from a different object.  This may be useful when objects
-     * of different types share the same set of configuration keys and values.<br/>
-     * If the target object is locked, the {@code ConfigurableException} will be thrown.  The
+     * of different types share the same set of configuration keys and values.
+     * <p>If the target object is locked, the {@code ConfigurableException} will be thrown.  The
      * other object doesn't have to be locked.
      * 
      *  @return a reference to itself

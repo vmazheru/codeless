@@ -13,7 +13,7 @@
  *   ...
  * }
  * 
- *  HTTPClient c = new HTTPClient()
+ * HTTPClient c = new HTTPClient()
  *                  .with(socketTimeout, 60_000)
  *                  .with(logging, true)
  *                  .locked();

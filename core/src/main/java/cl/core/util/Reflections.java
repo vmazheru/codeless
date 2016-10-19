@@ -5,8 +5,9 @@ import static cl.core.decorator.exception.ExceptionDecorators.*;
 import java.lang.reflect.Method;
 
 /**
- * Reflection utilities. <br/> 
- * Any checked exceptions thrown by reflection API will be
+ * Reflection utilities.
+ *  
+ * <p>Any checked exceptions thrown by reflection API will be
  * wrapped in run-time exceptions in all methods of this class.
  */
 public final class Reflections {
