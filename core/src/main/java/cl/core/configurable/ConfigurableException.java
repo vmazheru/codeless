@@ -1,7 +1,7 @@
 package cl.core.configurable;
 
 /**
- * Instances of this exception might thrown by methods of {@code Configurable} interface.
+ * Instances of this exception are thrown by methods of {@link Configurable} interface.
  * 
  * @see Configurable
  */

@@ -6,11 +6,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This class is the default implementation of {@code Configurable} interface, which should be 
- * extended by any configurable object implementation if possible.
+ * This class is the default implementation of {@link Configurable} interface, which provides common
+ * infrastructure for all configurable object classes which extend this class.
  * 
  * <p> If a configurable object implementation needs to extend another class and still needs to
- * implement {@code Configurable}, the code of this class may serve as an implementation reference.
+ * implement {@link Configurable}, the code of this class may serve as an implementation example.
  * 
  * @see Configurable
  */
@@ -19,10 +19,6 @@ public abstract class ConfigurableObject<C extends Configurable<C>> implements C
     private Map<Key<?>, Object> configuration = new HashMap<>();
     private boolean locked;
 
-    /**
-     * {@inheritDoc}
-     */
-    //TODO: see if inheritDoc actually works and add to the rest of the methods
     @Override
     @SuppressWarnings("unchecked")
     public final <T> C with(Key<T> key, T value) {
@@ -65,8 +61,8 @@ public abstract class ConfigurableObject<C extends Configurable<C>> implements C
     
     /**
      * This method is being called from {@code locked()}. Subclasses may override
-     * this method in order to provide additional initialization logic before locking object's
-     * configuration.  The default implementation does nothing.
+     * this method in order to provide initialization logic related to configuration before locking it.
+     * The default implementation does nothing.
      */
     protected void build() {}
     
