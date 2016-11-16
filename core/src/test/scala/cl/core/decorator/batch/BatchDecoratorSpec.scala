@@ -66,20 +66,20 @@ class BatchDecoratorSpec extends FlatSpec with Matchers with GivenWhenThen {
     
     // test with Lists
     batch[Int, java.util.List[Int]](SIZE_LIMIT, list, consumer)
-    counter.getValueAndReset should be (list.size)
+    counter.getAndReset should be (list.size)
     
     batch[Int, Int, java.util.List[Int]](SIZE_LIMIT, list, 1, biConsumer)
-    counter.getValueAndReset should be (list.size + 2) //param added twice because of the batching
+    counter.getAndReset should be (list.size + 2) //param added twice because of the batching
     
     batch[Int, Int, java.util.List[Int]](SIZE_LIMIT, list, function) should be (addOneResult)
     batch[Int, Int, Int, java.util.List[Int]](SIZE_LIMIT, list, 10, biFunction) should be (addTenResult)
 
     // test with sets
     batch[Int, java.util.Set[Int]](SIZE_LIMIT, set, consumer)
-    counter.getValueAndReset should be (list.size)
+    counter.getAndReset should be (list.size)
 
     batch[Int, Int, java.util.Set[Int]](SIZE_LIMIT, set, 1, biConsumer)
-    counter.getValueAndReset should be (list.size + 2)
+    counter.getAndReset should be (list.size + 2)
 
     batch[Int, Int, java.util.Set[Int]](SIZE_LIMIT, sortedSet, function) should be (addOneResult)
     batch[Int, Int, Int, java.util.Set[Int]](SIZE_LIMIT, sortedSet, 10, biFunction) should be (addTenResult)
@@ -96,10 +96,10 @@ class BatchDecoratorSpec extends FlatSpec with Matchers with GivenWhenThen {
     val groupFunction = (i: Int) => new Integer(i)
     
     batch[Int, Integer, java.util.List[Int]](SIZE_LIMIT, list, true, groupFunction, consumer)
-    counter.getValueAndReset should be (list.size)
+    counter.getAndReset should be (list.size)
     
     batch[Int, Int, Integer, java.util.List[Int]](SIZE_LIMIT, list, 1, true, groupFunction, biConsumer)
-    counter.getValueAndReset should be (list.size + grouped.size) //5 groups less than size SIZE_LIMIT expected
+    counter.getAndReset should be (list.size + grouped.size) //5 groups less than size SIZE_LIMIT expected
     
     batch[Int, Int, Integer, java.util.List[Int]](SIZE_LIMIT, list, true, groupFunction, function) should be (addOneResult)
     batch[Int, Int, Int, Integer, java.util.List[Int]](SIZE_LIMIT, list, 10, true, groupFunction, biFunction) should be (addTenResult)

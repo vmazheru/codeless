@@ -31,12 +31,12 @@ class RetryDecoratorSpec extends FlatSpec with Matchers with GivenWhenThen {
 
 
   it should "execute code 3 times in case of error" in {
-    val counter = new Counter()
+    val counter = new Counter
     val d = new RetryDecorator(rp, null, null, () => counter.increment())
     intercept[RuntimeException] {
       d.decorate(runnableWithRuntimeException).run()
     }
-    counter.getValue should be (rp.getNumRetries)
+    counter.get should be (rp.getNumRetries)
   }
   
   
@@ -62,7 +62,7 @@ class RetryDecoratorSpec extends FlatSpec with Matchers with GivenWhenThen {
     intercept[RuntimeException] {
       d.decorate(runnableWithRuntimeException).run()
     }
-    counter.getValue should be (0)
+    counter.get should be (0)
   }
   
   
@@ -73,7 +73,7 @@ class RetryDecoratorSpec extends FlatSpec with Matchers with GivenWhenThen {
     intercept[RuntimeException] {
       d.decorate(runnableWithNullPointerException).run()
     }
-    counter.getValue should be (rp.getNumRetries)
+    counter.get should be (rp.getNumRetries)
   }
   
   
@@ -84,7 +84,7 @@ class RetryDecoratorSpec extends FlatSpec with Matchers with GivenWhenThen {
     intercept[FileNotFoundException] {
       d.decorate(runnableWithFileNotFoundException).run()
     }
-    counter.getValue should be (rp.getNumRetries)
+    counter.get should be (rp.getNumRetries)
   }
   
   
@@ -97,8 +97,8 @@ class RetryDecoratorSpec extends FlatSpec with Matchers with GivenWhenThen {
       d.decorate(runnableWithRuntimeException).run()
     }
     
-    beforeCounter.getValue should be (rp.getNumRetries)
-    afterCounter.getValue should be (rp.getNumRetries)
+    beforeCounter.get should be (rp.getNumRetries)
+    afterCounter.get should be (rp.getNumRetries)
   }
   
   
@@ -139,7 +139,7 @@ class RetryDecoratorSpec extends FlatSpec with Matchers with GivenWhenThen {
       private val counter = new Counter
 
       def run() {
-        val isError = counter.getValue == 0
+        val isError = counter.get == 0
         counter.increment()
         if (isError) {
           throw new ShakyServiceException("foo")
@@ -153,7 +153,7 @@ class RetryDecoratorSpec extends FlatSpec with Matchers with GivenWhenThen {
       def apply(i: Int, j: Int) = { run(); i + j }
       
       def checkAndReset() {
-        counter.getValue should be (2)
+        counter.get should be (2)
         counter.reset()
       }
     }

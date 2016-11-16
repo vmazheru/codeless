@@ -45,7 +45,7 @@ public class ExceptionDecoratorsTest {
             fail("Runtime exception must be thrown");
         } catch (RuntimeException e) {
             assertEquals("foo", e.getCause().getMessage());
-            assertEquals(expectedCounterValue, Functions.counter.getValue());
+            assertEquals(expectedCounterValue, Functions.counter.get());
         }
     }
     
@@ -55,7 +55,7 @@ public class ExceptionDecoratorsTest {
             fail("MyException must be thrown");
         } catch (MyRuntimeException e) {
             assertEquals("foo", e.getCause().getMessage());
-            assertEquals(expectedCounterValue, Functions.counter.getValue());
+            assertEquals(expectedCounterValue, Functions.counter.get());
         } catch (RuntimeException e) {
             fail("MyException must be thrown");
         }

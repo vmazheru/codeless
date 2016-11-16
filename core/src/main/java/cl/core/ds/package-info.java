@@ -1,5 +1,4 @@
 /**
- * This package contains some simple primitive data structures useful in many circumstances.
- * Classes in this package are not related to each other.
+ * This package contains some useful primitive data structures.
  */
 package cl.core.ds;

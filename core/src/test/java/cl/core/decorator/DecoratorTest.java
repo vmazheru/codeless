@@ -61,14 +61,14 @@ public class DecoratorTest {
                 // do some stuff with that i
             });
         });
-        assertEquals(TIMES, counter.getValue());
+        assertEquals(TIMES, counter.get());
         
         counter.reset();
         
         IntStream.range(0, TIMES).forEach(i -> {
             CountDecorator.count(counter, () -> i);
         });
-        assertEquals(TIMES, counter.getValue());
+        assertEquals(TIMES, counter.get());
     }
     
 }

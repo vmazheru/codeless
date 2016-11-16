@@ -116,7 +116,7 @@ class SerializerSpec extends FlatSpec with Matchers {
       using(serializer[Person, Person](src, dest, SerializationType.JAVA, SerializationType.JAVA)) { serializer =>
         serializer.forEach((p: Person) => counter.increment())
       }
-      counter.getValue should equal (Person.peopleDB.size)
+      counter.get should equal (Person.peopleDB.size)
       JavaIterator.fromFile(dest).read should equal(Person.peopleDB)
     }
   }
@@ -132,7 +132,7 @@ class SerializerSpec extends FlatSpec with Matchers {
               batch.size should be <= batchSize
             })
       }
-      counter.getValue should equal (Person.peopleDB.size)
+      counter.get should equal (Person.peopleDB.size)
       JavaIterator.fromFile(dest).read should equal(Person.peopleDB)
     }
   }  

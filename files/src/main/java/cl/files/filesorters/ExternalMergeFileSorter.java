@@ -52,7 +52,7 @@ public class ExternalMergeFileSorter<T> extends FileSorterSupport<T> {
         Counter c = new Counter();
         iterator.forEachBatch(numObjectsPerFile, batch -> {
             uncheck(() ->
-                inprocessFiles.add(writeNextInprocessFile(batch, inprocessDir, c.getValueAndIncrement()))
+                inprocessFiles.add(writeNextInprocessFile(batch, inprocessDir, c.getAndIncrement()))
             );
         });
         return inprocessFiles;
