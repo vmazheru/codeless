@@ -18,49 +18,49 @@ import cl.core.function.SupplierWithException;
 /**
  * The purpose of this decorator is to transform functions which throw checked exceptions into functions 
  * which throw unchecked exception.
- * See a description of the {@code Decorator} class on how decorators work.
+ * See a description of the {@link Decorator} class on how decorators work.
  * 
  * @see Decorator 
  */
 public interface DecoratorWithException<T,U,R> {
     
     /**
-     * Decorate a RunnableWithException
+     * Decorate a {@link RunnableWithException}
      */
     default Runnable decorate(RunnableWithException f) {
         return toR(decorate(toBF(f)));
     }
 
     /**
-     * Decorate a SupplierWithException
+     * Decorate a {@link SupplierWithException}
      */
     default Supplier<R> decorate(SupplierWithException<R> f) {
         return toS(decorate(toBF(f)));
     }
 
     /**
-     * Decorate a ConsumerWithException
+     * Decorate a {@link ConsumerWithException}
      */
     default Consumer<T> decorate(ConsumerWithException<T> f) {
         return toC(decorate(toBF(f)));
     }
 
     /**
-     * Decorate a FunctionWithException
+     * Decorate a {@link FunctionWithException}
      */
     default Function<T, R> decorate(FunctionWithException<T, R> f) {
         return toF(decorate(toBF(f)));
     }
 
     /**
-     * Decorate a BiConsumerWithException
+     * Decorate a {@link BiConsumerWithException}
      */
     default BiConsumer<T, U> decorate(BiConsumerWithException<T, U> f) {
         return toBC(decorate(toBF(f)));
     }
 
     /**
-     * Decorate a BiFunctionWithException
+     * Decorate a {@link BiFunctionWithException}
      */
     BiFunction<T, U, R> decorate(BiFunctionWithException<T, U, R> f);
 }
