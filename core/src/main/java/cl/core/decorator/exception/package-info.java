@@ -1,6 +1,5 @@
 /**
- * This package contains classes for exception decorator.  The idea of exception decorator 
- * is to convert functions which throw checked exceptions into functions which throw unchecked
- * exceptions.
+ * This package contains implementation of {@link DecoratorWithException} the purpose of which is
+ * to convert functions throwing checked exceptions into functions throwing unchecked exceptions.
  */
 package cl.core.decorator.exception;

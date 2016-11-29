@@ -19,71 +19,194 @@ import cl.core.function.SupplierWithException;
 
 /**
  * Exception decorators take functions which throw checked exceptions and return functions which
- * throw run-time exceptions.
+ * throw run-time (unchecked) exceptions.
+ * 
+ * <p>Behind the scenes, all functions in this interface use an actual implementation of
+ * {@link DecoratorWithException} interface which does the following:
+ * 
+ * <ol>
+ *  <li>Call the underlying function.</li>
+ *  <li>
+ *      If the exception is thrown and the specific exception class is passed as an argument,
+ *      try to throw an instance of that class.  If creating it by the means of reflection fails, just
+ *      throw a {@code RutimeException}.
+ *  </li>
+ *  <li>
+ *      If no specific exception class is requested, then if the exception caught is {@code IOException},
+ *      throw {@code UncheckedIOException}.
+ *  </li>
+ *  <li>Else, just throw {@RuntimeException}.</li>
+ * </ol>
+ * 
+ * <p>The methods in this interface can be broken down into two groups:
+ * <ul>
+ *   <li>
+ *      Methods which accepts AND return functions of the same type (the actual "decorators").
+ *      These are all overloaded versions of {@code unchecked()} method
+ *   </li>
+ *   <li>
+ *     Methods which accept functions, decorate them by applying one of the methods from the first group,
+ *     and then execute the resulting functions returning the actual value (if any).  These are all
+ *     overloaded versions of {@code uncheck()} method. These methods are only implemented for those types
+ *     of functions which don't take arguments (that is for {@code Runnable} and {@code Supplier}).
+ *   </li>
+ * </ul>
+ * 
+ * <p>The following snippet illustrates how to use methods from the first group:
+ * 
+ * <pre>{@code
+ *  Function<File, List<String> readAllLinesF = unchecked(file -> Files.readAllLines(file.toPath()));
+ *  
+ *  // that you have a new function which reads all lines from a file, but throws a run-time exception
+ *  // instead of IOException
+ *  
+ *  readAllLinesF.apply(myFile);
+ * }</pre>
+ * 
+ * <p>For functions which don't accept arguments (Runnable and Supplier),
+ * it's easier to combine decorating a function with calling it in one line by
+ * using one of the methods from the second group, like in the following snippet:
+ * 
+ * <pre>{@code
+ *   File f = getMyFile();
+ *   Fist<String> lines = uncheck(() -> Files.readAllLines(f.toPath()));
+ * }</pre>
  */
 public interface ExceptionDecorators {
-    
-    //////////////////////// decorators ///////////////////////////
-    
+
+    /**
+     * Convert {@link RunnableWithException} into {@code Runnable}.
+     */
     static Runnable unchecked(RunnableWithException f) {
-        return new ExceptionWrappingDecorator<>().decorate(f);
+        return new DecoratorWithExceptionImpl<>().decorate(f);
     }
-    
+
+    /**
+     * Convert {@link RunnableWithException} into {@code Runnable}.
+     * 
+     * @param exceptionClass run-time exception class, instances of which will be thrown by the runnable
+     *        whenever the underlying runnable throws a checked exception
+     */
     static Runnable unchecked(Class<? extends RuntimeException> exceptionClass, RunnableWithException f) {
-        return new ExceptionWrappingDecorator<>(exceptionClass).decorate(f);
+        return new DecoratorWithExceptionImpl<>(exceptionClass).decorate(f);
     }
     
+    /**
+     * Convert {@link SupplierWithException} into {@code Supplier}.
+     */
     static <R> Supplier<R> unchecked(SupplierWithException<R> f) {
-        return new ExceptionWrappingDecorator<Object, Object, R>().decorate(f);
+        return new DecoratorWithExceptionImpl<Object, Object, R>().decorate(f);
     }
     
+    /**
+     * Convert {@link SupplierWithException} into {@code Supplier}.
+     * 
+     * @param exceptionClass run-time exception class, instances of which will be thrown by the supplier
+     *        whenever the underlying supplier throws a checked exception
+     */
     static <R> Supplier<R> unchecked(Class<? extends RuntimeException> exceptionClass, SupplierWithException<R> f) {
-        return new ExceptionWrappingDecorator<Object, Object, R>(exceptionClass).decorate(f);
+        return new DecoratorWithExceptionImpl<Object, Object, R>(exceptionClass).decorate(f);
     }
     
+    /**
+     * Convert {@link ConsumerWithException} into {@code Consumer}.
+     */
     static <T> Consumer<T> unchecked(ConsumerWithException<T> f) {
-        return new ExceptionWrappingDecorator<T, Object, Object>().decorate(f);
+        return new DecoratorWithExceptionImpl<T, Object, Object>().decorate(f);
     }
-    
+
+    /**
+     * Convert {@link ConsumerWithException} into {@code Consumer}.
+     * 
+     * @param exceptionClass run-time exception class, instances of which will be thrown by the consumer
+     *        whenever the underlying consumer throws a checked exception
+     */
     static <T> Consumer<T> unchecked(Class<? extends RuntimeException> exceptionClass, ConsumerWithException<T> f) {
-        return new ExceptionWrappingDecorator<T, Object, Object>(exceptionClass).decorate(f);
+        return new DecoratorWithExceptionImpl<T, Object, Object>(exceptionClass).decorate(f);
     }
     
+    /**
+     * Convert {@link BiConsumerWithException} into {@code BiConsumer}.
+     */
     static <T,U> BiConsumer<T,U> unchecked(BiConsumerWithException<T,U> f) {
-        return new ExceptionWrappingDecorator<T, U, Object>().decorate(f);
+        return new DecoratorWithExceptionImpl<T, U, Object>().decorate(f);
     }
-    
+
+    /**
+     * Convert {@link BiConsumerWithException} into {@code BiConsumer}.
+     * 
+     * @param exceptionClass run-time exception class, instances of which will be thrown by the consumer
+     *        whenever the underlying consumer throws a checked exception
+     */
     static <T,U> BiConsumer<T,U> unchecked(Class<? extends RuntimeException> exceptionClass, BiConsumerWithException<T,U> f) {
-        return new ExceptionWrappingDecorator<T, U, Object>(exceptionClass).decorate(f);
+        return new DecoratorWithExceptionImpl<T, U, Object>(exceptionClass).decorate(f);
     }    
 
+    /**
+     * Convert {@link FunctionWithException} into {@code Function}.
+     */
     static <T,R> Function<T,R> unchecked(FunctionWithException<T,R> f) {
-        return new ExceptionWrappingDecorator<T, Object, R>().decorate(f);
+        return new DecoratorWithExceptionImpl<T, Object, R>().decorate(f);
     }    
-    
+
+    /**
+     * Convert {@link FunctionWithException} into {@code Function}.
+     * 
+     * @param exceptionClass run-time exception class, instances of which will be thrown by the function
+     *        whenever the underlying function throws a checked exception
+     */
     static <T,R> Function<T,R> unchecked(Class<? extends RuntimeException> exceptionClass, FunctionWithException<T,R> f) {
-        return new ExceptionWrappingDecorator<T, Object, R>(exceptionClass).decorate(f);
+        return new DecoratorWithExceptionImpl<T, Object, R>(exceptionClass).decorate(f);
     }
     
+    /**
+     * Convert {@link BiFunctionWithException} into {@code BiFunction}.
+     */
     static <T,U,R> BiFunction<T,U,R> unchecked(BiFunctionWithException<T,U,R> f) {
-        return new ExceptionWrappingDecorator<T, U, R>().decorate(f);
+        return new DecoratorWithExceptionImpl<T, U, R>().decorate(f);
     }    
-    
+
+    /**
+     * Convert {@link BiFunctionWithException} into {@code BiFunction}.
+     * 
+     * @param exceptionClass run-time exception class, instances of which will be thrown by the function
+     *        whenever the underlying function throws a checked exception
+     */
     static <T,U,R> BiFunction<T,U,R> unchecked(Class<? extends RuntimeException> exceptionClass, BiFunctionWithException<T,U,R> f) {
-        return new ExceptionWrappingDecorator<T, U, R>(exceptionClass).decorate(f);
+        return new DecoratorWithExceptionImpl<T, U, R>(exceptionClass).decorate(f);
     }
     
-    ///////////////////////// decorator applications ////////////////
-    
+
+    /**
+     * Convert {@code RunnableWithException} into a {@code Runnable} and execute it.
+     */
     static void uncheck(RunnableWithException f) {
         unchecked(f).run();
     }
+    
+    /**
+     * Convert {@code RunnableWithException} into a {@code Runnable} and execute it.
+     * 
+     * @param exceptionClass run-time exception class, instances of which will be thrown
+     *        whenever the underlying runnable throws a checked exception
+     */
     static void uncheck(Class<? extends RuntimeException> exceptionClass, RunnableWithException f) {
         unchecked(exceptionClass, f).run();
     }
+    
+    /**
+     * Convert {@code SupplierWithException} into a {@code Supplier} and execute it.
+     */
     static <R> R uncheck(SupplierWithException<R> f) {
         return unchecked(f).get();
     }
+    
+    /**
+     * Convert {@code SupplierWithException} into a {@code Supplier} and execute it.
+     * 
+     * @param exceptionClass run-time exception class, instances of which will be thrown
+     *        whenever the underlying runnable throws a checked exception
+     */
     static <R> R uncheck(Class<? extends RuntimeException> exceptionClass, SupplierWithException<R> f) {
         return unchecked(exceptionClass, f).get();
     }
@@ -92,15 +215,16 @@ public interface ExceptionDecorators {
 
 /**
  * Implementation of {@code DecoratorWithException}
- * which wraps checked exceptions into unchecked exceptions.
+ * which "decorates" code which may throw checked exceptions into code which may throw
+ * run-time exceptions.
  */
-final class ExceptionWrappingDecorator<T,U,R> implements DecoratorWithException<T,U,R> {
+final class DecoratorWithExceptionImpl<T,U,R> implements DecoratorWithException<T,U,R> {
     
     private Class<? extends RuntimeException> exceptionClass;
 
-    ExceptionWrappingDecorator(){}
+    DecoratorWithExceptionImpl(){}
     
-    ExceptionWrappingDecorator (Class<? extends RuntimeException> exceptionClass) {
+    DecoratorWithExceptionImpl (Class<? extends RuntimeException> exceptionClass) {
         this.exceptionClass = exceptionClass;
     }
 

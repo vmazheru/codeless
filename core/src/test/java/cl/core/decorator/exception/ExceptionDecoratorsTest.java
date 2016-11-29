@@ -125,5 +125,5 @@ class Functions {
     private static void throwIt() throws Exception {
         throw new Exception("foo");
     }
-    
+
 }
