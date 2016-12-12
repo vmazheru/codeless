@@ -1,11 +1,10 @@
 package cl.core.decorator.retry;
 
 /**
- * The simplest possible implementation of {@code RetryPolicy}, where retries execute for specified
+ * A simple {@code RetryPolicy}, where instructs to execute retries for specific
  * number of times with equal pauses between them.
- * 
- * An instance of this class maintains an internal retry counter and it hence the instance cannot be
- * reused for a different method execution. 
+ *
+ * <p>This retry policy maintains an internal retry counter, and cannot be used more than once.
  */
 public class SimpleRetryPolicy implements RetryPolicy {
     
@@ -14,7 +13,8 @@ public class SimpleRetryPolicy implements RetryPolicy {
     private int counter;
 
     /**
-     * Constructor.
+     * Create an instance of this retry policy.
+     * 
      * @param numRetries How many times to retry?
      * @param sleepTime  For how long to sleep between retries?
      */
