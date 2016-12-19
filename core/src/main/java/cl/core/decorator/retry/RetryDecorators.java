@@ -91,7 +91,7 @@ public interface RetryDecorators {
     }
     
     /**
-     * Apply given {@link RetryPolicy} to a {@code Runnable} when specific exceptions happen.
+     * Apply given {@link RetryPolicy} to a {@code Runnable}.
      * 
      * @param p                 retry policy
      * @param exceptionClasses  exception types on which execute the retries
@@ -596,7 +596,6 @@ public interface RetryDecorators {
      * @param numRetries how many times to retry
      * @param sleep      for how long to sleep between retries
      * @param f          code to retry
-     * @return           {@code Runnable} which will retry in case of an error
      */
     static void retry(int numRetries, long sleep, Runnable f) {
         retried(numRetries, sleep, f).run();
@@ -607,7 +606,6 @@ public interface RetryDecorators {
      * 
      * @param p retry policy
      * @param f code to retry
-     * @return {@code Runnable} which will retry in case of an error
      */
     static void retry(RetryPolicy p, Runnable f) {
         retried(p, f).run();
@@ -625,11 +623,8 @@ public interface RetryDecorators {
         retried(p, exceptionClasses, f).run();
     }
     
-    
-    // -------------- Consumer ----------------- //
-
     /**
-     * Apply {@link SimpleRetryPolicy} to a {@code Consumer} and execute it.
+     * Apply {@link SimpleRetryPolicy} to a {@code Runnable} and execute it.
      * 
      * @param numRetries how many times to retry
      * @param sleep      for how long to sleep between retries
@@ -640,93 +635,142 @@ public interface RetryDecorators {
         retried(p, beforeSleep, f).run();
     }    
 
-    static void retry(
-            RetryPolicy p,
-            Consumer<Exception> beforeSleep,
-            Runnable f,
-            Runnable afterSleep) {
+    /**
+     * Apply given {@link RetryPolicy} to a {@code Runnable} and execute it.
+     * 
+     * @param p             retry policy
+     * @param beforeSleep   code to execute before going to sleep
+     * @param f             code to retry
+     * @param afterSleep    code to execute after going to sleep
+     */
+    static void retry(RetryPolicy p, Consumer<Exception> beforeSleep, Runnable f, Runnable afterSleep) {
         retried(p, beforeSleep, f, afterSleep).run();
     }
     
-    static void retry(
-            RetryPolicy p,
-            Class<? extends Exception>[] exceptionClasses,
-            Consumer<Exception> beforeSleep,
+    /**
+     * Apply given {@link RetryPolicy} to a {@code Runnable} and execute it.
+     * 
+     * @param p                 retry policy
+     * @param exceptionClasses  exception types on which execute the retries
+     * @param beforeSleep       code to execute before going to sleep
+     * @param f                 code to retry
+     */
+    static void retry(RetryPolicy p, Class<? extends Exception>[] exceptionClasses, Consumer<Exception> beforeSleep,
             Runnable f) {
         retried(p, exceptionClasses, beforeSleep, f).run();
     }    
     
-    static void retry(
-            RetryPolicy p,
-            Class<? extends Exception>[] exceptionClasses,
-            Consumer<Exception> beforeSleep,
-            Runnable f,
-            Runnable afterSleep) {
+    /**
+     * Apply given {@link RetryPolicy} to a {@code Runnable} and execute it.
+     * 
+     * @param p                 retry policy
+     * @param exceptionClasses  exception types on which execute the retries
+     * @param beforeSleep       code to execute before going to sleep
+     * @param f                 code to retry
+     * @param afterSleep        code to execute after sleeping
+     */
+    static void retry(RetryPolicy p, Class<? extends Exception>[] exceptionClasses, Consumer<Exception> beforeSleep,
+            Runnable f, Runnable afterSleep) {
         retried(p, exceptionClasses, beforeSleep, f, afterSleep).run();
     }
 
+    
     // -------------- Supplier ----------------- //
+    
+    /**
+     * Apply {@link SimpleRetryPolicy} to a {@code Supplier} and execute it.
+     * 
+     * @param numRetries how many times to retry
+     * @param sleep      for how long to sleep between retries
+     * @param f          code to retry
+     */
     static <R> R retry(int numRetries, long sleep, Supplier<R> f) {
         return retried(numRetries, sleep, f).get();
     }    
 
-    static <R> R retry(
-            RetryPolicy p,
-            Supplier<R> f) {
+    /**
+     * Apply given {@link RetryPolicy} to a {@code Supplier} and execute it.
+     * 
+     * @param p retry policy
+     * @param f code to retry
+     */
+    static <R> R retry(RetryPolicy p, Supplier<R> f) {
         return retried(p, f).get();
     }
     
-    static <R> R retry(
-            RetryPolicy p,
-            Class<? extends Exception>[] exceptionClasses,
-            Supplier<R> f) {
+    /**
+     * Apply given {@link RetryPolicy} to a {@code Supplier} and execute it.
+     * 
+     * @param p                 retry policy
+     * @param exceptionClasses  exception types on which execute retries
+     * @param f                 code to retry
+     */
+    static <R> R retry(RetryPolicy p, Class<? extends Exception>[] exceptionClasses, Supplier<R> f) {
         return retried(p, exceptionClasses, f).get();
-    }    
+    }
 
-    static <R> R retry(
-            RetryPolicy p,
-            Consumer<Exception> beforeSleep,
-            Supplier<R> f) {
+    /**
+     * Apply given {@link RetryPolicy} to a {@Supplier} and execute it.
+     *  
+     * @param p           retry policy
+     * @param beforeSleep code to execute before going to sleep
+     * @param f           code to retry
+     */
+    static <R> R retry(RetryPolicy p, Consumer<Exception> beforeSleep, Supplier<R> f) {
         return retried(p, beforeSleep, f).get();
-    }    
+    }
     
-    static <R> R retry(
-            RetryPolicy p,
-            Consumer<Exception> beforeSleep,
-            Supplier<R> f,
-            Runnable afterSleep) {
+    /**
+     * Apply given {@link RetryPolicy} to a {@Supplier} and execute it.
+     * 
+     * @param p             retry policy
+     * @param beforeSleep   code to execute before going to sleep
+     * @param f             code to retry
+     * @param afterSleep    code to execute after sleeping
+     */
+    static <R> R retry(RetryPolicy p, Consumer<Exception> beforeSleep, Supplier<R> f, Runnable afterSleep) {
         return retried(p, beforeSleep, f, afterSleep).get();
     }
     
-    static <R> R retry(
-            RetryPolicy p,
-            Class<? extends Exception>[] exceptionClasses,
-            Consumer<Exception> beforeSleep,
+    /**
+     * Apply given {@link RetryPolicy} to a {@Supplier} and execute it.
+     *  
+     * @param p                retry policy
+     * @param exceptionClasses exception types on which to execute the retries
+     * @param beforeSleep      code to execute before sleeping
+     * @param f                code to retry
+     */
+    static <R> R retry(RetryPolicy p, Class<? extends Exception>[] exceptionClasses, Consumer<Exception> beforeSleep,
             Supplier<R> f) {
         return retried(p, exceptionClasses, beforeSleep, f).get();
     }    
     
-    static <R> R retry(
-            RetryPolicy p,
-            Class<? extends Exception>[] exceptionClasses,
-            Consumer<Exception> beforeSleep,
-            Supplier<R> f,
-            Runnable afterSleep) {
+    /**
+     * Apply given {@link RetryPolicy} to a {@Supplier} and execute it.
+     * 
+     * @param p                  retry policy
+     * @param exceptionClasses   exception types on which to execute the retries
+     * @param beforeSleep        code to execute before sleeping
+     * @param f                  code to retry
+     * @param afterSleep         code to execute after sleeping
+     */
+    static <R> R retry(RetryPolicy p, Class<? extends Exception>[] exceptionClasses, Consumer<Exception> beforeSleep,
+            Supplier<R> f, Runnable afterSleep) {
         return retried(p, exceptionClasses, beforeSleep, f, afterSleep).get();
-    }   
+    }
 
 }
 
 /**
  * This decorator applies retry logic as defined in the given {@link RetryPoliy}.
  * 
- * <p>The decorator may be given an array of exception types instances of which it should intercept.
- * If no array of exception classes is given, the decorator will retry on any kind of exception thrown.
+ * <p>The decorator may be given an array of exception types which it should intercept.
+ * If no array of exception classes is given, the decorator will retry on any exception type.
  *  
- * <p>Exceptions types are checked with {@code Class.isInstance} method, so the decorator will
- * run on the given exceptions' subclasses as well.
+ * <p>Exception types are checked with {@code Class.isInstance} method, so the decorator will
+ * intercept exception subclasses as well.
  * 
- * <p>Also, the decorator may be given call-backs which it calls right after an exception is caught,
+ * <p>Also, the decorator may be given callbacks which it executes right after an exception is caught,
  * and after it is done sleeping.
  * 
  *  @see RetryPolicy

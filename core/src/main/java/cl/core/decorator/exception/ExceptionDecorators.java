@@ -176,7 +176,6 @@ public interface ExceptionDecorators {
         return new DecoratorWithExceptionImpl<T, U, R>(exceptionClass).decorate(f);
     }
     
-
     /**
      * Convert {@code RunnableWithException} into a {@code Runnable} and execute it.
      */
