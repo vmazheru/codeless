@@ -35,7 +35,7 @@ import cl.core.function.SupplierWithException;
  *      If no specific exception class is requested, then if the exception caught is {@code IOException},
  *      throw {@code UncheckedIOException}.
  *  </li>
- *  <li>Else, just throw {@RuntimeException}.</li>
+ *  <li>Else, just throw {@code RuntimeException}.</li>
  * </ol>
  * 
  * <p>The methods in this interface can be broken down into two groups:

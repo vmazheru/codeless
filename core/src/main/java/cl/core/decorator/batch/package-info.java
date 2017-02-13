@@ -1,6 +1,5 @@
 /**
- * This package contains classes for batch decorator.  The idea of batch decorators 
- * is to process lists in batches for operations which induce size limit (for example,
- * API or DB calls)
+ * This package contains batch decorator classes.  Batch decorators allow for
+ * large collection processing in smaller size batches.
  */
 package cl.core.decorator.batch;
