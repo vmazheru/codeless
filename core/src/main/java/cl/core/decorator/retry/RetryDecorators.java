@@ -157,7 +157,7 @@ public interface RetryDecorators {
     }
 
     /**
-     * Apply given {@link RetryPolicy} to a {@Supplier}.
+     * Apply given {@link RetryPolicy} to a {@code Supplier}.
      *  
      * @param p           retry policy
      * @param beforeSleep code to execute before going to sleep
@@ -169,7 +169,7 @@ public interface RetryDecorators {
     }
 
     /**
-     * Apply given {@link RetryPolicy} to a {@Supplier}.
+     * Apply given {@link RetryPolicy} to a {@code Supplier}.
      * 
      * @param p             retry policy
      * @param beforeSleep   code to execute before going to sleep
@@ -182,7 +182,7 @@ public interface RetryDecorators {
     }
 
     /**
-     * Apply given {@link RetryPolicy} to a {@Supplier}.
+     * Apply given {@link RetryPolicy} to a {@code Supplier}.
      *  
      * @param p                retry policy
      * @param exceptionClasses exception types on which to execute the retries
@@ -196,7 +196,7 @@ public interface RetryDecorators {
     }
 
     /**
-     * Apply given {@link RetryPolicy} to a {@Supplier}.
+     * Apply given {@link RetryPolicy} to a {@code Supplier}.
      * 
      * @param p                  retry policy
      * @param exceptionClasses   exception types on which to execute the retries
@@ -617,19 +617,17 @@ public interface RetryDecorators {
      * @param p                 retry policy
      * @param exceptionClasses  classes, which represent type of exceptions on which the retry policy will be applied
      * @param f                 code to retry                  
-     * @return {@code Runnable} which will retry in case of an error
      */
     static void retry(RetryPolicy p, Class<? extends Exception>[] exceptionClasses, Runnable f) {
         retried(p, exceptionClasses, f).run();
     }
     
     /**
-     * Apply {@link SimpleRetryPolicy} to a {@code Runnable} and execute it.
+     * Apply given {@link RetryPolicy} to a {@code Runnable} and execute it.
      * 
-     * @param numRetries how many times to retry
-     * @param sleep      for how long to sleep between retries
-     * @param f          code to retry
-     * @return           {@code Consumer} which will retry in case of an error
+     * @param p             retry policy
+     * @param beforeSleep   code to execute before going to sleep
+     * @param f             code to retry
      */
     static void retry(RetryPolicy p, Consumer<Exception> beforeSleep, Runnable f) {
         retried(p, beforeSleep, f).run();
@@ -710,7 +708,7 @@ public interface RetryDecorators {
     }
 
     /**
-     * Apply given {@link RetryPolicy} to a {@Supplier} and execute it.
+     * Apply given {@link RetryPolicy} to a {@code Supplier} and execute it.
      *  
      * @param p           retry policy
      * @param beforeSleep code to execute before going to sleep
@@ -721,7 +719,7 @@ public interface RetryDecorators {
     }
     
     /**
-     * Apply given {@link RetryPolicy} to a {@Supplier} and execute it.
+     * Apply given {@link RetryPolicy} to a {@code Supplier} and execute it.
      * 
      * @param p             retry policy
      * @param beforeSleep   code to execute before going to sleep
@@ -733,7 +731,7 @@ public interface RetryDecorators {
     }
     
     /**
-     * Apply given {@link RetryPolicy} to a {@Supplier} and execute it.
+     * Apply given {@link RetryPolicy} to a {@code Supplier} and execute it.
      *  
      * @param p                retry policy
      * @param exceptionClasses exception types on which to execute the retries
@@ -746,7 +744,7 @@ public interface RetryDecorators {
     }    
     
     /**
-     * Apply given {@link RetryPolicy} to a {@Supplier} and execute it.
+     * Apply given {@link RetryPolicy} to a {@code Supplier} and execute it.
      * 
      * @param p                  retry policy
      * @param exceptionClasses   exception types on which to execute the retries
