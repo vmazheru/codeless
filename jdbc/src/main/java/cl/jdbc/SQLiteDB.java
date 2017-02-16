@@ -10,6 +10,9 @@ import java.util.List;
  * A thin wrapper around a file which contains an SQLite database.
  * This class does not guarantee thread safety.  Also, many objects
  * of this class may point to the same physical file.
+ * 
+ * <p>Once the data base file is created, an {@link DBClient} may be obtained to it by calling
+ * {@code getClient() } method.
  */
 public class SQLiteDB {
 

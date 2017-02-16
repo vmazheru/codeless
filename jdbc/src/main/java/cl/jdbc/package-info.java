@@ -1,4 +1,4 @@
 /**
- * Class to manipulate relational database through JDBC
+ * Classes which manipulate relational databases through JDBC
  */
 package cl.jdbc;

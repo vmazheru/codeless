@@ -17,9 +17,14 @@ import cl.core.util.Reflections;
 import cl.jdbc.DBClientImpl;
 
 /**
- * This class allows for easier execution of SQL statement against a JDBC-enabled data source.<br/>
- * It should be used primarily for testing and situations where enterprise features like transaction
- * management are not required.
+ * This interface facilitates easier execution of SQL statements against a JDBC-enabled data source.
+ * 
+ * <p>Methods in this interface may be used with or without explicitly opening and closing a JDBC connection.
+ * If no connection is open explicitly, the client will open a connection per each SQL statement.  If it
+ * is necessary to execute many SQL statements with the same connection, it can be open by calling 
+ * {@code openConnecttion() } method and closed (preferably in finally block) by calling 
+ * {@code closeConnection() }. Weather the connection is actually closed or released and returned to a 
+ * connection pool is entirely up to the underlying data source.
  */
 public interface DBClient {
     
@@ -98,10 +103,10 @@ public interface DBClient {
 
     /**
      * Open a connection explicitly. Use this method if you need to execute multiple SQL statements
-     * and want to save time by re-using the same database connection.<br/>
+     * and want to save time by re-using the same database connection.<br>
      * This connection will be held open until the client closes it with {@code closeConnection()},
-     * which should be used in the finally block.<br/>
-     * Repeated subsequent calls to this method will have no effect until the current connect
+     * which should be used in the finally block.<br>
+     * Repeated subsequent calls to this method will have no effect until the current connection
      * gets closed with {@code closeConnection()}
      * 
      * @see #closeConnection()
@@ -137,7 +142,7 @@ public interface DBClient {
     }
     
     /**
-     * A run-time exception class instances of which may be thrown by all methods in this class.
+     * A run-time exception class instances of which may be thrown by all methods in {@link DBClient} class.
      */
     @SuppressWarnings("serial")
     static class DBClientException extends RuntimeException {

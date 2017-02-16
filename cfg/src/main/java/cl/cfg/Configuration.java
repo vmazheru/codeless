@@ -13,8 +13,8 @@ package cl.cfg;
  *   The file named 'cl.cfg.txt' is searched in the classpath.  If found,
  *   each line of it is treated as a property file name. For each line,
  *   the loader will try to find a file in the classpath, and load properties
- *   from it.  If no such file is found, the {@code ConfigurationException} is thrown.<br/>
- *   If file 'cl.cfg.txt' is not found itself, nothing gets loaded and no exception is thrown.<br/>
+ *   from it.  If no such file is found, the {@code ConfigurationException} is thrown.<br>
+ *   If file 'cl.cfg.txt' is not found itself, nothing gets loaded and no exception is thrown.<br>
  *   The 'cl.cfg.txt' file can be used whenever the application is required to load its attributes
  *   from multiple property files. The lines placed in this file may be just simple file names
  *   (in which case the files are loaded from the classpath) or absolute paths.
@@ -31,7 +31,7 @@ package cl.cfg;
  * <li>
  *   If the configuration object is loaded by calling {@code Configuration.getConfiguration(String fileName)}
  *   method, as the last step, the properties get loaded from the given file.  The file name may be a
- *   simple file name, in which case the file is loaded from the classpath, or it may be an absolute path.<br/>
+ *   simple file name, in which case the file is loaded from the classpath, or it may be an absolute path.<br>
  *   A {@code ConfigurationException} is thrown if the file can't be found.
  * </li>
  * </ol>
