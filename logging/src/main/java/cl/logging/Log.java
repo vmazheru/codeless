@@ -5,7 +5,7 @@ import static cl.core.util.Exceptions.*;
 import java.util.function.Supplier;
 
 /**
- * A simple wrapper around logging implementations (including System.out).
+ * A simple wrapper around some logging implementation (which may be System.out as well).
  * The default implementation is Log4j.
  */
 public interface Log {
@@ -46,7 +46,7 @@ public interface Log {
     void error(Supplier<String> message);
     
     /**
-     * Print an error. <br/>
+     * Print an error.
      * This method will evaluate the message before sending to the logging system.
      */
     default void error(String message) {
@@ -62,7 +62,7 @@ public interface Log {
     
     /**
      * Print an error message and an exception stack trace.
-     * <br/> This method will evaluate the message before sending to the logging system.
+     * This method will evaluate the message before sending to the logging system.
      */
     default void error(String message, Throwable error) {
         error(new StringBuilder(message).append(System.lineSeparator()).append(getStackTrace(error)).toString());
@@ -85,7 +85,7 @@ public interface Log {
                 .getConstructor(Class.class).newInstance(klass);
         } catch (Exception e) {
             System.out.println("Log4j log implementation class 'cl.logging.Log4jLog' is not found in the classpath. "
-                    + "Will default to Java logging implementation.");
+                    + "Java logging implementation will be used.");
             return new JavaLog(klass);
         }
     }
@@ -100,7 +100,7 @@ public interface Log {
                 .getConstructor(String.class).newInstance(name);
         } catch (Exception e) {
             System.out.println("Log4j log implementation class 'cl.logging.Log4jLog' is not found in the classpath. "
-                    + "Will default to Java logging implementation.");
+                    + "Java logging implementation will be used.");
             return new JavaLog(name);
         }
     }
@@ -133,14 +133,14 @@ public interface Log {
      * Get a console for the given name.
      */
     static Log getConsole(String name) {
-        return new Console(name);
+        return getLog(name, Implementation.CONSOLE);
     }
 
     /**
      * Get a console for the given class.
      */
     static Log getConsole(Class<?> klass) {
-        return new Console(klass);
+        return getLog(klass, Implementation.CONSOLE);
     }
     
 }

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.function.Supplier;
 
 /**
- * A {@code Log} interface implementation which prints message to {@code System.out}
+ * A {@link Log} interface implementation which prints messages to {@code System.out}
  */
 final class Console implements Log {
     

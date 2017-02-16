@@ -6,7 +6,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 /**
- * A Log4j implementation of {@code Log} interface.
+ * A Log4j implementation of {@link Log} interface.
  */
 final class Log4jLog implements Log {
     

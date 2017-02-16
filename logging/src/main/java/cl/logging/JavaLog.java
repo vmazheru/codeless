@@ -7,7 +7,9 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
- * This class is a Java logging's implementation of the {@code Log} interface.<br/>
+ * This class is a Java logging's implementation of the {@link Log} interface.
+ * 
+ * <p>
  * The class will attempt to load Java logging configuration from "logging.properties" file first, 
  * and if not found will use default Java logging configuration.
  */

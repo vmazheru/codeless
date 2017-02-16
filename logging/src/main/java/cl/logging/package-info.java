@@ -1,4 +1,4 @@
 /**
- * This package contains Log interface and two out-of-the-box implementations.
+ * This package contains {@link Log} interface and its implementations.
  */
 package cl.logging;
