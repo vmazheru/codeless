@@ -23,14 +23,14 @@ import cl.core.configurable.ConfigurableObject;
  * converting them into some specific representations (for example, serialize objects with Java serialization
  * mechanism, or convert to JSON). 
  * 
- * <p>{@code ObjectWriter} is a {@code ConfigurableObject}, so the implementations can feel free
+ * <p>{@link ObjectWriter} is a {@link ConfigurableObject}, so the implementations can feel free
  * to implement any configuration logic they desire.  Overloaded {@code write()} methods
- * when called on a writer with unlocked configuration will result in {@code ConfigurableException}.
+ * when called on a writer with unlocked configuration will result in {@link cl.core.configurable.ConfigurableException}.
  * 
- * <p>{@code ObjectWriter} also implements {@code Closeable} interface and may be used in Java 'try-with-resource' construct.
+ * <p>{@link ObjectWriter} also implements {@code Closeable} interface and may be used in Java 'try-with-resource' construct.
  * 
  * @param <T> Type of objects which an object writer writes to its destination. This may be some custom
- * class for {@code JavaWriter} or {@JsonWriter}, or {@String} for {@code StringWriter}.
+ * class for {@link JavaWriter} or {@link JsonWriter}, or {@code String} for {@link StringWriter}.
  */
 public abstract class ObjectWriter<T> extends ConfigurableObject<ObjectWriter<T>> implements Closeable {
     

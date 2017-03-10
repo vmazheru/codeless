@@ -11,14 +11,20 @@ import java.io.InputStreamReader;
 import cl.files.serializers.SerializerConfiguration;
 
 /**
- * This class is a specialization of {@code IOBoundObjectIterator} which operates on text inputs
+ * This class is a specialization of {@link IOBoundObjectIterator} which operates on text inputs
  * (files or input streams).
  * 
  * <p>The class makes use of the following configuration keys:
  * <ul>
- *   <li>{@code SerializerConfiguration.skipEmptyLines} of boolean type instructs the iterator to skip or not skip empty lines in the text input.
- *   The default value is {@code true}.</li>
- *   <li>{@code SerializerConfiguration.charset} specifies the input character set. The default value is UTF-8.</li>
+ *   <li>
+ *      {@link cl.files.serializers.SerializerConfiguration#skipEmptyLines} of boolean type 
+ *      instructs the iterator to skip or not skip empty lines in the text input.
+ *      The default value is {@code true}.
+ *   </li>
+ *   <li>
+ *      {@link cl.files.serializers.SerializerConfiguration#charset} specifies the input character set. 
+ *      The default value is UTF-8.
+ *   </li>
  * </ul>
  * 
  * <p>Subclasses may override these configuration settings in their respective {@code build()} methods.

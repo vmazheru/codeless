@@ -7,8 +7,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 /**
- * Extends {@code ObjectIterator} with addition of either file or input stream handler.  Most of
- * implemented iterators operate on file or input stream, so they should extend this class. 
+ * Extends {@link ObjectIterator} with addition of either file or input stream handler. Most of
+ * implemented iterators operate on file or input stream, so they extend this class. 
  */
 abstract class IOBoundObjectIterator<T> extends ObjectIterator<T> {
 

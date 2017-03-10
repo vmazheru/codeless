@@ -1,11 +1,11 @@
 /**
- * This package contains {@code Serializer} interface and support classes.
+ * This package contains {@link Serializer} interface and support classes.
  * 
  * <p>Serializers support work flows which include reading objects from some source, processing
  * these objects, and writing these objects (possibly modified) to some destination.  The source here
  * may be a file or an input stream, while the destination may be another file or an output stream.
  * 
- * <p>The following example shows how to use {@code Serializer} to read objects of some 
+ * <p>The following example shows how to use a {@link Serializer} to read objects of some 
  * type {@code Person} from their Java 8 serialized state in a file, and save them in a text file 
  * by mapping them to their string representations.  Note the use of java 'try-with-resource' construct
  * which automatically closes the serializer's object iterator and writer.
@@ -23,6 +23,6 @@
         }
  * }</pre>
  * 
- * @see cl.files.serializers.Serialzer
+ * @see cl.files.serializers.Serializer
  */
 package cl.files.serializers;

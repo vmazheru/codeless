@@ -11,12 +11,12 @@ import java.io.PrintWriter;
 import cl.files.serializers.SerializerConfiguration;
 
 /**
- * This class is a specialization of {@code IOBoundObjectWriter} which operates on text outputs
+ * This class is a specialization of {@link IOBoundObjectWriter} which operates on text outputs
  * (files or output streams).
  * 
  * <p>The class makes use of the following configuration keys:
  * <ul>
- *   <li>{@code SerializerConfiguration.charset} specifies the output character set. The default value is UTF-8.</li>
+ *   <li>{@link cl.files.serializers.SerializerConfiguration#charset} specifies the output character set. The default value is UTF-8.</li>
  * </ul>
  * 
  * <p>Subclasses may override these configuration settings in their respective {@code build()} methods.
@@ -48,8 +48,8 @@ abstract class TextWriter<T> extends IOBoundObjectWriter<T> {
     }
 
     /**
-     * Write an object to the destination.  The object will be converted to a {@String} by
-     * calling a subclass's concrete implementation of {@TextWriter.toString()} method.
+     * Write an object to the destination. The object will be converted to a {@code String} by
+     * calling a subclass's concrete implementation of {@code TextWriter.toString()} method.
      */
     @Override
     public void write(T t) {
@@ -57,7 +57,7 @@ abstract class TextWriter<T> extends IOBoundObjectWriter<T> {
     }
     
     /**
-     * Implements the {@code IOBoundObjectWriter.init()} method in order to wrap a given output stream into a {@PrintWriter}
+     * Implements the {@code IOBoundObjectWriter.init()} method in order to wrap a given output stream into a {@code PrintWriter}
      * object.
      * 
      * <p>The print writer will be initialized with the character set defined as a configuration setting.

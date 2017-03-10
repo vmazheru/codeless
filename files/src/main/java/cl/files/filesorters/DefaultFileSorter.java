@@ -5,7 +5,7 @@ import cl.files.serializers.iterators.ObjectIterator;
 import cl.files.serializers.writers.ObjectWriter;
 
 /**
- * Default implementation of {@code FileSorter} interface.
+ * The default implementation of the {@link FileSorter} interface.
  * <p>This class make use of {@code FileSorter.inMemorySizeThreshold} configuration value
  * in order to switch between in-memory sorting for smaller files and external merge sorting
  * for large files. 

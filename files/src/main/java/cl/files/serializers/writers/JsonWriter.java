@@ -7,12 +7,13 @@ import cl.files.serializers.SerializerConfiguration;
 import cl.json.JsonMapper;
 
 /**
- * A specialization of {@code ObjectWriter} which stores objects in JSON format.
+ * A specialization of {@link ObjectWriter} which stores objects in JSON format.
  * 
- * <p>The class makes use of the following configuration keys (besides those available for its superclass {@code TextIterator}):
+ * <p>The class makes use of the following configuration keys (besides those available in {@link TextWriter}):
  * <ul>
- *   <li>{@code SerializerConfiguration.jsonMapper} sets a custom JSON mapper object. The default instance of JSON mapper is the
- *   instance with all JSON mapper default configuration settings.</li>
+ *   <li>{@link cl.files.serializers.SerializerConfiguration#jsonMapper} sets a custom JSON mapper object. 
+ *   The default instance of JSON mapper is the instance with all JSON mapper default configuration settings.
+ *   </li>
  * </ul>
  */
 public class JsonWriter<T> extends TextWriter<T> {

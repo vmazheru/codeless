@@ -9,10 +9,12 @@ import cl.json.JsonMapper;
 /**
  * Instances of this class know how to iterate over objects stored in JSON format.
  * 
- * <p>The class makes use of the following configuration keys (besides those available for its superclass {@code TextIterator}):
+ * <p>The class makes use of the following configuration keys (besides those available in {@link TextIterator}):
  * <ul>
- *   <li>{@code SerializerConfiguration.jsonMapper} sets a custom JSON mapper object. The default instance of JSON mapper is the
- *   instance with all JSON mapper default configuration settings.</li>
+ *   <li>
+ *      {@link cl.files.serializers.SerializerConfiguration#jsonMapper} sets a custom JSON mapper object. 
+ *      The default instance of JSON mapper is the instance with all JSON mapper default configuration settings.
+ *   </li>
  * </ul>
  * 
  * <p>Note, that reading objects from a JSON file requires run-time knowledge of the target object type, hence
@@ -56,8 +58,8 @@ public class JsonIterator<T> extends TextIterator<T> {
     /**
      * Return an object iterator which will operate on an input stream.
      * 
-     * @param file  input file
-     * @param klass target objects' class
+     * @param inputStream  input stream
+     * @param klass        target objects' class
      * @param lockConfiguration if true, the returned iterator configuration will be locked.
      */
     public static <T> ObjectIterator<T> fromInputStream(InputStream inputStream, Class<T> klass, boolean lockConfiguration) {

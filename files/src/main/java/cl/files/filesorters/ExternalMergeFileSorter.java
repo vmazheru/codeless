@@ -20,7 +20,7 @@ import cl.files.serializers.iterators.ObjectIterator;
 import cl.files.serializers.writers.ObjectWriter;
 
 /**
- * Implementation of {@code FileSorter} interface which sorts data by splitting it into
+ * Implementation of the {@link FileSorter} interface which sorts data by splitting it into
  * multiple intermediary files of manageable size, sorting them one at a time in memory, and them
  * merging sorted files into one result file.
  */

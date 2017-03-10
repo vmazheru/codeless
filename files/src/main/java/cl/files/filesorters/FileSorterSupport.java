@@ -11,7 +11,7 @@ import cl.files.serializers.iterators.ObjectIterator;
 import cl.files.serializers.writers.ObjectWriter;
 
 /**
- * Super class for {@FileSorter} implementations, which contains some common logic.
+ * Super class for {@link FileSorter} implementations, which contains some common logic.
  */
 abstract class FileSorterSupport<T> extends ConfigurableObject<FileSorter<T>> implements FileSorter<T> {
     
@@ -21,6 +21,9 @@ abstract class FileSorterSupport<T> extends ConfigurableObject<FileSorter<T>> im
         this.serializer = serializer;
     }
     
+    /**
+     * Make sure the object is locked, and then sort the file.
+     */
     @Override
     public void sort() {
         requireLock();

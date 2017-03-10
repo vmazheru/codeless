@@ -3,3 +3,4 @@ javadoc -d javadoc -sourcepath cfg/src/main/java  -subpackages cl
 javadoc -d javadoc -sourcepath jdbc/src/main/java -subpackages cl -classpath core/target/classes
 javadoc -d javadoc -sourcepath json/src/main/java -subpackages cl -classpath core/target/classes
 javadoc -d javadoc -sourcepath logging/src/main/java -subpackages cl -classpath core/target/classes
+javadoc -d javadoc -sourcepath files/src/main/java -subpackages cl -classpath core/target/classes:json/target/classes

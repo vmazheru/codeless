@@ -28,22 +28,23 @@ public class SerializerConfiguration {
     
     /**
      * Instruct a text-based serializer on how many lines in the file belongs to the file header.
-     * This setting should be consistent with {@code SerializerConfiguration.headerLines} value.
-     * The setting informs {@code ObjectIterator} on how may lines to skip before processing the data.
-     * The default value is 0;
+     * This setting should be consistent with {@link SerializerConfiguration#headerLines} value.
+     * The setting informs {@link cl.files.serializers.iterators.ObjectIterator} on how many lines 
+     * to skip before processing the data. The default value is 0;
      */
     public final static Key<Integer> numHeaderLines = new Key<>(() -> 0);
     
     /**
      * Set a list of strings which represent header lines in the text file. These lines will be
-     * written by a text-based {@code ObjectWriter} before any data.
+     * written by a text-based {@link cl.files.serializers.writers.ObjectWriter} before any data.
      * The default value is an empty list.
      */
     public final static Key<List<String>> headerLines = new Key<>(() -> Collections.emptyList());
     
     /**
      * Set a callback which will be executed on every line in the file header when reading
-     * data by a text-based {@ObjectIterator}. The default value is a function which does nothing.
+     * data by a text-based {@link cl.files.serializers.iterators.ObjectIterator}. 
+     * The default value is a function which does nothing.
      */
     public final static Key<BiConsumer<Integer, String>> onHeader = new Key<>(() -> (i, s) -> {});
     
@@ -67,9 +68,9 @@ public class SerializerConfiguration {
      * Return default configuration settings for JSON serializers.
      * <p>JSON serializers make use of the following configuration settings:
      * <ul>
-     *   <li>{@code SerializerConfiguration.skipEmptyLines}</li>
-     *   <li>{@code SerializerConfiguration.charset}</li>
-     *   <li>{@code SerializerConfiguration.jsonMapper}</li>
+     *   <li>{@link SerializerConfiguration#skipEmptyLines}</li>
+     *   <li>{@link SerializerConfiguration#charset}</li>
+     *   <li>{@link SerializerConfiguration#jsonMapper}</li>
      * </ul>
      */
     public static Configurable<?> jsonSerializerDefaultConfiguration() {
@@ -80,11 +81,11 @@ public class SerializerConfiguration {
      * Return default configuration settings for string serializers.
      * <p>String serializers make use of the following configuration settings:
      * <ul>
-     *   <li>{@code SerializerConfiguration.skipEmptyLines}</li>
-     *   <li>{@code SerializerConfiguration.charset}</li>
-     *   <li>{@code SerializerConfiguration.numHeaderLines}</li>
-     *   <li>{@code SerializerConfiguration.headerLines}</li>
-     *   <li>{@code SerializerConfiguration.onHeader}</li>
+     *   <li>{@link SerializerConfiguration#skipEmptyLines}</li>
+     *   <li>{@link SerializerConfiguration#charset}</li>
+     *   <li>{@link SerializerConfiguration#numHeaderLines}</li>
+     *   <li>{@link SerializerConfiguration#headerLines}</li>
+     *   <li>{@link SerializerConfiguration#onHeader}</li>
      * </ul>
      */
     public static Configurable<?> stringSerializerDefaultConfiguration() {

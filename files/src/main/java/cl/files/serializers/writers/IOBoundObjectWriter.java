@@ -7,8 +7,8 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 /**
- * Extends {@code ObjectWriter} with addition of either file or output stream handler.  Most of
- * implemented writers operate on file or input stream, so they should extend this class. 
+ * Extends {@link ObjectWriter} with addition of either file or output stream handler.  Most of
+ * implemented writers operate on file or input stream, so they extend this class. 
  */
 abstract class IOBoundObjectWriter<T> extends ObjectWriter<T> {
 

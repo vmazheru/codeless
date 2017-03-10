@@ -6,11 +6,11 @@ import java.io.OutputStream;
 import cl.files.serializers.SerializerConfiguration;
 
 /**
- * A specialization of {@code ObjectWriter} which operate on {@code String} objects.
+ * A specialization of {@link ObjectWriter} which operate on {@code String} objects.
  * 
- * <p>The class makes use of the following configuration keys (besides those available for its superclass {@code TextWriter}):
+ * <p>The class makes use of the following configuration keys (besides those available in {@link TextWriter}):
  * <ul>
- *   <li>{@code SerializerConfiguration.headerLines} defines a list of header lines (zero or more).  
+ *   <li>{@link cl.files.serializers.SerializerConfiguration#headerLines} defines a list of header lines (zero or more).  
  *   These lines will be written in the output before any data lines.  The default value is empty list.</li>
  * </ul>
  */

@@ -23,19 +23,19 @@ import cl.core.configurable.ConfigurableObject;
  * This class defines common functionality available in all object iterator implementations.  See 
  * package description for usage examples.
  * 
- * <p>The actual {@code Iterator} methods {@code hasNext()} and {@code next()} are made final, so
+ * <p>The actual {@code Iterator} methods {@code hasNext()} and {@code next()} are made final, and
  * concrete implementations must implement {@code readNext()} method.  (There are also two 
  * {@code clone()} methods, which concrete implementations must implement, but implementing these methods
  * is trivial).
  * 
- * <p>{@code ObjectIterator} is a {@code ConfigurableObject}, so the implementations can feel free
+ * <p>{@link ObjectIterator} is a {@link ConfigurableObject}, so the implementations can feel free
  * to implement any configuration logic they desire.  Final methods {@code hasNext()} and {@code next()}
- * make sure that any operation on an unlocked configurable object iterator will result in {@code ConfigurableException}.
+ * make sure that any operation on an unlocked configurable object iterator will result in {@link ConfigurableException}.
  * 
- *  <p>{@code ObjectIterator} also implements {@code Closeable} interface and may be used in Java 'try-with-resource' construct.
+ *  <p>{@link ObjectIterator} also implements {@code Closeable} interface and may be used in Java 'try-with-resource' construct.
 
  * @param <T> Type of objects which an object iterator reads from its source. This may be some custom
- * class for {@code JavaIterator} or {@JsonIterator}, or {@String} for {@code StringIterator}.
+ * class for {@link JavaIterator} or {@link JsonIterator}, or {@code String} for {@link StringIterator}.
  */
 public abstract class ObjectIterator<T> extends ConfigurableObject<ObjectIterator<T>> implements Iterator<T>, Closeable {
 
@@ -58,7 +58,7 @@ public abstract class ObjectIterator<T> extends ConfigurableObject<ObjectIterato
      * Return the next element in this iterator.
      * 
      * @throws ConfigurableException whenever configuration for this object is not locked.
-     * @throws IllegalArgumentException when called on an iterator with no more elements available.
+     * @throws NoSuchElementException when called on an iterator with no more elements available.
      */
     @Override
     public final T next() {
@@ -72,9 +72,9 @@ public abstract class ObjectIterator<T> extends ConfigurableObject<ObjectIterato
     
     /**
      * Return the next {@code numObjects} elements from the source.  If the iterator has less elements, than
-     * specified by the parameter, return as many items as are available.
+     * specified by the parameter, it will return as many items as are available.
      * 
-     * @throws ConfigurableException whenever configuration for this object is not locked.
+     * @throws ConfigurableException whenever the configuration for this object is not locked.
      * @param numObjects How many elements to read
      * @return A list of at most {@code numObjects} elements read from the source.
      */
@@ -109,7 +109,7 @@ public abstract class ObjectIterator<T> extends ConfigurableObject<ObjectIterato
     }
     
     /**
-     * Read all objects and return them as list.
+     * Read all objects and return them in a list.
      * 
      * @throws ConfigurableException whenever configuration for this object is not locked.
      */

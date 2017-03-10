@@ -10,7 +10,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 
 /**
- * A specialization of {@code ObjectWriter} which stores objects by using Java serialization mechanism.
+ * A specialization of {@link ObjectWriter} which stores objects by using Java serialization mechanism.
  *
  * @param <T> object type which must extend {@code java.io.Serializable} interface.
  */

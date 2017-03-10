@@ -12,7 +12,7 @@ import cl.files.serializers.iterators.ObjectIterator;
 import cl.files.serializers.writers.ObjectWriter;
 
 /**
- * Implementation of {@code FileSorter} interface which loads a file in memory and sorts it in memory.
+ * Implementation of the {@link FileSorter} interface which loads a file fully into the memory and sorts it in memory.
  */
 public class InMemoryFileSorter<T> extends FileSorterSupport<T> {
     

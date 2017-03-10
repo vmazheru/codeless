@@ -21,18 +21,18 @@ import cl.files.serializers.iterators.ObjectIterator;
 import cl.files.serializers.writers.ObjectWriter;
 
 /**
- * A serializer is an object which wraps a pair of an {@code ObjectIterator} and an {@code ObjectWriter},
- * which share common or somehow related configuration attributes.
+ * A serializer is an object which wraps a pair of an {@link ObjectIterator} and an {@link ObjectWriter},
+ * which share common configuration attributes.
  * 
  * <p>The idea is to support work flows where one needs to read objects from some source (file, or input stream),
- * process them somehow, and then write them to some destination (file, or output stream).  The important part
+ * process them, and then write them to some destination (file, or output stream).  The important part
  * here is that a consistent set of configuration settings is used to read and write the objects.
  * 
  * <p>Examples of using serializers may include sorting files, converting a file of one type (for example JAVA) to
  * another type (for example JSON), removing objects from a file (filtering), converting objects of one type
- * to objects with a different type (mapping), etc.  Serializers should be used when reading objects goes along
- * with writing them. In cases when only reading or writing is needed, one should use {@code ObjectIterator} and
- * {@code ObjectWriter} directly.
+ * to objects of a different type (mapping), etc.  Serializers should be used when reading objects goes along
+ * with writing them. In cases when only reading or writing is needed, one should use {@link ObjectIterator}s and
+ * {@link ObjectWriter}s directly.
  * 
  * <p>Serializers implement {@code Closeable} interface, and if used in 'try-with-resource' construct will
  * close both their object iterator and object writer automatically.
@@ -513,7 +513,7 @@ public interface Serializer<T,R> extends Closeable {
     }
 
     /*
-     * The next for methods create serializers whith default configuration settings and no
+     * The next for methods create serializers with default configuration settings and no
      * iterator class.
      */
     

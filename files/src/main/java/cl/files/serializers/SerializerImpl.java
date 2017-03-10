@@ -21,7 +21,7 @@ import cl.files.serializers.writers.ObjectWriter;
 import cl.files.serializers.writers.StringWriter;
 
 /**
- * Implementation of {@code Serializer} interface.
+ * Implementation of {@link Serializer} interface.
  */
 final class SerializerImpl<T,R> implements Serializer<T,R> {
     
