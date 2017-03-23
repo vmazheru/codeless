@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a tuple of two elements. The objects of this class are immutable.
+ * Represents a tuple of two elements.
  *
  * @param <T> type of the first element
  * @param <U> type of the second element
