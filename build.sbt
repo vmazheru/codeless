@@ -20,6 +20,13 @@ lazy val core = project.
     name := "cl.core"
   )
 
+lazy val util = project.
+  dependsOn(core).
+  settings(commonSettings: _*).
+  settings(
+    name := "cl.util"
+  ) 
+
 lazy val jdbc = project.
   dependsOn(core).
   settings(commonSettings: _*).
@@ -41,9 +48,9 @@ lazy val json = project.
   settings(
     name := "cl.json",
     libraryDependencies ++= Seq(
-      "com.fasterxml.jackson.core" % "jackson-core"            %  "2.5.1",
-      "com.fasterxml.jackson.core" % "jackson-databind"        %  "2.5.1",
-      "com.fasterxml.jackson.core" % "jackson-annotations"     %  "2.5.1",
+      "com.fasterxml.jackson.core"     % "jackson-core"            %  "2.5.1",
+      "com.fasterxml.jackson.core"     % "jackson-databind"        %  "2.5.1",
+      "com.fasterxml.jackson.core"     % "jackson-annotations"     %  "2.5.1",
       "com.fasterxml.jackson.datatype" % "jackson-datatype-jsr310" %  "2.5.1"
     )
   )
