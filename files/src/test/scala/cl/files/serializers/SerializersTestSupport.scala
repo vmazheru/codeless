@@ -136,8 +136,8 @@ object SerializersTestSupport {
       writeObjects(Person.peopleDBStrings(), numObjects, writer)
     }
     file
-  }  
- 
+  }
+  
   private[files] def writeObjects[T](list: java.util.List[T], numObjects: Int, writer: ObjectWriter[T]) {
     
     def randomElem[T](list: java.util.List[T]) = {

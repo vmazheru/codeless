@@ -1,4 +1,4 @@
-package cl.files.filesorters;
+package cl.util.file.sorter;
 
 import static java.util.stream.Collectors.*;
 

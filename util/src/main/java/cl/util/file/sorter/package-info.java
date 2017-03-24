@@ -45,4 +45,4 @@
  *  configuration value to do just that. Setting it to zero will force using of {@link ExternalMergeFileSorter}
  *  while setting it to {@code Long.MAX_VALUE} will force using of {@link InMemoryFileSorter}.
  */
-package cl.files.filesorters;
+package cl.util.file.sorter;

@@ -1,29 +1,23 @@
 package cl.files.serializers
 
-import scala.util.Random
-import org.junit.runner.RunWith
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
-import cl.core.lang.Control.using
-import cl.core.function.ScalaToJava._
-import cl.files.Person
-import cl.files.serializers.Serializer._
-import cl.files.serializers.SerializersTestSupport._
-import cl.files.serializers.iterators.JavaIterator
-import cl.files.serializers.iterators.JsonIterator
+import java.util.stream.Collectors
+import cl.files.serializers.iterators.StringIterator
+import cl.core.configurable.Configurable
 import cl.files.serializers.iterators.ObjectIterator
-import cl.files.serializers.writers.JavaWriter
+import cl.files.serializers.iterators.JavaIterator
+import cl.files.Person
+import org.junit.runner.RunWith
+import cl.files.serializers.iterators.JsonIterator
+import org.scalatest.Matchers
 import cl.files.serializers.writers.JsonWriter
+import java.util.Optional
+import org.scalatest.FlatSpec
+import cl.files.serializers.writers.StringWriter
 import cl.files.serializers.writers.ObjectWriter
 import java.io.File
-import cl.files.serializers.iterators.StringIterator
-import cl.files.serializers.writers.StringWriter
-import java.util.Optional
-import cl.core.configurable.Configurable
-import cl.files.Person.Gender
-import java.util.stream.Collectors
-import java.util.Objects
+import cl.files.serializers.writers.JavaWriter
 import cl.core.ds.Counter
+import cl.files.Person.Gender
 
 @RunWith(classOf[org.scalatest.junit.JUnitRunner])
 class SerializerSpec extends FlatSpec with Matchers {

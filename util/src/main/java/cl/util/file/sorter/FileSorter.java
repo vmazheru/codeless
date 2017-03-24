@@ -1,7 +1,7 @@
-package cl.files.filesorters;
+package cl.util.file.sorter;
 
-import static cl.files.filesorters.FileSorterUtils.*;
 import static cl.files.serializers.Serializer.*;
+import static cl.util.file.sorter.FileSorterUtils.*;
 
 import java.io.File;
 import java.util.Comparator;

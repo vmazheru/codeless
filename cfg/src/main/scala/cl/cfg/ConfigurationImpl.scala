@@ -8,7 +8,7 @@ import java.util.Properties
 
 import cl.cfg.Configuration.ConfigurationException
 import cl.core.function.ScalaToJava.toConsumer
-import cl.core.lang.Control._
+import cl.core.lang.Control.using
 
 protected object CfgImpl {
   

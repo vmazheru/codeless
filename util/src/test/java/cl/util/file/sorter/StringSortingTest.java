@@ -1,4 +1,4 @@
-package cl.files;
+package cl.util.file.sorter;
 
 import static cl.core.decorator.exception.ExceptionDecorators.*;
 import static org.junit.Assert.*;
@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import cl.files.filesorters.FileSorter;
 import cl.files.serializers.iterators.StringIterator;
 import cl.files.serializers.writers.ObjectWriter;
 import cl.files.serializers.writers.StringWriter;

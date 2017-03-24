@@ -11,6 +11,7 @@ import cl.core.configurable.Configurable;
 import cl.core.configurable.Key;
 import cl.json.JsonMapper;
 
+
 /**
  * This class contains all configuration keys (and their default values), which can be used with serializers.
  */

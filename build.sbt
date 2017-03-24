@@ -20,13 +20,6 @@ lazy val core = project.
     name := "cl.core"
   )
 
-lazy val util = project.
-  dependsOn(core).
-  settings(commonSettings: _*).
-  settings(
-    name := "cl.util"
-  ) 
-
 lazy val jdbc = project.
   dependsOn(core).
   settings(commonSettings: _*).
@@ -78,6 +71,15 @@ lazy val files = project.
   settings(commonSettings: _*).
   settings(
     name := "cl.files"
+  )
+
+lazy val util = project.
+  dependsOn(core).
+  dependsOn(json).
+  dependsOn(files).
+  settings(commonSettings: _*).
+  settings(
+    name := "cl.util"
   )
 
 lazy val ugly = project.

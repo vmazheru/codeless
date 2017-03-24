@@ -4,19 +4,27 @@ import java.io.File
 import java.io.UncheckedIOException
 import java.util.ArrayList
 import java.util.Collections
-
 import org.junit.runner.RunWith
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
-
 import cl.core.lang.Control.using
-import cl.files.Person
 import cl.files.serializers.Serializer._
 import cl.files.serializers.Serializer
-import cl.files.serializers.SerializersTestSupport._
 import cl.files.serializers.iterators.JavaIterator
 import cl.files.serializers.iterators.JsonIterator
 import cl.files.serializers.iterators.StringIterator
+import cl.util.file.sorter.ExternalMergeFileSorter
+import cl.util.file.sorter.InMemoryFileSorter
+import cl.util.file.sorter.FileSorter
+import cl.files.serializers.writers.StringWriter
+import cl.files.serializers.writers.ObjectWriter
+import java.util.Random
+import java.io.FileOutputStream
+import java.io.ObjectOutputStream
+import cl.util.file.sorter.Person
+import java.io.PrintWriter
+import cl.json.JsonMapper
+import cl.core.function.ScalaToJava.toConsumer
 
 @RunWith(classOf[org.scalatest.junit.JUnitRunner])
 class FileSorterSpec extends FlatSpec with Matchers {
@@ -167,6 +175,53 @@ class FileSorterSpec extends FlatSpec with Matchers {
       Collections.sort(people)
       iterator.read() should equal (people)
     }
+  }
+  
+  private[this] def withFiles(src: File, dest: File)(f: (File, File) => Unit) {
+    try { f.apply(src, dest) } finally { src.delete(); dest.delete(); }
+  }
+  
+  private[files] def largeStringInputFile(numObjects: Int) = {
+    val file = File.createTempFile("string", "")
+    using (StringWriter.toFile(file)) { writer =>
+      writeObjects(Person.peopleDBStrings(), numObjects, writer)
+    }
+    file
+  }
+  
+  private[files] def writeObjects[T](list: java.util.List[T], numObjects: Int, writer: ObjectWriter[T]) {
+    
+    def randomElem[T](list: java.util.List[T]) = {
+      val size = list.size();
+      val r = new Random(System.currentTimeMillis())
+      list.get(r.nextInt(size))
+    }
+    
+    var i = 0
+    while (i < numObjects) {
+      writer.write(randomElem(list))
+      i += 1
+    }
+  }
+  
+  private[this] def newFile() = File.createTempFile("tmp", "")
+  
+  private[this] def javaInputFileWithDuplicates() = {
+    val file = File.createTempFile("java", "")
+    using(new ObjectOutputStream(new FileOutputStream(file))) { out =>
+      Person.peopleDB().forEach((p: Person) => out.writeObject(p))
+      Person.peopleDB().forEach((p: Person) => out.writeObject(p))
+    }
+    file
+  }
+  
+  private[files] def jsonInputFile() = {
+    val file = File.createTempFile("json", "")
+    val jsonMapper = JsonMapper.getJsonMapper
+    using(new PrintWriter(new FileOutputStream(file))) { out =>
+      Person.peopleDB().forEach((p: Person) => out.println(jsonMapper.toJson(p)))
+    }
+    file
   }
   
 }

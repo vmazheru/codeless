@@ -1,4 +1,4 @@
-package cl.files.filesorters;
+package cl.util.file.sorter;
 
 import cl.files.serializers.Serializer;
 import cl.files.serializers.iterators.ObjectIterator;
