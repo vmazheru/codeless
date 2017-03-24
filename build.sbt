@@ -66,7 +66,6 @@ lazy val logging_log4j = project.
   )
 
 lazy val files = project.
-  dependsOn(core).
   dependsOn(json).
   settings(commonSettings: _*).
   settings(
@@ -74,9 +73,7 @@ lazy val files = project.
   )
 
 lazy val util = project.
-  dependsOn(core).
-  dependsOn(json).
-  dependsOn(files).
+  dependsOn(files % "compile->compile;test->test").
   settings(commonSettings: _*).
   settings(
     name := "cl.util"
