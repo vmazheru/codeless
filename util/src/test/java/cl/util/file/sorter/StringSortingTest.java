@@ -12,9 +12,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import cl.files.serializers.iterators.StringIterator;
-import cl.files.serializers.writers.ObjectWriter;
-import cl.files.serializers.writers.StringWriter;
+import cl.serializers.iterators.StringIterator;
+import cl.serializers.writers.ObjectWriter;
+import cl.serializers.writers.StringWriter;
 
 /**
  * Unit tests in this class verify static sort() methods in FileSorter interface.

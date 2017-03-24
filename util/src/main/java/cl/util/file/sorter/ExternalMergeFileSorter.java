@@ -15,9 +15,9 @@ import java.util.stream.Stream;
 
 import cl.core.ds.Counter;
 import cl.core.util.FileUtils;
-import cl.files.serializers.Serializer;
-import cl.files.serializers.iterators.ObjectIterator;
-import cl.files.serializers.writers.ObjectWriter;
+import cl.serializers.Serializer;
+import cl.serializers.iterators.ObjectIterator;
+import cl.serializers.writers.ObjectWriter;
 
 /**
  * Implementation of the {@link FileSorter} interface which sorts data by splitting it into

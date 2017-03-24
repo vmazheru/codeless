@@ -65,15 +65,15 @@ lazy val logging_log4j = project.
     )
   )
 
-lazy val files = project.
+lazy val serializers = project.
   dependsOn(json).
   settings(commonSettings: _*).
   settings(
-    name := "cl.files"
+    name := "cl.serializers"
   )
 
 lazy val util = project.
-  dependsOn(files % "compile->compile;test->test").
+  dependsOn(serializers % "compile->compile;test->test").
   settings(commonSettings: _*).
   settings(
     name := "cl.util"

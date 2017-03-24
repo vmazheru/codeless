@@ -1,31 +1,24 @@
-package cl.files.filesorters
+package cl.util.file.sorter
 
 import java.io.File
 import java.io.UncheckedIOException
 import java.util.ArrayList
 import java.util.Collections
+
 import org.junit.runner.RunWith
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
+
 import cl.core.lang.Control.using
-import cl.files.serializers.Serializer._
-import cl.files.serializers.Serializer
-import cl.files.serializers.iterators.JavaIterator
-import cl.files.serializers.iterators.JsonIterator
-import cl.files.serializers.iterators.StringIterator
-import cl.util.file.sorter.ExternalMergeFileSorter
-import cl.util.file.sorter.InMemoryFileSorter
-import cl.util.file.sorter.FileSorter
-import cl.files.serializers.writers.StringWriter
-import cl.files.serializers.writers.ObjectWriter
-import java.util.Random
-import java.io.FileOutputStream
-import java.io.ObjectOutputStream
-import cl.files.Person
-import java.io.PrintWriter
-import cl.json.JsonMapper
-import cl.core.function.ScalaToJava.toConsumer
-import cl.files.serializers.SerializersTestSupport._
+import cl.serializers.Person
+import cl.serializers.Serializer
+import cl.serializers.Serializer.javaSerializer
+import cl.serializers.Serializer.jsonSerializer
+import cl.serializers.Serializer.stringSerializer
+import cl.serializers.SerializersTestSupport._
+import cl.serializers.iterators.JavaIterator
+import cl.serializers.iterators.JsonIterator
+import cl.serializers.iterators.StringIterator
 
 @RunWith(classOf[org.scalatest.junit.JUnitRunner])
 class FileSorterSpec extends FlatSpec with Matchers {

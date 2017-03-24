@@ -7,9 +7,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
-import cl.files.serializers.Serializer;
-import cl.files.serializers.iterators.ObjectIterator;
-import cl.files.serializers.writers.ObjectWriter;
+import cl.serializers.Serializer;
+import cl.serializers.iterators.ObjectIterator;
+import cl.serializers.writers.ObjectWriter;
 
 /**
  * Implementation of the {@link FileSorter} interface which loads a file fully into the memory and sorts it in memory.

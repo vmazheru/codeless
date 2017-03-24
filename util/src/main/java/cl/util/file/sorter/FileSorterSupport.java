@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.util.Comparator;
 
 import cl.core.configurable.ConfigurableObject;
-import cl.files.serializers.Serializer;
-import cl.files.serializers.iterators.ObjectIterator;
-import cl.files.serializers.writers.ObjectWriter;
+import cl.serializers.Serializer;
+import cl.serializers.iterators.ObjectIterator;
+import cl.serializers.writers.ObjectWriter;
 
 /**
  * Super class for {@link FileSorter} implementations, which contains some common logic.

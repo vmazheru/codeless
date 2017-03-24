@@ -1,8 +1,8 @@
 package cl.util.file.sorter;
 
-import cl.files.serializers.Serializer;
-import cl.files.serializers.iterators.ObjectIterator;
-import cl.files.serializers.writers.ObjectWriter;
+import cl.serializers.Serializer;
+import cl.serializers.iterators.ObjectIterator;
+import cl.serializers.writers.ObjectWriter;
 
 /**
  * The default implementation of the {@link FileSorter} interface.

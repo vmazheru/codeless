@@ -1,16 +1,16 @@
 package cl.util.file.sorter;
 
-import static cl.files.serializers.Serializer.*;
-import static cl.util.file.sorter.FileSorterUtils.*;
+import static cl.util.file.sorter.FileSorterUtils.withTempFile;
+import static cl.serializers.Serializer.*;
 
 import java.io.File;
 import java.util.Comparator;
 
 import cl.core.configurable.Configurable;
 import cl.core.configurable.Key;
-import cl.files.serializers.SerializationType;
-import cl.files.serializers.Serializer;
-import cl.files.serializers.SerializerConfiguration;
+import cl.serializers.SerializationType;
+import cl.serializers.Serializer;
+import cl.serializers.SerializerConfiguration;
 
 /**
  * A file sorter is an object which sorts files, from small to large possibly without loading them
