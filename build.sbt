@@ -1,7 +1,7 @@
 lazy val commonSettings = Seq(
   organization := "j2vm",
   version := "0.1.0",
-  scalaVersion := "2.11.4",
+  scalaVersion := "2.11.8",
   crossPaths := false, //remove scala version suffix from porject name
   EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource,
   EclipseKeys.withSource := true,

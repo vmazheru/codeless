@@ -10,7 +10,7 @@ import scala.collection.SortedSet
 import java.util.function.Predicate
 
 /**
- * Implicit conversions between Scala function types and Java 8 functional interfaces.
+ * Implicit conversions from Java to Scala types
  */
 object ScalaToJava {
   
