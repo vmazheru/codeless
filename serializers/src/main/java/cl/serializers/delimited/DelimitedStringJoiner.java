@@ -1,5 +1,6 @@
 package cl.serializers.delimited;
 
+import java.util.Collection;
 import java.util.stream.Stream;
 
 import cl.core.configurable.Configurable;
@@ -50,13 +51,28 @@ public interface DelimitedStringJoiner extends Configurable<DelimitedStringJoine
 	String join(CharSequence ... values);
 	
 	/**
-	 * Concatenate (join) given values into one string.  {@code toString() } will be called on each given object
+	 * Concatenate (join) given values into one string. {@code toString() } will be called on each given object
 	 * in order to convert it to a string before concatenation.
 	 */
 	default String join(Object ... values) {
-		return join(Stream.of(values)
-		        .map(v -> v != null ? v.toString() : null)
-		        .toArray(CharSequence[]::new));
+		return join(Stream.of(values));
+	}
+	
+	/**
+	 * Concatenate (join) given values into one string. {@code toString() } will be called on each given object
+	 * in order to convert it to a string before concatenation.  The values will be concatenated in the order of
+	 * iteration.
+	 */
+	default String join(Collection<?> values) {
+		return join(values.stream());
+	}
+	
+	/**
+	 * Concatenate (join) a stream of values into one string. {@code toString() } will be called on each given object
+	 * in order to convert it to a string before concatenation.
+	 */
+	default String join(Stream<?> values) {
+		return join(values.map(v -> v != null ? v.toString() : null).toArray(CharSequence[]::new));
 	}
 	
 	/**
