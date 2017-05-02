@@ -13,7 +13,7 @@ class DelimitedStringSplitterImpl extends ConfigurableObject<DelimitedStringSpli
     @Override
     public String[] split(String str) {
     	requireLock();
-        if (str == null) return new String[]{};
+        if (str == null) return null;
         
         // extract parameters
         char enc = get(encloser);

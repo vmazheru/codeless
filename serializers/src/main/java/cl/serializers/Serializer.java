@@ -136,9 +136,9 @@ public interface Serializer<T,R> extends Closeable {
     @SuppressWarnings("unchecked")
     default void forEach(Consumer<T> f) {
         uncheck(() -> {
-            try (Serializer<T,T> s = (Serializer<T,T>)this) {
+            try (Serializer<T,T> s = (Serializer<T,T>)this;
                 ObjectIterator<T> iter = s.getIterator();
-                ObjectWriter<T> writer = s.getWriter();
+                ObjectWriter<T> writer = s.getWriter()) {
                 while (iter.hasNext()) {
                     T next = iter.next();
                     f.accept(next);
@@ -156,9 +156,9 @@ public interface Serializer<T,R> extends Closeable {
     @SuppressWarnings("unchecked")
     default void forEachBatch(int batchSize, Consumer<List<T>> onBatch) {
         uncheck(() -> {
-            try (Serializer<T,T> s = (Serializer<T,T>)this) {
+            try (Serializer<T,T> s = (Serializer<T,T>)this;
                 ObjectIterator<T> iter = s.getIterator();
-                ObjectWriter<T> writer = s.getWriter();
+                ObjectWriter<T> writer = s.getWriter()) {
                 iter.forEachBatch(batchSize, batch -> {
                     onBatch.accept(batch);
                     writer.write(batch);

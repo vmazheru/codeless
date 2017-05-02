@@ -85,9 +85,9 @@ class DelimitedStringSplitterSpec extends FlatSpec with Matchers with GivenWhenT
   }
 
   Given("a null value") 
-  it should "return an empty array" in {
-    c(null) should equal(Array())
-    p(null) should equal(Array())
+  it should "return null" in {
+    c(null) should equal(null)
+    p(null) should equal(null)
   }
   
   Given("an empty string")

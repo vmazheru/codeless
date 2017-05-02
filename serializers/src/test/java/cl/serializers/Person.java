@@ -18,7 +18,6 @@ public class Person implements Serializable, Comparable<Person> {
         public static Gender f() { return FEMALE; }
     }
     
-    @SuppressWarnings("serial")
     public static class Address implements Serializable {
 
         public Address(){}

@@ -98,7 +98,7 @@ public class StringIterator extends TextIterator<String> {
         }
     }
     
-    @Override @SuppressWarnings("unchecked")
+    @Override
     protected String parseLine(String line) {
         return line;
     }

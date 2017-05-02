@@ -11,12 +11,6 @@ public class DelimitedStringSplitterTest {
 	public void testSplit() {
 		
 		assertCorrectSplit(
-				"Split of null should result in an empty array",
-				null,
-				new String[]{},
-				DelimitedStringSplitter.csv()
-		);
-		assertCorrectSplit(
 				"Split of string with comma-separated empty values, should result in an array of empty strings",
 				",,",
 				new String[]{"", "", ""},

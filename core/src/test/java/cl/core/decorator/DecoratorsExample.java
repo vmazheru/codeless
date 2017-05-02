@@ -83,8 +83,8 @@ public class DecoratorsExample {
             return request.stream().map(req -> new Res()).collect(toList());
         }
         
-        static class Req {}
-        static class Res {}
+        static class Req {/* empty request */}
+        static class Res {/* empty response */}
 
         @SuppressWarnings("serial")
         static class SomeAPIException extends Exception {
