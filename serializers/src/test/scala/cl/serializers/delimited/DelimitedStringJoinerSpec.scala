@@ -5,6 +5,7 @@ import org.scalatest.FlatSpec
 
 import cl.serializers.delimited.DelimitedStringJoiner._
 import org.junit.runner.RunWith
+import cl.core.configurable.ConfigurableException
 
 /**
  * Specification for delimited string joiner.
@@ -79,24 +80,45 @@ class DelimitedStringJoinerSpec extends FlatSpec with Matchers {
     sTrimEnc("  1","2  ","  3   ",4) should be ("\"1\" \"2\" \"3\" \"4\"")
   }
   
+  it should "check for new  lines and convert them to spaces when instructed to do so" in {
+    val newLine = System.lineSeparator()
+    cNewLine(1,"Line " + newLine + " interrupted",3) should be ("1,Line   interrupted,3")
+    pNewLine(1,"Line " + newLine + " interrupted",3) should be ("1|Line   interrupted|3")
+    tNewLine(1,"Line " + newLine + " interrupted",3) should be ("1\tLine   interrupted\t3")
+    sNewLine(1,"Line " + newLine + " interrupted",3) should be ("1 \"Line   interrupted\" 3")
+  }
   
-  private def c(values: Any*) = csv().join(values.map(_.asInstanceOf[AnyRef]) : _*)
-  private def p(values: Any*) = pipe().join(values.map(_.asInstanceOf[AnyRef]) : _*)
-  private def t(values: Any*) = tab().join(values.map(_.asInstanceOf[AnyRef]) : _*)
-  private def s(values: Any*) = space().join(values.map(_.asInstanceOf[AnyRef]) : _*)
+  it must "throw an exception when used while unlocked" in {
+    a [ConfigurableException] should be thrownBy get().join("one")
+  }
   
-  private def cEnc(values: Any*) = csvEnclosing().join(values.map(_.asInstanceOf[AnyRef]) : _*)
-  private def pEnc(values: Any*) = pipeEnclosing().join(values.map(_.asInstanceOf[AnyRef]) : _*)
-  private def tEnc(values: Any*) = tabEnclosing().join(values.map(_.asInstanceOf[AnyRef]) : _*)
-  private def sEnc(values: Any*) = spaceEnclosing().join(values.map(_.asInstanceOf[AnyRef]) : _*)
+  private def join(joiner: DelimitedStringJoiner, values: Any*) = joiner.join(values.map(_.asInstanceOf[AnyRef]) : _*)
   
-  private def cTrim(values: Any*) = csvTrimming().join(values.map(_.asInstanceOf[AnyRef]) : _*)
-  private def pTrim(values: Any*) = pipeTrimming().join(values.map(_.asInstanceOf[AnyRef]) : _*)
-  private def tTrim(values: Any*) = tabTrimming().join(values.map(_.asInstanceOf[AnyRef]) : _*)
-  private def sTrim(values: Any*) = spaceTrimming().join(values.map(_.asInstanceOf[AnyRef]) : _*)
+  private def c(values: Any*) = join(csv(),   values : _*)
+  private def p(values: Any*) = join(pipe(),  values : _*)
+  private def t(values: Any*) = join(tab(),   values : _*)
+  private def s(values: Any*) = join(space(), values : _*)
   
-  private def cTrimEnc(values: Any*) = csvTrimmingAndEnclosing().join(values.map(_.asInstanceOf[AnyRef]) : _*)
-  private def pTrimEnc(values: Any*) = pipeTrimmingAndEnclosing().join(values.map(_.asInstanceOf[AnyRef]) : _*)
-  private def tTrimEnc(values: Any*) = tabTrimmingAndEnclosing().join(values.map(_.asInstanceOf[AnyRef]) : _*)
-  private def sTrimEnc(values: Any*) = spaceTrimmingAndEnclosing().join(values.map(_.asInstanceOf[AnyRef]) : _*)
+  private def cEnc(values: Any*) = join(csvEnclosing(),   values : _*)
+  private def pEnc(values: Any*) = join(pipeEnclosing(),  values : _*)
+  private def tEnc(values: Any*) = join(tabEnclosing(),   values : _*)
+  private def sEnc(values: Any*) = join(spaceEnclosing(), values : _*)
+  
+  private def cTrim(values: Any*) = join(csvTrimming(),   values : _*)
+  private def pTrim(values: Any*) = join(pipeTrimming(),  values : _*)
+  private def tTrim(values: Any*) = join(tabTrimming(),   values : _*)
+  private def sTrim(values: Any*) = join(spaceTrimming(), values : _*)
+  
+  private def cTrimEnc(values: Any*) = join(csvTrimmingAndEnclosing(),   values : _*)
+  private def pTrimEnc(values: Any*) = join(pipeTrimmingAndEnclosing(),  values : _*)
+  private def tTrimEnc(values: Any*) = join(tabTrimmingAndEnclosing(),   values : _*)
+  private def sTrimEnc(values: Any*) = join(spaceTrimmingAndEnclosing(), values : _*)
+  
+  private def nlChecker(joiner: DelimitedStringJoiner) = 
+    joiner.`with`(DelimitedStringJoiner.checkForNewLines, java.lang.Boolean TRUE).locked()
+  
+  private def cNewLine(values: Any*) = join(nlChecker(csv(false)),   values : _*)
+  private def pNewLine(values: Any*) = join(nlChecker(pipe(false)),  values : _*)
+  private def tNewLine(values: Any*) = join(nlChecker(tab(false)),   values : _*)
+  private def sNewLine(values: Any*) = join(nlChecker(space(false)), values : _*)
 }
