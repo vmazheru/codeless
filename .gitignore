@@ -2,6 +2,7 @@
 .project
 .settings
 .externalToolBuilders
+.cache
 .cache-main
 .cache-tests
 target
