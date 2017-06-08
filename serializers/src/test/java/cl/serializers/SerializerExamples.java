@@ -1,7 +1,7 @@
 package cl.serializers;
 
-import static cl.serializers.Serializer.*;
-import static cl.serializers.SerializerConfiguration.*;
+import static cl.serializers.Serializer.serializer;
+import static cl.serializers.SerializerConfiguration.numHeaderLines;
 
 import java.io.File;
 import java.io.IOException;

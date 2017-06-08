@@ -139,6 +139,5 @@ class DelimitedStringSplitterImpl extends ConfigurableObject<DelimitedStringSpli
     	
     	return finalValue;
     }
- 
 
 }

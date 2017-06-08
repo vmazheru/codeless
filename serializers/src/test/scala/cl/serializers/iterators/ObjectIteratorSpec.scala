@@ -129,7 +129,7 @@ class ObjectIteratorSpec extends FlatSpec with Matchers {
   
   private def forAllIterators[T](test: ObjectIterator[T] => Unit) {
     testIterators(javaInputFile, javaIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
-    testIterators(jsonInputFile, jsonIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
+    //testIterators(jsonInputFile, jsonIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
     testIterators(stringInputFile, stringIterators) (test.asInstanceOf[ObjectIterator[String] => Unit])
   }
   
