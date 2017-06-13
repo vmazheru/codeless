@@ -3,13 +3,21 @@ package cl.serializers.iterators;
 import java.io.File;
 import java.io.InputStream;
 
+import cl.serializers.delimited.DelimitedStringParser;
+import cl.serializers.delimited.DelimitedStringSplitter;
+
 public class DelimitedStringIterator<T> extends TextIterator<T> {
     
     private final Class<T> klass;
+    private final DelimitedStringSplitter splitter = null;
+    private final DelimitedStringParser<T> parser = null;
     
     private DelimitedStringIterator(File file, Class<T> klass) {
         super(file);
         this.klass = klass;
+        
+        
+        
     }
     
     private DelimitedStringIterator(InputStream inputStream, Class<T> klass) {
@@ -49,11 +57,7 @@ public class DelimitedStringIterator<T> extends TextIterator<T> {
     
     @Override
     protected T parseLine(String line) {
-        
-        
-        
-        // TODO Auto-generated method stub
-        return null;
+        return parser.parse(splitter.split(line));
     }
 
 }
