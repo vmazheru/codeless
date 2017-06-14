@@ -1,14 +1,7 @@
 package cl.core.util;
 
-import static cl.core.util.Reflections.call;
-import static cl.core.util.Reflections.get;
-import static cl.core.util.Reflections.getField;
-import static cl.core.util.Reflections.set;
-import static cl.core.util.Reflections.setField;
-import static cl.core.util.Reflections.trySetField;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static cl.core.util.Reflections.*;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -168,6 +161,17 @@ public class ReflectionsTest {
         ZonedDateTime zdt = ZonedDateTime.now();
         trySetField("zonedDateTime", zdt.toString(), obj);
         assertEquals(zdt, obj.zonedDateTime);
+    }
+    
+    @Test
+    public void testFieldExists() {
+        AllFieldTypesObject obj = new AllFieldTypesObject();
+        try {
+            assertTrue(fieldExists("primByte", obj));
+            assertFalse(fieldExists("primbyte", obj));
+        } catch (Exception e) {
+            fail("should not get any exceptions while checking field existsence");
+        }
     }
     
     static class SampleObject {

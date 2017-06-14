@@ -1,7 +1,9 @@
 package cl.core.util;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.util.Objects;
 
@@ -42,5 +44,18 @@ public final class Exceptions {
     public static String getRootStackTrace(Throwable e) {
         Objects.requireNonNull(e);
         return getStackTrace(getRootCause(e));
+    }
+    
+    /**
+     * Wrap a checked exception into an unchecked exception.
+     */
+    public static RuntimeException toUnchecked(Exception e) {
+        if (e instanceof RuntimeException) {
+            return (RuntimeException)e;
+        }
+        else if (e instanceof IOException) {
+            return new UncheckedIOException((IOException)e);
+        }
+        return new RuntimeException(e);
     }
 }

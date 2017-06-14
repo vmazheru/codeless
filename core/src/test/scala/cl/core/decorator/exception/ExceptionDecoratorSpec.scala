@@ -24,7 +24,7 @@ class ExceptionDecoratorSpec extends FlatSpec with Matchers {
     }
   }
   
-  it should "wrap an IO exception throw by the function into an unchecked IO exception" in {
+  it should "wrap an IO exception thrown by the function into an unchecked IO exception" in {
     interceptAndCheck(classOf[UncheckedIOException], classOf[IOException], "Where is my file?") {
       uncheck(() => throw new IOException("Where is my file?"))
     }

@@ -1,5 +1,7 @@
 package cl.core.util;
 
+
+import static cl.core.decorator.exception.ExceptionDecorators.safely;
 import static cl.core.decorator.exception.ExceptionDecorators.uncheck;
 
 import java.lang.reflect.Constructor;
@@ -134,6 +136,13 @@ public final class Reflections {
      */
     public static <T> T getField(String fieldName, Object object) {
         return (T)uncheck(() -> getFld(fieldName, object).get(object));
+    }
+
+    /**
+     * Check if a field with given name exists in the object.
+     */
+    public static boolean fieldExists(String fieldName, Object object) {
+        return null != safely(() -> getFld(fieldName, object), NoSuchFieldException.class);
     }
     
     /**
