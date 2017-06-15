@@ -192,7 +192,8 @@ public interface Serializer<T,R> extends Closeable {
             SerializationType outputSerializationType,
             Optional<Class<T>> iteratorClass,
             Optional<Configurable<?>> configuration) {
-        return SerializerBuilder.<T,R>basicBuilder(inputSerializationType, outputSerializationType, iteratorClass, configuration)
+        return SerializerBuilder.<T,R>basicBuilder(
+                inputSerializationType, outputSerializationType, iteratorClass, configuration)
             .withInputFile(inputFile)
             .withOutputFile(outputFile)
             .build();
@@ -216,7 +217,8 @@ public interface Serializer<T,R> extends Closeable {
             SerializationType outputSerializationType,
             Optional<Class<T>> iteratorClass,
             Optional<Configurable<?>> configuration) {
-        return SerializerBuilder.<T,R>basicBuilder(inputSerializationType, outputSerializationType, iteratorClass, configuration)
+        return SerializerBuilder.<T,R>basicBuilder(
+                inputSerializationType, outputSerializationType, iteratorClass, configuration)
                 .withInputFile(inputFile)
                 .withOutputStream(outputStream)
                 .build();        
@@ -240,7 +242,8 @@ public interface Serializer<T,R> extends Closeable {
             SerializationType outputSerializationType,
             Optional<Class<T>> iteratorClass,
             Optional<Configurable<?>> configuration) {
-        return SerializerBuilder.<T,R>basicBuilder(inputSerializationType, outputSerializationType, iteratorClass, configuration)
+        return SerializerBuilder.<T,R>basicBuilder(
+                inputSerializationType, outputSerializationType, iteratorClass, configuration)
                 .withInputStream(inputStream)
                 .withOutputFile(outputFile)
                 .build();        
@@ -264,7 +267,8 @@ public interface Serializer<T,R> extends Closeable {
             SerializationType outputSerializationType,
             Optional<Class<T>> iteratorClass,
             Optional<Configurable<?>> configuration) {
-        return SerializerBuilder.<T,R>basicBuilder(inputSerializationType, outputSerializationType, iteratorClass, configuration)
+        return SerializerBuilder.<T,R>basicBuilder(
+                inputSerializationType, outputSerializationType, iteratorClass, configuration)
                 .withInputStream(inputStream)
                 .withOutputStream(outputStream)
                 .build();        
@@ -289,7 +293,8 @@ public interface Serializer<T,R> extends Closeable {
             SerializationType serializationType,
             Class<T> iteratorClass, 
             Configurable<?> configuration) {
-        return serializer(inputFile, outputFile, serializationType, serializationType, Optional.of(iteratorClass), Optional.of(configuration));
+        return serializer(inputFile, outputFile, serializationType, serializationType, 
+                Optional.of(iteratorClass), Optional.of(configuration));
     }
     
     /**
@@ -309,7 +314,8 @@ public interface Serializer<T,R> extends Closeable {
             SerializationType serializationType,
             Class<T> iteratorClass,
             Configurable<?> configuration) {
-        return serializer(inputFile, outputStream, serializationType, serializationType, Optional.of(iteratorClass), Optional.of(configuration));
+        return serializer(inputFile, outputStream, serializationType, serializationType, 
+                Optional.of(iteratorClass), Optional.of(configuration));
     }
     
     /**
@@ -329,7 +335,8 @@ public interface Serializer<T,R> extends Closeable {
             SerializationType serializationType,
             Class<T> iteratorClass,
             Configurable<?> configuration) {
-        return serializer(inputStream, outputFile, serializationType, serializationType, Optional.of(iteratorClass), Optional.of(configuration));
+        return serializer(inputStream, outputFile, serializationType, serializationType, 
+                Optional.of(iteratorClass), Optional.of(configuration));
     }
     
     /**
@@ -349,7 +356,8 @@ public interface Serializer<T,R> extends Closeable {
             SerializationType serializationType,
             Class<T> iteratorClass,
             Configurable<?> configuration) {
-        return serializer(inputStream, outputStream, serializationType, serializationType, Optional.of(iteratorClass), Optional.of(configuration));
+        return serializer(inputStream, outputStream, serializationType, serializationType, 
+                Optional.of(iteratorClass), Optional.of(configuration));
     }    
     
     
@@ -370,7 +378,8 @@ public interface Serializer<T,R> extends Closeable {
             File outputFile,
             SerializationType serializationType,
             Class<T> iteratorClass) {
-        return serializer(inputFile, outputFile, serializationType, serializationType, Optional.of(iteratorClass), Optional.empty());
+        return serializer(inputFile, outputFile, serializationType, serializationType, 
+                Optional.of(iteratorClass), Optional.empty());
     }
     
     /**
@@ -388,7 +397,8 @@ public interface Serializer<T,R> extends Closeable {
             OutputStream outputStream,
             SerializationType serializationType,
             Class<T> iteratorClass) {
-        return serializer(inputFile, outputStream, serializationType, serializationType, Optional.of(iteratorClass), Optional.empty());
+        return serializer(inputFile, outputStream, serializationType, serializationType, 
+                Optional.of(iteratorClass), Optional.empty());
     }
     
     /**
@@ -406,7 +416,8 @@ public interface Serializer<T,R> extends Closeable {
             File outputFile,
             SerializationType serializationType,
             Class<T> iteratorClass) {
-        return serializer(inputStream, outputFile, serializationType, serializationType, Optional.of(iteratorClass), Optional.empty());
+        return serializer(inputStream, outputFile, serializationType, serializationType, 
+                Optional.of(iteratorClass), Optional.empty());
     }
     
     /**
@@ -424,7 +435,8 @@ public interface Serializer<T,R> extends Closeable {
             OutputStream outputStream,
             SerializationType serializationType,
             Class<T> iteratorClass) {
-        return serializer(inputStream, outputStream, serializationType, serializationType, Optional.of(iteratorClass), Optional.empty());
+        return serializer(inputStream, outputStream, serializationType, serializationType, 
+                Optional.of(iteratorClass), Optional.empty());
     }
     
     
@@ -449,7 +461,8 @@ public interface Serializer<T,R> extends Closeable {
             File outputFile,
             SerializationType serializationType,
             Configurable<?> configuration) {
-        return serializer(inputFile, outputFile, serializationType, serializationType, Optional.empty(), Optional.of(configuration));
+        return serializer(inputFile, outputFile, serializationType, serializationType, 
+                Optional.empty(), Optional.of(configuration));
     }
     
     /**
@@ -469,7 +482,8 @@ public interface Serializer<T,R> extends Closeable {
             OutputStream outputStream,
             SerializationType serializationType,
             Configurable<?> configuration) {
-        return serializer(inputFile, outputStream, serializationType, serializationType, Optional.empty(), Optional.of(configuration));
+        return serializer(inputFile, outputStream, serializationType, serializationType, 
+                Optional.empty(), Optional.of(configuration));
     }
     
     /**
@@ -489,7 +503,8 @@ public interface Serializer<T,R> extends Closeable {
             File outputFile,
             SerializationType serializationType,
             Configurable<?> configuration) {
-        return serializer(inputStream, outputFile, serializationType, serializationType, Optional.empty(), Optional.of(configuration));
+        return serializer(inputStream, outputFile, serializationType, serializationType, 
+                Optional.empty(), Optional.of(configuration));
     }
     
     /**
@@ -509,7 +524,8 @@ public interface Serializer<T,R> extends Closeable {
             OutputStream outputStream,
             SerializationType serializationType,
             Configurable<?> configuration) {
-        return serializer(inputStream, outputStream, serializationType, serializationType, Optional.empty(), Optional.of(configuration));
+        return serializer(inputStream, outputStream, serializationType, serializationType, 
+                Optional.empty(), Optional.of(configuration));
     }
 
     /*
@@ -533,7 +549,8 @@ public interface Serializer<T,R> extends Closeable {
             File outputFile,
             SerializationType inputSerializationType,
             SerializationType outputSerializationType) {
-        return serializer(inputFile, outputFile, inputSerializationType, outputSerializationType, Optional.empty(), Optional.empty());
+        return serializer(inputFile, outputFile, inputSerializationType, outputSerializationType, 
+                Optional.empty(), Optional.empty());
     }
     
     /**
@@ -553,7 +570,8 @@ public interface Serializer<T,R> extends Closeable {
             OutputStream outputStream,
             SerializationType inputSerializationType, 
             SerializationType outputSerializationType) {
-        return serializer(inputFile, outputStream, inputSerializationType, outputSerializationType, Optional.empty(), Optional.empty());
+        return serializer(inputFile, outputStream, inputSerializationType, outputSerializationType, 
+                Optional.empty(), Optional.empty());
     }
     
     /**
@@ -573,7 +591,8 @@ public interface Serializer<T,R> extends Closeable {
             File outputFile,
             SerializationType inputSerializationType,
             SerializationType outputSerializationType) {
-        return serializer(inputStream, outputFile, inputSerializationType, outputSerializationType, Optional.empty(), Optional.empty());
+        return serializer(inputStream, outputFile, inputSerializationType, outputSerializationType,
+                Optional.empty(), Optional.empty());
     }
     
     /**
@@ -593,7 +612,8 @@ public interface Serializer<T,R> extends Closeable {
             OutputStream outputStream,
             SerializationType inputSerializationType,
             SerializationType outputSerializationType) {
-        return serializer(inputStream, outputStream, inputSerializationType, outputSerializationType, Optional.empty(), Optional.empty());
+        return serializer(inputStream, outputStream, inputSerializationType, outputSerializationType, 
+                Optional.empty(), Optional.empty());
     }    
     
     /**
@@ -611,7 +631,8 @@ public interface Serializer<T,R> extends Closeable {
             File inputFile,
             File outputFile,
             SerializationType serializationType) {
-        return serializer(inputFile, outputFile, serializationType, serializationType, Optional.empty(), Optional.empty());
+        return serializer(inputFile, outputFile, serializationType, serializationType,
+                Optional.empty(), Optional.empty());
     }
     
     /**
@@ -629,7 +650,9 @@ public interface Serializer<T,R> extends Closeable {
             File inputFile,
             OutputStream outputStream,
             SerializationType serializationType) {
-        return serializer(inputFile, outputStream, serializationType, serializationType, Optional.empty(), Optional.empty());
+        return serializer(inputFile, outputStream, serializationType, serializationType, 
+                
+                Optional.empty(), Optional.empty());
     }
     
     /**
@@ -647,7 +670,8 @@ public interface Serializer<T,R> extends Closeable {
             InputStream inputStream,
             File outputFile,
             SerializationType serializationType) {
-        return serializer(inputStream, outputFile, serializationType, serializationType, Optional.empty(), Optional.empty());
+        return serializer(inputStream, outputFile, serializationType, serializationType, 
+                Optional.empty(), Optional.empty());
     }
     
     /**
@@ -665,7 +689,8 @@ public interface Serializer<T,R> extends Closeable {
             InputStream inputStream,
             OutputStream outputStream,
             SerializationType serializationType) {
-        return serializer(inputStream, outputStream, serializationType, serializationType, Optional.empty(), Optional.empty());
+        return serializer(inputStream, outputStream, serializationType, serializationType, 
+                Optional.empty(), Optional.empty());
     }
     
     /* The rest of the methods generate serializers for specific serialization types which operates on files */
@@ -682,7 +707,8 @@ public interface Serializer<T,R> extends Closeable {
             File inputFile,
             File outputFile,
             Configurable<?> configuration) {
-        return serializer(inputFile, outputFile, SerializationType.JAVA, SerializationType.JAVA, Optional.empty(), Optional.of(configuration));
+        return serializer(inputFile, outputFile, SerializationType.JAVA, SerializationType.JAVA, 
+                Optional.empty(), Optional.of(configuration));
     }
     
     /**
@@ -712,7 +738,8 @@ public interface Serializer<T,R> extends Closeable {
             File outputFile,
             Class<T> iteratorClass,
             Configurable<?> configuration) {
-        return serializer(inputFile, outputFile, SerializationType.JSON, SerializationType.JSON, Optional.of(iteratorClass), Optional.of(configuration));
+        return serializer(inputFile, outputFile, SerializationType.JSON, SerializationType.JSON, 
+                Optional.of(iteratorClass), Optional.of(configuration));
     }
     
     /**
@@ -742,7 +769,8 @@ public interface Serializer<T,R> extends Closeable {
             File inputFile,
             File outputFile,
             Configurable<?> configuration) {
-        return serializer(inputFile, outputFile, SerializationType.STRING, SerializationType.STRING, Optional.empty(), Optional.of(configuration));
+        return serializer(inputFile, outputFile, SerializationType.STRING, SerializationType.STRING, 
+                Optional.empty(), Optional.of(configuration));
     }
     
     /**

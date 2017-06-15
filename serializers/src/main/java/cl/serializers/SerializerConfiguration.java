@@ -75,7 +75,8 @@ public class SerializerConfiguration {
      * </ul>
      */
     public static Configurable<?> jsonSerializerDefaultConfiguration() {
-        return Configurable.defaultConfiguration(Arrays.asList(skipEmptyLines, charset, jsonMapper));
+        return Configurable.defaultConfiguration(Arrays.asList(
+                skipEmptyLines, charset, jsonMapper));
     }
     
     /**
@@ -90,7 +91,8 @@ public class SerializerConfiguration {
      * </ul>
      */
     public static Configurable<?> stringSerializerDefaultConfiguration() {
-        return Configurable.defaultConfiguration(Arrays.asList(skipEmptyLines, charset, numHeaderLines, headerLines, onHeader));
+        return Configurable.defaultConfiguration(Arrays.asList(
+                skipEmptyLines, charset, numHeaderLines, headerLines, onHeader));
     }
     
 }
