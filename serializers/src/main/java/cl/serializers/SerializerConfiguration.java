@@ -19,9 +19,11 @@ import cl.json.JsonMapper;
 public class SerializerConfiguration {
 
     /**
-     * Instruct a text-based serializer to skip empty lines. The default value is {@code true}.
+     * Instruct a text-based serializer to skip empty lines. The default value is {@code false}.
+     * <p>With most of iterators which use this key (JSON, delimited, etc), there is
+     * no need to set this key to TRUE, if the files are well-formed.
      */
-    public final static Key<Boolean> skipEmptyLines = new Key<>(() -> true);
+    public final static Key<Boolean> skipEmptyLines = new Key<>(() -> false);
     
     /**
      * Set a character set on the text- based serializer. The default value is UTF-8.

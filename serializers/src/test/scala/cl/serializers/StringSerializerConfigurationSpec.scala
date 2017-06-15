@@ -26,11 +26,12 @@ class StringSerializerConfigurationSpec extends FlatSpec with Matchers {
   behavior of "string serializer"
   
   it should "respect 'skip empty lines' configuration setting" in {
+    val config = Configurable.empty().`with`[java.lang.Boolean](SerializerConfiguration.skipEmptyLines, true).locked
     
     // the default setting is to skip empty lines
     // and the serializer will read the entire file with no problem
     withFiles(stringInputFileWithEmptyLines, newFile) { (src, dest) =>
-      using(serializer(src, dest, SerializationType.STRING)) { serializer =>
+      using(serializer(src, dest, SerializationType.STRING, config)) { serializer =>
         serializer.getIterator.read
       } should equal (Person.peopleDBStrings())
     }
@@ -38,14 +39,11 @@ class StringSerializerConfigurationSpec extends FlatSpec with Matchers {
     // when the setting is not to skip empty lines,
     // the resulting collection should have all empty lines 
     withFiles(stringInputFileWithEmptyLines, newFile) { (src, dest) =>
-      import scala.language.existentials
-      val config = Configurable.empty().`with`[java.lang.Boolean](SerializerConfiguration.skipEmptyLines, false).locked
-      
       // the expected result is to have an empty string after every person
       val expected = Person.peopleDBStrings().stream()
         .flatMap((s: String) => java.util.stream.Stream.of(s, "")).collect(Collectors.toList())
       
-      using(serializer(src, dest, SerializationType.STRING, config)) { serializer =>
+      using(serializer(src, dest, SerializationType.STRING)) { serializer =>
         serializer.getIterator.read
       } should equal (expected)
     }    
@@ -54,7 +52,6 @@ class StringSerializerConfigurationSpec extends FlatSpec with Matchers {
   it should "read/write a file with specified encoding" in {
     
     withFiles(stringInputFileInRussian, newFile) { (src, dest) =>
-      import scala.language.existentials
       val config = Configurable.empty().`with`(SerializerConfiguration.charset, Charset.forName("Windows-1251")).locked
       
       // verify the read() works with the file written by some other process with encoding Windows-1251
@@ -80,7 +77,6 @@ class StringSerializerConfigurationSpec extends FlatSpec with Matchers {
   }
   
   it should "copy one or more header lines, if present in the input file, to the output file" in {
-    import scala.language.existentials
     val config = Configurable.empty().`with`[java.lang.Integer](SerializerConfiguration.numHeaderLines, 3).locked
     
     withFiles(stringInputFileWithHeader, newFile) { (src, dest) =>

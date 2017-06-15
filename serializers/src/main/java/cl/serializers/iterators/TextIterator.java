@@ -32,7 +32,7 @@ import cl.serializers.SerializerConfiguration;
 abstract class TextIterator<T> extends IOBoundObjectIterator<T> {
     
     protected BufferedReader reader;
-    protected boolean skipEmptyLines = true;
+    protected boolean skipEmptyLines;
 
     /**
      * Initialize object iterator with file as input.

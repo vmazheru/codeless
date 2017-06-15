@@ -95,6 +95,7 @@ public class JsonIterator<T> extends TextIterator<T> {
     protected void build() {
         super.build();
         jsonMapper = get(SerializerConfiguration.jsonMapper);
+        skipEmptyLines = get(SerializerConfiguration.skipEmptyLines);
     }
     
     @Override

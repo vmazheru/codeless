@@ -23,11 +23,10 @@ class JsonSerializerConfigurationSpec extends FlatSpec with Matchers {
   
   behavior of "JSON serializer"
   
-  it should "always skip empty lines and ignore 'skip empty lines' configuration setting" in {
+  it should "skip empty lines when instructed to do so" in {
   
     withFiles(jsonInputFileWithEmptyLines, newFile) { (src, dest) =>
-      import scala.language.existentials
-      val config = Configurable.empty().`with`[java.lang.Boolean](SerializerConfiguration.skipEmptyLines, false).locked
+      val config = Configurable.empty().`with`[java.lang.Boolean](SerializerConfiguration.skipEmptyLines, true).locked
       using(serializer(src, dest, SerializationType.JSON, classOf[Person], config)) { serializer =>
         serializer.getIterator.read
       } should equal (Person.peopleDB())
@@ -38,7 +37,6 @@ class JsonSerializerConfigurationSpec extends FlatSpec with Matchers {
   it should "read/write a file with specified encoding" in {
     
     withFiles(jsonInputFileRussian, newFile) { (src, dest) =>
-      import scala.language.existentials
       val config = Configurable.empty().`with`(SerializerConfiguration.charset, Charset.forName("Windows-1251")).locked
       
       // verify the read() works with the file written by some other process with encoding Windows-1251
@@ -67,7 +65,6 @@ class JsonSerializerConfigurationSpec extends FlatSpec with Matchers {
     
     // some non-standard JSON mapper
     val jsonMapper = JsonMapper.getJsonMapper(false).`with`[java.lang.Boolean](JsonMapper.wrapRootValue, true).locked
-    import scala.language.existentials
     val config = Configurable.empty().`with`(SerializerConfiguration.jsonMapper, jsonMapper).locked
     
     withFiles(jsonInputFile(jsonMapper), newFile) { (src, dest) =>
