@@ -1,8 +1,9 @@
 package cl.serializers;
 
+import static cl.core.configurable.Configurable.configurationWith;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -62,7 +63,7 @@ public class SerializerConfiguration {
      * configuration is empty.
      */
     public static Configurable<?> javaSerializerDefaultConfiguration() {
-        return Configurable.defaultConfiguration(Collections.emptyList());
+        return configurationWith();
     }
 
     /**
@@ -75,8 +76,7 @@ public class SerializerConfiguration {
      * </ul>
      */
     public static Configurable<?> jsonSerializerDefaultConfiguration() {
-        return Configurable.defaultConfiguration(Arrays.asList(
-                skipEmptyLines, charset, jsonMapper));
+        return configurationWith(skipEmptyLines, charset, jsonMapper);
     }
     
     /**
@@ -91,8 +91,7 @@ public class SerializerConfiguration {
      * </ul>
      */
     public static Configurable<?> stringSerializerDefaultConfiguration() {
-        return Configurable.defaultConfiguration(Arrays.asList(
-                skipEmptyLines, charset, numHeaderLines, headerLines, onHeader));
+        return configurationWith(skipEmptyLines, charset, numHeaderLines, headerLines, onHeader);
     }
     
 }

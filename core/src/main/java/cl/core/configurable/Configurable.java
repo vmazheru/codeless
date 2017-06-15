@@ -1,7 +1,7 @@
 package cl.core.configurable;
 
-import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * A {@code Configurable} object is an object who's behavior may be altered prior to its use by changing
@@ -115,14 +115,15 @@ public interface Configurable<C extends Configurable<C>> {
       * This method is useful when a collection of configuration keys has to be passed around as one
       * object. The returned {@code Configurable} object is locked.
       */
-     static Configurable<?> defaultConfiguration(Collection<Key<?>> keys) {
+     static Configurable<?> configurationWith(Key<?> ... keys) {
          Configurable<?> configurable = empty();
-         keys.forEach(key -> configurable.with(key, null));
+         Stream.of(keys).forEach(key -> configurable.with(key, null));
          return configurable.locked();
      }
      
      /**
-      * Return an empty unlocked configuration.
+      * Return an empty unlocked configuration. This object can be used
+      * to collect configuration values and lock it afterwards.
       */
      static Configurable<?> empty() {
          return new ConfigurationHolder();
