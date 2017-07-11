@@ -6,11 +6,16 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import cl.core.configurable.Configurable;
 import cl.core.configurable.Key;
+import cl.core.function.FunctionWithException;
+import cl.core.util.Strings;
 import cl.json.JsonMapper;
+import cl.serializers.delimited.DelimitedStringSplitter;
 
 
 /**
@@ -59,6 +64,63 @@ public class SerializerConfiguration {
      * @see cl.json.JsonMapper
      */
     public final static Key<JsonMapper> jsonMapper = new Key<>(() -> JsonMapper.getJsonMapper());
+    
+
+    /**
+     * Used by {@link DelimitedStringIterator}. This key sets an object
+     * responsible for splitting lines by delimiters. CSV splitter is the 
+     * default value.
+     * 
+     * @see cl.serializers.delimited.DelimitedStringSplitter
+     */
+    public final static Key<DelimitedStringSplitter> delimitedStringSplitter = 
+            new Key<>(() -> DelimitedStringSplitter.csv());
+    
+    /**
+     * Used by {@link DelimitedStringIterator}. This key sets a strategy
+     * for parsing file header in order to establish mappings between
+     * columns and object properties.
+     * 
+     * <p>Converting strings with spaces to camel case is the default strategy.
+     * 
+     * <p>This key will not override explicit mappings between column
+     * indexes and object properties given as {@code columnIndexToProperty} key value.
+     * 
+     * @see SerializerConfiguration#columnIndexToProperty
+     */
+    public final static Key<Function<String, String>> columnToProperty =
+            new Key<>(() -> s -> Strings.spacedToCamel(s));
+    
+    /**
+     * Used by {@link DelimitedStringIterator}. This key sets a mapping
+     * between columns and object properties. It does not have to cover all
+     * columns in the delimited file. The missing mappings will be filled by
+     * applying the 'columnToProperty' setting.
+     * 
+     * <p>An empty map is the default value.
+     * 
+     * @see SerializerConfiguration#columnToProperty
+     */
+    public final static Key<Map<Integer, String>> columnIndexToProperty =
+            new Key<>(() -> Collections.emptyMap());
+    
+    /**
+     * Used by {@link DelimitedStringIterator}. This key sets custom
+     * parsers for certain object properties.  
+     * 
+     * <p>By default, a delimited
+     * string parsers is able to parse strings, all primitive types, dates, 
+     * big integers, and big decimals. But if a property is of some other type,
+     * a custom parser is required.
+     * 
+     * <p>The property maps object property names to custom parsers.  If no
+     * parser for a property is given by this mapping, a default parser will
+     * be used.
+     * 
+     * @see cl.serializers.delimited.DelimitedStringParser
+     */
+    public final static Key<Map<String, FunctionWithException<String, Object>>> valueParsers =
+            new Key<>(() -> Collections.emptyMap());
     
     /**
      * Return default configuration settings for java serializers. For java serializers, the

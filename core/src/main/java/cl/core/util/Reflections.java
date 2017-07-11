@@ -38,7 +38,7 @@ public final class Reflections {
      * @param object         An object, whose property we're setting.
      */
     public static void set(String propertyName, Object propertyValue, Object object) {
-        call("set" + Strings.capitalize(propertyName), object, propertyValue);
+        call(getSetterName(propertyName), object, propertyValue);
     }
     
     /**
@@ -49,7 +49,7 @@ public final class Reflections {
      * @return             A property value
      */
     public static <T> T get(String propertyName, Object object) {
-        return call("get" + Strings.capitalize(propertyName), object);
+        return call(getGetterName(propertyName), object);
     }
     
     /**
@@ -61,7 +61,7 @@ public final class Reflections {
      */
     public static <T> T call(String method, Object object) {
         return (T)call(
-                () -> object.getClass().getDeclaredMethod(method),
+                () -> object.getClass().getMethod(method),
                 m -> m.invoke(object));
     }
     
@@ -75,7 +75,7 @@ public final class Reflections {
      */
     public static <T> T call(String method, Object object, Object arg) {
         return (T)call(
-                () -> object.getClass().getDeclaredMethod(method, arg.getClass()),
+                () -> object.getClass().getMethod(method, arg.getClass()),
                 m -> m.invoke(object, arg));
     }
     
@@ -90,7 +90,7 @@ public final class Reflections {
      */
     public static <T> T call(String method, Object object, Object arg1, Object arg2) {
         return (T)call(
-                () -> object.getClass().getDeclaredMethod(method, 
+                () -> object.getClass().getMethod(method, 
                             arg1.getClass(), arg2.getClass()),
                 m -> m.invoke(object, arg1, arg2));
     }
@@ -108,7 +108,7 @@ public final class Reflections {
     public static <T> T call(String method, Object object, 
             Object arg1, Object arg2, Object arg3) {
         return (T)call(
-                () -> object.getClass().getDeclaredMethod(method, 
+                () -> object.getClass().getMethod(method, 
                             arg1.getClass(), arg2.getClass(), arg3.getClass()),
                 m -> m.invoke(object, arg1, arg2, arg3));
     }
@@ -123,7 +123,7 @@ public final class Reflections {
      */
     @SafeVarargs
     public static <T,P> T call(String method, Object object, P ... args) {
-        return (T)call(() -> object.getClass().getDeclaredMethod(method, args.getClass()),
+        return (T)call(() -> object.getClass().getMethod(method, args.getClass()),
                 m -> m.invoke(object, new Object[] {args}));
     }
 
@@ -245,6 +245,14 @@ public final class Reflections {
             SupplierWithException<Method> methodSupplier, 
             FunctionWithException<Method, T> methodToResultFunction) {
         return uncheck(() -> methodToResultFunction.apply(methodSupplier.get()));
+    }
+    
+    private static String getSetterName(String propertyName) {
+        return "set" + Strings.capitalize(propertyName);
+    }
+    
+    private static String getGetterName(String propertyName) {
+        return "get" + Strings.capitalize(propertyName);
     }
     
 }

@@ -46,7 +46,7 @@ public final class Strings {
      * spaces.
      */
     public static String snakeToCamel(CharSequence s) {
-        return delimitedToCamel(s, ch -> ch != '_', false);
+        return delimitedToCamel(s, ch -> ch == '_', false);
     }
     
     /**
@@ -58,7 +58,7 @@ public final class Strings {
      * spaces.
      */
     public static String dashedToCamel(CharSequence s) {
-        return delimitedToCamel(s, ch -> ch != '-', false);
+        return delimitedToCamel(s, ch -> ch == '-', false);
     }
     
     /**
@@ -70,7 +70,7 @@ public final class Strings {
      * spaces.
      */
     public static String dottedToCamel(CharSequence s) {
-        return delimitedToCamel(s, ch -> ch != '.', false);
+        return delimitedToCamel(s, ch -> ch == '.', false);
     }
     
     /**
@@ -79,26 +79,26 @@ public final class Strings {
      * while the rest of the characters will be brought to lower case.
      */
     public static String spacedToCamel(CharSequence s) {
-        return delimitedToCamel(s, ch -> !Character.isWhitespace(ch), true);
+        return delimitedToCamel(s, ch -> Character.isWhitespace(ch), true);
     }
     
     private static String delimitedToCamel(
-            CharSequence s, IntPredicate regularCharTest, boolean forceLowercase) {
+            CharSequence s, IntPredicate delimiterTest, boolean forceLowercase) {
         if (s == null) return null;
         if (s.length() == 0) return "";
         
         StringBuilder sb = new StringBuilder();
-        boolean lastWasUnderscore = false;
+        boolean lastWasDelimiter = false;
         for (char ch : s.toString().toCharArray()) {
-            if (regularCharTest.test(ch)) {
-                if (lastWasUnderscore) {
+            if (delimiterTest.test(ch)) {
+                lastWasDelimiter = true;
+            } else {
+                if (lastWasDelimiter) {
                     sb.append(Character.toUpperCase(ch));
-                    lastWasUnderscore = false;
+                    lastWasDelimiter = false;
                 } else {
                     sb.append(forceLowercase ? Character.toLowerCase(ch) : ch);
                 }
-            } else {
-                lastWasUnderscore = true;
             }
         }
         return sb.toString();

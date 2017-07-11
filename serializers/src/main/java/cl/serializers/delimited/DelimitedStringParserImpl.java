@@ -51,7 +51,7 @@ class DelimitedStringParserImpl<T> extends ConfigurableObject<DelimitedStringPar
                             }
                         } else {
                             // we do not check 'useSetters' here,
-                            // because it is guaranteed by the constructor code
+                            // because it is guaranteed by the constructor
                             // that if it is even possible to call a setter,
                             // the value parser will be present.
                             Reflections.trySetField(property, valueStr, object);                            
