@@ -1,15 +1,16 @@
 package cl.serializers.delimited;
 
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.junit.Test;
-
-import cl.core.function.FunctionWithException;
 
 public class DelimitedStringParserExamples {
 
@@ -25,7 +26,7 @@ public class DelimitedStringParserExamples {
         indexToProperty.put(2, "rating");
         indexToProperty.put(3, "cast");
         
-        Map<String, FunctionWithException<String, Object>> valueParsers = new HashMap<>();
+        Map<String, Function<String, Object>> valueParsers = new HashMap<>();
         valueParsers.put("cast", valueStr -> valueStr.split(","));
         
         DelimitedStringParser<Movie> parser = DelimitedStringParser.get(
@@ -38,6 +39,25 @@ public class DelimitedStringParserExamples {
         assertEquals(new BigDecimal("8.1"), movie.getRating());
         assertArrayEquals(new String[] { "Liza Minelli", "Michael York" }, movie.getCast());
         
+    }
+    
+    @Test
+    public void useSetters() {
+        Map<Integer, String> indexToProperty = new HashMap<>();
+        indexToProperty.put(0, "title");
+        indexToProperty.put(1, "year");
+        indexToProperty.put(2, "rating");
+        
+        DelimitedStringParser<Movie> parser = DelimitedStringParser.get(
+                Movie.class, indexToProperty, false)
+                .with(DelimitedStringParser.useSetters, false).locked();
+        
+        Movie m = parser.parse(new String[] {"Forward in the past", "1990", "7.3"});
+        
+        assertEquals("Forward in the past", m.getTitle());
+        assertEquals(1990, m.getYear());
+        assertEquals(new BigDecimal("7.3"), m.getRating());
+        assertNull(m.getCast());
     }
 }
 

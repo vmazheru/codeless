@@ -13,12 +13,16 @@ import cl.core.configurable.ConfigurableException
 import cl.core.function.ScalaToJava._
 import cl.core.lang.Control.using
 import cl.serializers.Person
+import cl.serializers.SerializersTestSupport.psvInputFile
 import cl.serializers.SerializersTestSupport.emptyFile
 import cl.serializers.SerializersTestSupport.isString
 import cl.serializers.SerializersTestSupport.javaInputFile
 import cl.serializers.SerializersTestSupport.jsonInputFile
 import cl.serializers.SerializersTestSupport.stringInputFile
 import cl.serializers.SerializersTestSupport.withFile
+import cl.serializers.SerializerConfiguration
+import cl.json.JsonMapper
+import cl.serializers.delimited.DelimitedStringSplitter
 
 @RunWith(classOf[org.scalatest.junit.JUnitRunner])
 class ObjectIteratorSpec extends FlatSpec with Matchers {
@@ -129,13 +133,15 @@ class ObjectIteratorSpec extends FlatSpec with Matchers {
   
   private def forAllIterators[T](test: ObjectIterator[T] => Unit) {
     testIterators(javaInputFile, javaIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
-    //testIterators(jsonInputFile, jsonIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
+    testIterators(jsonInputFile, jsonIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
+    testIterators(psvInputFile, csvIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
     testIterators(stringInputFile, stringIterators) (test.asInstanceOf[ObjectIterator[String] => Unit])
   }
   
   private def forAllIteratorsWithEmptyFile[T](test: ObjectIterator[T] => Unit) {
     testIterators(emptyFile, javaIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
     testIterators(emptyFile, jsonIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
+    testIterators(emptyFile, csvIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
     testIterators(emptyFile, stringIterators) (test.asInstanceOf[ObjectIterator[String] => Unit])
   }
   
@@ -144,7 +150,7 @@ class ObjectIteratorSpec extends FlatSpec with Matchers {
   }
   
   private def testIterators[T](fileF: () => File, iterF: File => List[ObjectIterator[T]])(iteratorTest: ObjectIterator[T] => Unit) {
-    withFile(fileF.apply()) { f => withIterators (iterF.apply(f)) (iteratorTest) }    
+    withFile(fileF.apply()) { f => withIterators (iterF.apply(f)) (iteratorTest) }
   }
   
   private def javaIterators(file: File, lockConfiguration: Boolean) = {
@@ -160,6 +166,27 @@ class ObjectIteratorSpec extends FlatSpec with Matchers {
       JsonIterator.fromInputStream(new FileInputStream(file), classOf[Person], lockConfiguration))
   }
   private def jsonIterators(file: File): List[ObjectIterator[Person]] = jsonIterators(file, true)
+  
+  private def csvIterators(file: File, lockConfiguration: Boolean) = {
+    val valueParsers = new java.util.HashMap[String, java.util.function.Function[String, Object]]
+    val jsonMapper = JsonMapper.getJsonMapper
+    valueParsers.put("address", (s: String) => jsonMapper.fromJson(s, classOf[Person.Address]))
+    
+    val splitter = DelimitedStringSplitter.pipe()
+    
+    val iterFromFile = DelimitedStringIterator.fromFile(file, classOf[Person], false)
+        .`with`(SerializerConfiguration.delimitedStringSplitter, splitter)
+        .`with`(SerializerConfiguration.valueParsers, valueParsers)
+    if (lockConfiguration) iterFromFile.locked()
+    
+    val iterFromStream = DelimitedStringIterator.fromInputStream(new FileInputStream(file), classOf[Person], false)
+        .`with`(SerializerConfiguration.delimitedStringSplitter, splitter)
+        .`with`(SerializerConfiguration.valueParsers, valueParsers)
+    if (lockConfiguration) iterFromStream.locked()
+    
+    List(iterFromFile, iterFromStream)
+  }
+  private def csvIterators(file: File): List[ObjectIterator[Person]] = csvIterators(file, true)
   
   private def stringIterators(file: File, lockConfiguration: Boolean) = {
     List[ObjectIterator[String]](

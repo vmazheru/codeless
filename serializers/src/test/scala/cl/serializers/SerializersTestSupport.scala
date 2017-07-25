@@ -89,7 +89,25 @@ object SerializersTestSupport {
       Person.peopleDBInRussian().forEach((p: Person) => out.println(jsonMapper.toJson(p)))
     }
     file
-  }  
+  }
+  
+  def psvInputFile() = {
+    val file = File.createTempFile("txt", "")
+    using(new PrintWriter(new FileOutputStream(file))) { out =>
+      out.println("name|dob|gender|address")
+      Person.peopleDB().forEach((p: Person) => out.println(p.toPsv()))
+    }
+    file
+  }
+  
+  def psvInputFileRussian() = {
+    val file = File.createTempFile("txt", "")
+    using(new PrintWriter(file, "Windows-1251")) { out =>
+      out.println("name|dob|gender|address")
+      Person.peopleDBInRussian().forEach((p: Person) => out.println(p.toPsv()))
+    }
+    file
+  }
   
   def stringInputFile() = {
     val file = File.createTempFile("txt", "")

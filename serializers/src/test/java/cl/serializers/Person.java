@@ -1,13 +1,16 @@
 package cl.serializers;
 
-import static cl.serializers.Person.Gender.*;
-import static java.util.stream.Collectors.*;
+import static cl.serializers.Person.Gender.f;
+import static cl.serializers.Person.Gender.m;
+import static java.util.stream.Collectors.toList;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import cl.json.JsonMapper;
 
 @SuppressWarnings("serial")
 public class Person implements Serializable, Comparable<Person> {
@@ -134,6 +137,16 @@ public class Person implements Serializable, Comparable<Person> {
     @Override
     public int compareTo(Person o) {
         return name.compareTo(o.name);
+    }
+    
+    public String toPsv() {
+        JsonMapper jsonMapper = JsonMapper.getJsonMapper();
+        return new StringBuilder()
+                .append(name).append("|")
+                .append(dob).append("|")
+                .append(gender).append("|")
+                .append(jsonMapper.toJson(address)).append("|")
+                .toString();
     }
 
     public static List<Person> peopleDB() {

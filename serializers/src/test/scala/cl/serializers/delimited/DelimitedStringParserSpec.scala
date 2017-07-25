@@ -1,20 +1,19 @@
 package cl.serializers.delimited
 
-import java.text.SimpleDateFormat
 import java.util.HashMap
 
 import scala.beans.BeanProperty
 
+import org.junit.runner.RunWith
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
 
 import DelimitedStringParser._
-import cl.core.function.ScalaToJava._
-import org.junit.runner.RunWith
-import cl.core.function.FunctionWithException
-import cl.serializers.delimited.DelimitedStringParser.PropertySetException
-import cl.core.ds.Counter
 import cl.core.configurable.ConfigurableException
+import cl.core.function.ScalaToJava._
+import cl.serializers.delimited.DelimitedStringParser.PropertySetException
+import java.text.SimpleDateFormat
+import cl.core.ds.Counter
 
 /**
  * Specification for DelimitedStringParser
@@ -162,17 +161,17 @@ class DelimitedStringParserSpec extends FlatSpec with Matchers {
     result2.setterCalls should be (0)
   }
   
-  it should "fail when trying to use setters and no value parser is given for types other than String" in {
+  it should "not fail when trying to use setters and no value parser is given for common types" in {
     class Test {
-      @BeanProperty var intProp = 0
+      @BeanProperty var intProp: Integer = 0
     }
     
-    val ex = intercept[RuntimeException] {    
-      get(() => new Test, iToP(0 -> "intProp"), false)
-          .`with`(useSetters, java.lang.Boolean.TRUE).locked  
-    }
+    val parser = get(() => new Test, iToP(0 -> "intProp"), false)
+          .`with`(useSetters, java.lang.Boolean.TRUE).locked
+          
+    val result = parser.parse(Array("5"))
     
-    ex.getCause.getClass should be (classOf[NoSuchMethodException])
+    result.intProp should be (5)
   }
   
   it should "succeed when trying to use setters and no value parser is given for type String" in {
@@ -291,8 +290,8 @@ class DelimitedStringParserSpec extends FlatSpec with Matchers {
     map
   }
   
-  private def pToParser(mappings: (String, FunctionWithException[String, Object])*) = {
-    val map = new HashMap[String, FunctionWithException[String, Object]]
+  private def pToParser(mappings: (String, java.util.function.Function[String, Object])*) = {
+    val map = new HashMap[String, java.util.function.Function[String, Object]]
     for (m <- mappings) map.put(m._1, m._2)
     map
   }
@@ -325,64 +324,3 @@ class AllTypesTest {
     var localDateTime: java.time.LocalDateTime = null
     var zonedDateTime: java.time.ZonedDateTime = null
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

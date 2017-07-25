@@ -1,19 +1,21 @@
 package cl.serializers.delimited;
 
+import static cl.core.decorator.exception.ExceptionDecorators.safely;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import cl.core.configurable.ConfigurableObject;
-import cl.core.function.FunctionWithException;
 import cl.core.util.Reflections;
 
 class DelimitedStringParserImpl<T> extends ConfigurableObject<DelimitedStringParser<T>> implements DelimitedStringParser<T> {
 
     private final Supplier<T> objectFactory;
     private final Map<Integer, String> indexToProperty;
-    private final Map<String, FunctionWithException<String, Object>> valueParsers;
+    private final Map<String, Function<String, Object>> valueParsers;
     
     private boolean useSetters;
     private Consumer<PropertySetException> onPropertyError;
@@ -21,7 +23,7 @@ class DelimitedStringParserImpl<T> extends ConfigurableObject<DelimitedStringPar
     DelimitedStringParserImpl(
             Supplier<T> objectFactory,
             Map<Integer, String> indexToProperty,
-            Map<String, FunctionWithException<String, Object>> valueParsers) {
+            Map<String, Function<String, Object>> valueParsers) {
         this.objectFactory = objectFactory;
         this.indexToProperty = indexToProperty;
         this.valueParsers = new HashMap<>(valueParsers);
@@ -40,7 +42,7 @@ class DelimitedStringParserImpl<T> extends ConfigurableObject<DelimitedStringPar
             if (property != null) {
                 String valueStr = values[i];
                 if (valueStr != null) {
-                    FunctionWithException<String, Object> parser = valueParsers.get(property);
+                    Function<String, Object> parser = valueParsers.get(property);
                     try {
                         if (parser != null) {
                             Object value = parser.apply(valueStr);
@@ -50,11 +52,13 @@ class DelimitedStringParserImpl<T> extends ConfigurableObject<DelimitedStringPar
                                 Reflections.setField(property, value, object);
                             }
                         } else {
-                            // we do not check 'useSetters' here,
-                            // because it is guaranteed by the constructor
-                            // that if it is even possible to call a setter,
-                            // the value parser will be present.
-                            Reflections.trySetField(property, valueStr, object);                            
+                            if (useSetters) {
+                                // we did try to find a parser for this property
+                                // in the build(), and if there is no parser
+                                // we cannot call the setter
+                            } else {
+                                Reflections.trySetField(property, valueStr, object);
+                            }
                         }
                     } catch (Exception e) {
                         onPropertyError.accept(new PropertySetException(property, valueStr, object, e)); 
@@ -71,7 +75,7 @@ class DelimitedStringParserImpl<T> extends ConfigurableObject<DelimitedStringPar
         super.build();
         useSetters = get(DelimitedStringParser.useSetters);
         onPropertyError = get(DelimitedStringParser.onPropertySetError);
-        
+
         validatePropertyNamesAndValueParsers();
     }
 
@@ -82,15 +86,17 @@ class DelimitedStringParserImpl<T> extends ConfigurableObject<DelimitedStringPar
      */
     private void validatePropertyNamesAndValueParsers() {
         T obj = objectFactory.get();
+        Class<?> klass = obj.getClass();
         
         indexToProperty.values().forEach(p -> {
             if (useSetters && !valueParsers.containsKey(p)) {
-                // if there is no value parser for this property when using setters,
-                // see if we can set it as a String object.
-                // If yes, add a value parser which takes a string and returns a string
-                // If no, throw an error, for we don't know how to set this property.
-                Reflections.set(p, "", obj);
-                valueParsers.put(p, s -> s);
+                // try to find value parsers for missing properties
+                // by looking for appropriate setters
+                Function<String, Object> parser = safely(() -> 
+                    Reflections.findStringParserForSetter(p, klass));
+                if (parser != null) {
+                    valueParsers.put(p, parser);
+                }
             } else {
                 // when not using setters, just verify that a field with the
                 // given name exists.

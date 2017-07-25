@@ -1,22 +1,20 @@
 package cl.core.util;
 
-
 import static cl.core.decorator.exception.ExceptionDecorators.safely;
 import static cl.core.decorator.exception.ExceptionDecorators.uncheck;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
+import cl.core.ds.Pair;
 import cl.core.function.FunctionWithException;
 import cl.core.function.SupplierWithException;
+import cl.core.function.stringparser.StringParsers;
+import cl.core.function.stringparser.StringParsers.StringParser;
 
 /**
  * Reflection utilities.
@@ -135,14 +133,21 @@ public final class Reflections {
      * @return          The field value
      */
     public static <T> T getField(String fieldName, Object object) {
-        return (T)uncheck(() -> getFld(fieldName, object).get(object));
+        return (T)uncheck(() -> getFld(fieldName, object.getClass()).get(object));
     }
 
     /**
-     * Check if a field with given name exists in the object.
+     * Check if a field with the given name exists in the object.
      */
     public static boolean fieldExists(String fieldName, Object object) {
-        return null != safely(() -> getFld(fieldName, object), NoSuchFieldException.class);
+        return fieldExists(fieldName, object.getClass());
+    }
+    
+    /**
+     * Check if a field with the given name exists in the class.
+     */
+    public static boolean fieldExists(String fieldName, Class<?> klass) {
+        return null != safely(() -> getFld(fieldName, klass), NoSuchFieldException.class);
     }
     
     /**
@@ -153,7 +158,7 @@ public final class Reflections {
      * @param object     An object whose value we're setting
      */
     public static void setField(String fieldName, Object fieldValue, Object object) {
-        uncheck(() -> getFld(fieldName, object).set(object, fieldValue));
+        uncheck(() -> getFld(fieldName, object.getClass()).set(object, fieldValue));
     }
     
     /**
@@ -162,16 +167,17 @@ public final class Reflections {
      * via reflection.
      * 
      * <p>
-     * The method supports all Java primitive types and the wrapper types, as well as
-     * String, BigInteger, BigDecimal, Date, LocalDate, LocalDateTime, LocalTime,
-     * and ZonedDateTime types.
-     * 
+     * This method will use {@link cl.core.function.stringparser.StringParsers}
+     * class to parse strings into objects.
+     *
      * @param fieldName  Field name
      * @param fieldValue Field value string representation
      * @param object     An object whose value we're setting
      * 
      * @throws UnsupportedOperationException if the type of the field is not supported
      * by this method
+     * 
+     * @see cl.core.function.stringparser.StringParsers
      */
     public static void trySetField(String fieldName, String fieldValue, Object object) {
         if (fieldValue == null || fieldValue.isEmpty()) return;
@@ -180,48 +186,79 @@ public final class Reflections {
         String v = fieldValue;
 
         uncheck(() -> {
-            Field field = getFld(fieldName, object);
+            Field field = getFld(fieldName, o.getClass());
             Class<?> klass = field.getType();
-
-            if (klass == String.class) field.set(o, v);
-            
-            else if (klass == int.class) field.setInt(o, Integer.parseInt(v));
-            else if (klass == Integer.class) field.set(o, Integer.valueOf(v));
-            
-            else if (klass == double.class) field.setDouble(o, Double.parseDouble(v));
-            else if (klass == Double.class) field.set(o, Double.valueOf(v));
-            
-            else if (klass == long.class) field.setLong(o, Long.parseLong(v));
-            else if (klass == Long.class) field.set(o, Long.valueOf(v));
-            
-            else if (klass == float.class) field.setFloat(o, Float.parseFloat(v));
-            else if (klass == Float.class) field.set(o, Float.valueOf(v));
-            
-            else if (klass == boolean.class) field.setBoolean(o, Boolean.parseBoolean(v));
-            else if (klass == Boolean.class) field.set(o, Boolean.valueOf(v));
-            
-            else if (klass == BigDecimal.class) field.set(o, new BigDecimal(v));
-            else if (klass == BigInteger.class) field.set(o, new BigInteger(v));
-            
-            else if (klass == LocalDateTime.class) field.set(o, LocalDateTime.parse(v));
-            else if (klass == LocalDate.class) field.set(o, LocalDate.parse(v));
-            else if (klass == LocalTime.class) field.set(o, LocalTime.parse(v));
-            else if (klass == Date.class) field.set(o, Dates.DATE_TO_STRING_FORMAT.parse(v));
-            else if (klass == ZonedDateTime.class) field.set(o, ZonedDateTime.parse(v));
-            
-            else if (klass == char.class) field.setChar(o, v.charAt(0));
-            else if (klass == Character.class) field.set(o, Character.valueOf(v.charAt(0)));
-            
-            else if (klass == byte.class) field.setByte(o, Byte.parseByte(v));
-            else if (klass == Byte.class) field.set(o, Byte.valueOf(v));
-            
-            else if (klass == short.class) field.setShort(o, Short.parseShort(v));
-            else if (klass == Short.class) field.set(o, Short.valueOf(v));
-
-            else throw new UnsupportedOperationException(
-                    "Cannot set value '" + fieldValue + "' to object of type " + klass);
+            if (klass.isPrimitive()) {
+                if (klass == int.class) field.setInt(o, Integer.parseInt(v));
+                else if (klass == double.class) field.setDouble(o, Double.parseDouble(v));
+                else if (klass == long.class) field.setLong(o, Long.parseLong(v));
+                else if (klass == float.class) field.setFloat(o, Float.parseFloat(v));
+                else if (klass == boolean.class) field.setBoolean(o, Boolean.parseBoolean(v));
+                else if (klass == char.class) field.setChar(o, v.charAt(0));
+                else if (klass == byte.class) field.setByte(o, Byte.parseByte(v));
+                else if (klass == short.class) field.setShort(o, Short.parseShort(v));
+            }  else if (klass.isEnum()) {
+                @SuppressWarnings("rawtypes")
+                Class enumClass = klass;
+                field.set(o, Enum.valueOf(enumClass, v));
+            } else {
+                StringParser<?> p = StringParsers.get(klass);
+                if (p != null) {
+                    field.set(o, p.parse(v));
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Cannot parse string value '" + v + "' to instance of class " + klass);
+                }
+            }
         });
-    }    
+    }
+    
+    /**
+     * Find a setter method (with one parameter only) by property name amongst the object's methods,
+     * figure out the method parameter type, parse a given String input to object of that type,
+     * and, finally, call the setter.
+     * 
+     * @param property property name in Camel case
+     * @param value    a string value which will be parsed into an object which matches the setter
+     *                 parameter type
+     * @param object   an object whose setter we are calling
+     * 
+     * @throws UnsupportedOperationException if a method is not found by the property name
+     *                                       or no string parser found for the method parameter type
+     */
+    public static void findAndCallSetter(String property, String value, Object object) {
+        Pair<Method, Function<String, Object>> methodAndParser =
+                getSetterWithParser(property, object.getClass());
+        uncheck(() -> methodAndParser._1().invoke(object, methodAndParser._2().apply(value)));
+    }
+    
+    /**
+     * Find a setter method (with one parameter only) by property name, and
+     * return a string parser for this method's parameter type
+     * 
+     * @param property property name in Camel case
+     * @param klass    object class
+     * 
+     * @throws UnsupportedOperationException if a method is not found by the property name
+     *                                       or no string parser found for the method parameter type
+     */
+    public static Function<String, Object> findStringParserForSetter(String property, Class<?> klass) {
+        return getSetterWithParser(property, klass)._2();
+    }
+    
+    /**
+     * Return true if a setter exists for the given property in the given object.
+     */
+    public static boolean setterExists(String property, Object object) {
+        return setterExists(property, object.getClass());
+    }
+    
+    /**
+     * Return true if a setter exists for the given property in the given class.
+     */
+    public static boolean setterExists(String property, Class<?> klass) {
+        return findSetter(property, klass).isPresent();
+    }
     
     /**
      * Create a new instance of the given class without throwing a compile-time
@@ -235,8 +272,8 @@ public final class Reflections {
         });
     }
     
-    private static Field getFld(String fieldName, Object object) throws NoSuchFieldException {
-        Field field = object.getClass().getDeclaredField(fieldName);
+    private static Field getFld(String fieldName, Class<?> klass) throws NoSuchFieldException {
+        Field field = klass.getDeclaredField(fieldName);
         field.setAccessible(true);
         return field;
     }
@@ -253,6 +290,45 @@ public final class Reflections {
     
     private static String getGetterName(String propertyName) {
         return "get" + Strings.capitalize(propertyName);
+    }
+    
+    private static Optional<Method> findSetter(String property, Class<?> klass) {
+        String setterName = getSetterName(property);
+        return Stream.of(klass.getMethods())
+            .filter(m -> m.getParameterCount() == 1 && m.getName().equals(setterName))
+            .findFirst();
+    }
+    
+    private static Pair<Method, Function<String, Object>> getSetterWithParser(String property, Class<?> klass) {
+        return
+            findSetter(property, klass).map(m -> {
+                Class<?> parameterType = m.getParameterTypes()[0];
+                StringParser<?> p = null;
+                if (parameterType.isPrimitive()) {
+                    if (parameterType == int.class) p = StringParsers.intParser;
+                    else if (parameterType == double.class) p = StringParsers.doubleParser;
+                    else if (parameterType == long.class) p = StringParsers.longParser;
+                    else if (parameterType == float.class) p = StringParsers.floatParser;
+                    else if (parameterType == boolean.class) p = StringParsers.booleanParser;
+                    else if (parameterType == char.class) p = StringParsers.charParser;
+                    else if (parameterType == byte.class) p = StringParsers.byteParser;
+                    else if (parameterType == short.class) p = StringParsers.shortParser; 
+                } else if (parameterType.isEnum()) {
+                    @SuppressWarnings("rawtypes")
+                    Class enumClass = parameterType;
+                    p = s -> Enum.valueOf(enumClass, s);
+                } else {
+                    p = StringParsers.get(parameterType);
+                }
+                
+                if (p == null) {
+                    throw new UnsupportedOperationException(
+                            "Cannot find string parser for method's '" + getSetterName(property) + 
+                            "' parameter type '" + parameterType + "'");
+                }
+                
+                return new Pair<>(m, p.toFunction());
+            }).orElseThrow(() -> new UnsupportedOperationException("No method found by name " + getSetterName(property)));
     }
     
 }

@@ -161,6 +161,87 @@ public class ReflectionsTest {
         ZonedDateTime zdt = ZonedDateTime.now();
         trySetField("zonedDateTime", zdt.toString(), obj);
         assertEquals(zdt, obj.zonedDateTime);
+        
+        trySetField("count", Count.one.toString(), obj);
+        assertEquals(Count.one, obj.count);
+    }
+    
+    @Test
+    public void testFindAndCallSetter() {
+        AllFieldTypesObject obj = new AllFieldTypesObject();
+        
+        findAndCallSetter("string", "Hello", obj);
+        assertEquals("Hello", obj.string);
+
+        findAndCallSetter("primByte", Byte.toString(Byte.MIN_VALUE), obj);
+        assertEquals(Byte.MIN_VALUE, obj.primByte);
+        findAndCallSetter("objByte", Byte.toString(Byte.MIN_VALUE), obj);
+        assertEquals(new Byte(Byte.MIN_VALUE), obj.objByte);
+        
+        findAndCallSetter("primShort", Short.toString(Short.MIN_VALUE), obj);
+        assertEquals(Short.MIN_VALUE, obj.primShort);
+        findAndCallSetter("objShort", Short.toString(Short.MIN_VALUE), obj);
+        assertEquals(new Short(Short.MIN_VALUE), obj.objShort);
+
+        findAndCallSetter("primInt", Integer.toString(Integer.MIN_VALUE), obj);
+        assertEquals(Integer.MIN_VALUE, obj.primInt);
+        findAndCallSetter("objInt", Integer.toString(Integer.MIN_VALUE), obj);
+        assertEquals(new Integer(Integer.MIN_VALUE), obj.objInt);
+        
+        findAndCallSetter("primLong", Long.toString(Long.MIN_VALUE), obj);
+        assertEquals(Long.MIN_VALUE, obj.primLong);
+        findAndCallSetter("objLong", Long.toString(Long.MIN_VALUE), obj);
+        assertEquals(new Long(Long.MIN_VALUE), obj.objLong);
+        
+        findAndCallSetter("primFloat", Float.toString(Float.MIN_VALUE), obj);
+        assertEquals(Float.MIN_VALUE, obj.primFloat, 0.0001);
+        findAndCallSetter("objFloat", Float.toString(Float.MIN_VALUE), obj);
+        assertEquals(new Float(Float.MIN_VALUE), obj.objFloat);
+        
+        findAndCallSetter("primDouble", Double.toString(Double.MIN_VALUE), obj);
+        assertEquals(Double.MIN_VALUE, obj.primDouble, 0.0001);
+        findAndCallSetter("objDouble", Double.toString(Double.MIN_VALUE), obj);
+        assertEquals(new Double(Double.MIN_VALUE), obj.objDouble);
+        
+        findAndCallSetter("primChar", Character.toString(Character.MAX_VALUE), obj);
+        assertEquals(Character.MAX_VALUE, obj.primChar);
+        findAndCallSetter("objChar", Character.toString(Character.MAX_VALUE), obj);
+        assertEquals(new Character(Character.MAX_VALUE), obj.objChar);
+        
+        findAndCallSetter("primBoolean", Boolean.TRUE.toString(), obj);
+        assertEquals(Boolean.TRUE, obj.primBoolean);
+        findAndCallSetter("objBoolean", Boolean.TRUE.toString(), obj);
+        assertEquals(Boolean.TRUE, obj.objBoolean);
+        
+        findAndCallSetter("bigInteger", "123455656456456465646", obj);
+        assertEquals(new BigInteger("123455656456456465646"), obj.bigInteger);
+        
+        findAndCallSetter("bigDecimal", "123455656456456465646.123123123123", obj);
+        assertEquals(new BigDecimal("123455656456456465646.123123123123"), obj.bigDecimal);
+        
+        Date date = new Date();
+        findAndCallSetter("date", date.toString(), obj);
+        assertEquals(date.toString(), obj.date.toString()); // java Date.toString() looses milliseconds
+                                                            // that's why we have to compare string representations
+                                                            // instead of actual objects
+        LocalTime t = LocalTime.now();
+        findAndCallSetter("localTime", t.toString(), obj);
+        assertEquals(t, obj.localTime);
+        
+        LocalDate d = LocalDate.now();
+        findAndCallSetter("localDate", d.toString(), obj);
+        assertEquals(d, obj.localDate);
+        
+        LocalDateTime dt = LocalDateTime.now();
+        findAndCallSetter("localDateTime", dt.toString(), obj);
+        assertEquals(dt, obj.localDateTime);
+        
+        ZonedDateTime zdt = ZonedDateTime.now();
+        findAndCallSetter("zonedDateTime", zdt.toString(), obj);
+        assertEquals(zdt, obj.zonedDateTime);
+        
+        findAndCallSetter("count", Count.one.toString(), obj);
+        assertEquals(Count.one, obj.count);
     }
     
     @Test
@@ -171,6 +252,17 @@ public class ReflectionsTest {
             assertFalse(fieldExists("primbyte", obj));
         } catch (Exception e) {
             fail("should not get any exceptions while checking field existsence");
+        }
+    }
+    
+    @Test
+    public void testSetterExists() {
+        AllFieldTypesObject obj = new AllFieldTypesObject();
+        try {
+            assertTrue(setterExists("primByte", obj));
+            assertFalse(fieldExists("primbyte", obj));
+        } catch (Exception e) {
+            fail("should not get any exceptions while checking setter existsence");
         }
     }
     
@@ -188,6 +280,8 @@ public class ReflectionsTest {
             return value;
         }
     }
+    
+    static enum Count {one, two, three}
     
     static class AllFieldTypesObject {
         private String string;
@@ -214,6 +308,83 @@ public class ReflectionsTest {
         private LocalDate localDate;
         private LocalDateTime localDateTime;
         private ZonedDateTime zonedDateTime;
+        private Count count;
+        
+        public void setString(String string) {
+            this.string = string;
+        }
+        public void setPrimByte(byte primByte) {
+            this.primByte = primByte;
+        }
+        public void setObjByte(Byte objByte) {
+            this.objByte = objByte;
+        }
+        public void setPrimShort(short primShort) {
+            this.primShort = primShort;
+        }
+        public void setObjShort(Short objShort) {
+            this.objShort = objShort;
+        }
+        public void setPrimInt(int primInt) {
+            this.primInt = primInt;
+        }
+        public void setObjInt(Integer objInt) {
+            this.objInt = objInt;
+        }
+        public void setPrimLong(long primLong) {
+            this.primLong = primLong;
+        }
+        public void setObjLong(Long objLong) {
+            this.objLong = objLong;
+        }
+        public void setPrimFloat(float primFloat) {
+            this.primFloat = primFloat;
+        }
+        public void setObjFloat(Float objFloat) {
+            this.objFloat = objFloat;
+        }
+        public void setPrimDouble(double primDouble) {
+            this.primDouble = primDouble;
+        }
+        public void setObjDouble(Double objDouble) {
+            this.objDouble = objDouble;
+        }
+        public void setPrimChar(char primChar) {
+            this.primChar = primChar;
+        }
+        public void setObjChar(Character objChar) {
+            this.objChar = objChar;
+        }
+        public void setPrimBoolean(boolean primBoolean) {
+            this.primBoolean = primBoolean;
+        }
+        public void setObjBoolean(Boolean objBoolean) {
+            this.objBoolean = objBoolean;
+        }
+        public void setBigInteger(BigInteger bigInteger) {
+            this.bigInteger = bigInteger;
+        }
+        public void setBigDecimal(BigDecimal bigDecimal) {
+            this.bigDecimal = bigDecimal;
+        }
+        public void setDate(Date date) {
+            this.date = date;
+        }
+        public void setLocalTime(LocalTime localTime) {
+            this.localTime = localTime;
+        }
+        public void setLocalDate(LocalDate localDate) {
+            this.localDate = localDate;
+        }
+        public void setLocalDateTime(LocalDateTime localDateTime) {
+            this.localDateTime = localDateTime;
+        }
+        public void setZonedDateTime(ZonedDateTime zonedDateTime) {
+            this.zonedDateTime = zonedDateTime;
+        }
+        public void setCount(Count count) {
+            this.count = count;
+        }
     }
     
 }

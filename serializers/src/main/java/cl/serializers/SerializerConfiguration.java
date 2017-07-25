@@ -12,10 +12,10 @@ import java.util.function.Function;
 
 import cl.core.configurable.Configurable;
 import cl.core.configurable.Key;
-import cl.core.function.FunctionWithException;
 import cl.core.util.Strings;
 import cl.json.JsonMapper;
 import cl.serializers.delimited.DelimitedStringSplitter;
+import cl.serializers.iterators.DelimitedStringIterator;
 
 
 /**
@@ -119,7 +119,7 @@ public class SerializerConfiguration {
      * 
      * @see cl.serializers.delimited.DelimitedStringParser
      */
-    public final static Key<Map<String, FunctionWithException<String, Object>>> valueParsers =
+    public final static Key<Map<String, Function<String, Object>>> valueParsers =
             new Key<>(() -> Collections.emptyMap());
     
     /**

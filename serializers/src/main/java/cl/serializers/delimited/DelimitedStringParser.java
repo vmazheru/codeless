@@ -4,11 +4,11 @@ import static java.util.Collections.emptyMap;
 
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import cl.core.configurable.Configurable;
 import cl.core.configurable.Key;
-import cl.core.function.FunctionWithException;
 import cl.core.util.Reflections;
 
 /**
@@ -48,13 +48,9 @@ import cl.core.util.Reflections;
  * </ul>
  *
  * <p>Optionally, the parser may be given a map pointing object's properties
- * to functions, which will instruct the parser on how to parse specific values
+ * to functions, which will instruct the parser on how to parse values
  * for specific properties. This map does not have to cover all properties, and if
  * a property function is missing, the parser will try to set it by using reflection.
- * 
- * <p>Note that when {@code useSetters} is set to {@code TRUE} the reflection 
- * mechanism cannot figure out the property type and it will fail for all types 
- * other than {@code String}.
  * 
  * @param <T> Type of the object produced by parsing the given string array.
  */
@@ -90,7 +86,7 @@ public interface DelimitedStringParser<T> extends Configurable<DelimitedStringPa
     static <T> DelimitedStringParser<T> get(
             Supplier<T> objectFactory,
             Map<Integer, String> indexToProperty,
-            Map<String, FunctionWithException<String, Object>> valueParsers,
+            Map<String, Function<String, Object>> valueParsers,
             boolean lockConfiguration) {
         DelimitedStringParser<T> p = new DelimitedStringParserImpl<>(
                 objectFactory, indexToProperty, valueParsers);
@@ -111,7 +107,7 @@ public interface DelimitedStringParser<T> extends Configurable<DelimitedStringPa
     static <T> DelimitedStringParser<T> get(
             Class<T> klass,
             Map<Integer, String> indexToProperty,
-            Map<String, FunctionWithException<String, Object>> valueParsers,
+            Map<String, Function<String, Object>> valueParsers,
             boolean lockConfiguration) {
         return get(() -> Reflections.newInstance(klass),
                 indexToProperty, valueParsers, lockConfiguration);
@@ -128,7 +124,7 @@ public interface DelimitedStringParser<T> extends Configurable<DelimitedStringPa
     static <T> DelimitedStringParser<T> get(
             Supplier<T> objectFactory,
             Map<Integer, String> indexToProperty,
-            Map<String, FunctionWithException<String, Object>> valueParsers) {
+            Map<String, Function<String, Object>> valueParsers) {
         return get(objectFactory, indexToProperty, valueParsers, true);
     }
     
@@ -144,7 +140,7 @@ public interface DelimitedStringParser<T> extends Configurable<DelimitedStringPa
     static <T> DelimitedStringParser<T> get(
             Class<T> klass,
             Map<Integer, String> indexToProperty,
-            Map<String, FunctionWithException<String, Object>> valueParsers) {
+            Map<String, Function<String, Object>> valueParsers) {
         return get(klass, indexToProperty, valueParsers, true);
     }
     
