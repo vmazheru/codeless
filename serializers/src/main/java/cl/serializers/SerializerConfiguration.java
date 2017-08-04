@@ -8,13 +8,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import cl.core.configurable.Configurable;
 import cl.core.configurable.Key;
 import cl.core.util.Strings;
 import cl.json.JsonMapper;
+import cl.serializers.delimited.DelimitedStringJoiner;
+import cl.serializers.delimited.DelimitedStringParser;
 import cl.serializers.delimited.DelimitedStringSplitter;
+import cl.serializers.delimited.DelimitedStringParser.PropertySetException;
 import cl.serializers.iterators.DelimitedStringIterator;
 
 
@@ -95,7 +99,7 @@ public class SerializerConfiguration {
      * Used by {@link DelimitedStringIterator}. This key sets a mapping
      * between columns and object properties. It does not have to cover all
      * columns in the delimited file. The missing mappings will be filled by
-     * applying the 'columnToProperty' setting.
+     * applying the 'columnToProperty' setting. It is zero based.
      * 
      * <p>An empty map is the default value.
      * 
@@ -121,6 +125,32 @@ public class SerializerConfiguration {
      */
     public final static Key<Map<String, Function<String, Object>>> valueParsers =
             new Key<>(() -> Collections.emptyMap());
+    
+    /**
+     * Used by {@link DelimitedStringIterator}. This key indicates the use of
+     * setters versus fields when parsing a delimited string into an object.
+     * 
+     * @see cl.serializers.delimited.DelimitedStringParser
+     */
+    public final static Key<Boolean> useSetters = DelimitedStringParser.useSetters;
+    
+    /**
+     * Used by {@link DelimitedStringIterator}. This key supplies a callback
+     * which is executed whenever setting an object property (by setting a field
+     * or using a setter) results in exception.
+     * 
+     * @see cl.serializers.delimited.DelimitedStringParser
+     */
+    public static Key<Consumer<PropertySetException>> onPropertySetError = 
+            DelimitedStringParser.onPropertySetError;
+
+    
+    
+    
+    // TODO: comment
+    
+    public final static Key<DelimitedStringJoiner> delimitedStringJoiner = 
+            new Key<>(() -> DelimitedStringJoiner.csv());
     
     /**
      * Return default configuration settings for java serializers. For java serializers, the

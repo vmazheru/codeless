@@ -66,7 +66,7 @@ public class DelimitedStringSplitterTest {
 				DelimitedStringSplitter.csv()
 		);
 		assertCorrectSplit(
-				"A single double qouted value should preserve qoutes, since we don't know, weather it's a regular value or a qouted value",
+				"A single double qouted value should preserve qoutes, since we don't know, whether it's a regular value or a qouted value",
 				"\"Double qouted, with comma\"",
 				new String[]{"Double qouted, with comma"},
 				DelimitedStringSplitter.csv()

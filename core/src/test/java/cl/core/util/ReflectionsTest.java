@@ -9,9 +9,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
+
+import cl.core.types.Transient;
 
 /**
  * Unit tests for Reflections.java
@@ -266,6 +271,25 @@ public class ReflectionsTest {
         }
     }
     
+    @Test
+    public void testGetPropertiesFromFields() {
+        String[] properties = getPropertiesFromFields(ObjectWithTransientAndNormalFields.class);
+        
+        assertEquals(ObjectWithTransientAndNormalFields.expectedProperties,
+                new HashSet<>(Arrays.asList(properties)));
+    }
+    
+    @Test
+    public void testGetPropertiesFromGetterAndSetter() {
+        String[] fromGetter = getPropertiesFromGetters(ObjectWithTransientAndNormalMethods.class);
+        String[] fromSetter = getPropertiesFromSetters(ObjectWithTransientAndNormalMethods.class);
+        
+        assertEquals(ObjectWithTransientAndNormalMethods.expectedProperties, 
+                new HashSet<>(Arrays.asList(fromGetter)));
+        assertEquals(ObjectWithTransientAndNormalMethods.expectedProperties, 
+                new HashSet<>(Arrays.asList(fromSetter)));
+    }
+    
     static class SampleObject {
         private String value;
         public String getValue() { return value; }
@@ -385,6 +409,37 @@ public class ReflectionsTest {
         public void setCount(Count count) {
             this.count = count;
         }
+    }
+    
+    static class ObjectWithTransientAndNormalFields {
+        @SuppressWarnings("unused") private int intField;
+        @SuppressWarnings("unused") private String stringField;
+        @SuppressWarnings("unused") private static int staticField;
+        @SuppressWarnings("unused") private transient int transientField;
+        @Transient private int transientAnnotatedField;
+        
+        static Set<String> expectedProperties = new HashSet<>(Arrays.asList("intField", "stringField"));
+    }
+    
+    static abstract class ObjectWithTransientAndNormalMethods {
+        public int getMyInt() { return 0; }
+        public void setMyInt(@SuppressWarnings("unused") int i) { }
+        
+        public String getMyString() { return ""; }
+        public void setMyString(@SuppressWarnings("unused") String s) {}
+        
+        public static int getStaticInt() { return 0; }
+        public static void setStaticInt(@SuppressWarnings("unused") int i) {}
+        
+        public abstract int getAbstractInt();
+        public abstract void setAbstractInt(int i);
+        
+        @Transient
+        public int getTransientInt() { return 0; }
+        @Transient
+        public void setTransientInt(@SuppressWarnings("unused") int i) {}
+        
+        static Set<String> expectedProperties = new HashSet<>(Arrays.asList("myInt", "myString"));
     }
     
 }

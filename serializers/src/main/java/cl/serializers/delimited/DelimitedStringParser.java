@@ -78,7 +78,7 @@ public interface DelimitedStringParser<T> extends Configurable<DelimitedStringPa
      * Get a parser instance.
      * 
      * @param objectFactory      A method to instantiate an object returned by the parser
-     * @param indexToProperty    Index to property mappings
+     * @param indexToProperty    Index to property mappings (zero based)
      * @param valueParsers       Property to value parser mappings
      * @param lockConfiguration  Flag to lock or not lock the parser's configuration
      * @return                   An object, instantiated and populated by the parser
@@ -99,7 +99,7 @@ public interface DelimitedStringParser<T> extends Configurable<DelimitedStringPa
      * 
      * @param klass             A class, which represents the type of an object returned by the parser.
      *                          It must have a default constructor.
-     * @param indexToProperty   Index to property mappings
+     * @param indexToProperty   Index to property mappings (zero based)
      * @param valueParsers      Property to value parser mappings
      * @param lockConfiguration Flag to lock or not lock the parser's configuration
      * @return                  An object, instantiated and populated by the parser
@@ -117,7 +117,7 @@ public interface DelimitedStringParser<T> extends Configurable<DelimitedStringPa
      * Get a parser instance with its configuration locked.
      * 
      * @param objectFactory      A method to instantiate an object returned by the parser
-     * @param indexToProperty    Index to property mappings
+     * @param indexToProperty    Index to property mappings (zero based)
      * @param valueParsers       Property to value parser mappings
      * @return                   An object, instantiated and populated by the parser
      */
@@ -133,7 +133,7 @@ public interface DelimitedStringParser<T> extends Configurable<DelimitedStringPa
      * 
      * @param klass             A class, which represents the type of an object returned by the parser.
      *                          It must have a default constructor.
-     * @param indexToProperty   Index to property mappings
+     * @param indexToProperty   Index to property mappings (zero based)
      * @param valueParsers      Property to value parser mappings
      * @return                  An object, instantiated and populated by the parser
      */
@@ -148,7 +148,7 @@ public interface DelimitedStringParser<T> extends Configurable<DelimitedStringPa
      * Get a parser instance.
      * 
      * @param objectFactory      A method to instantiate an object returned by the parser
-     * @param indexToProperty    Index to property mappings
+     * @param indexToProperty    Index to property mappings (zero based)
      * @param lockConfiguration  Flag to lock or not lock the parser's configuration
      * @return                   An object, instantiated and populated by the parser
      */
@@ -164,7 +164,7 @@ public interface DelimitedStringParser<T> extends Configurable<DelimitedStringPa
      * 
      * @param klass             A class, which represents the type of an object returned by the parser.
      *                          It must have a default constructor.
-     * @param indexToProperty   Index to property mappings
+     * @param indexToProperty   Index to property mappings (zero based)
      * @param lockConfiguration Flag to lock or not lock the parser's configuration
      * @return                  An object, instantiated and populated by the parser
      */
@@ -179,7 +179,7 @@ public interface DelimitedStringParser<T> extends Configurable<DelimitedStringPa
      * Get a parser instance with its configuration locked.
      * 
      * @param objectFactory      A method to instantiate an object returned by the parser
-     * @param indexToProperty    Index to property mappings
+     * @param indexToProperty    Index to property mappings (zero based)
      * @return                   An object, instantiated and populated by the parser
      */
     static <T> DelimitedStringParser<T> get(
@@ -193,7 +193,7 @@ public interface DelimitedStringParser<T> extends Configurable<DelimitedStringPa
      * 
      * @param klass             A class, which represents the type of an object returned by the parser.
      *                          It must have a default constructor.
-     * @param indexToProperty   Index to property mappings
+     * @param indexToProperty   Index to property mappings (zero based)
      * @return                  An object, instantiated and populated by the parser
      */
     static <T> DelimitedStringParser<T> get(

@@ -6,8 +6,10 @@ import static cl.core.decorator.exception.ExceptionDecorators.uncheck;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import cl.core.ds.Pair;
@@ -15,6 +17,7 @@ import cl.core.function.FunctionWithException;
 import cl.core.function.SupplierWithException;
 import cl.core.function.stringparser.StringParsers;
 import cl.core.function.stringparser.StringParsers.StringParser;
+import cl.core.types.Transient;
 
 /**
  * Reflection utilities.
@@ -26,6 +29,18 @@ import cl.core.function.stringparser.StringParsers.StringParser;
 public final class Reflections {
     
     private Reflections(){}
+    
+    /**
+     * Create a new instance of the given class without throwing a compile-time
+     * exception (but it will throw run rime exception in case of instantiation problem).
+     */
+    public static <T> T newInstance(Class<T> klass) {
+        return uncheck(() -> {
+            Constructor<T> c = klass.getConstructor();
+            c.setAccessible(true);
+            return c.newInstance();
+        });
+    }
 
     /**
      * Execute a setter.
@@ -259,17 +274,50 @@ public final class Reflections {
     public static boolean setterExists(String property, Class<?> klass) {
         return findSetter(property, klass).isPresent();
     }
+
+    /**
+     * Return an array of field names derived from fields. This will not include static and transient fields.
+     */
+    public static String[] getPropertiesFromFields(Class<?> klass) {
+        return getFields(klass).map(Field::getName).toArray(String[]::new);
+    }
     
     /**
-     * Create a new instance of the given class without throwing a compile-time
-     * exception (but it will throw run rime exception in case of instantiation problem).
+     * Return an array of field names derived from getters. This will not include
+     * static, abstract, and {@link cl.core.types.Transient} methods.
      */
-    public static <T> T newInstance(Class<T> klass) {
-        return uncheck(() -> {
-            Constructor<T> c = klass.getConstructor();
-            c.setAccessible(true);
-            return c.newInstance();
-        });
+    public static String[] getPropertiesFromGetters(Class<?> klass) {
+        return getGetters(klass).map(m -> Strings.pascalToCamel(m.getName().substring(3)))
+            .toArray(String[]::new);
+    }
+    
+    /**
+     * Return an array of field names derived from setters. This will not include
+     * static, abstract, and {@link cl.core.types.Transient} methods.
+     */
+    public static String[] getPropertiesFromSetters(Class<?> klass) {
+        return getSetters(klass).map(m -> Strings.pascalToCamel(m.getName().substring(3)))
+            .toArray(String[]::new);
+    }
+    
+    private static Stream<Field> getFields(Class<?> klass) {
+        Predicate<Field> isSerializableField = f ->
+            !Modifier.isStatic(f.getModifiers()) && 
+            !Modifier.isTransient(f.getModifiers()) && 
+            f.getAnnotation(Transient.class) == null;
+        
+        return Stream.of(klass.getDeclaredFields()).filter(isSerializableField);
+    }
+    
+    private static Stream<Method> getGetters(Class<?> klass) {
+            return getNonTransientOrStaticMethods(klass)
+                    .filter(m -> m.getParameterCount() == 0 && m.getName().startsWith("get") && 
+                    !"getClass".equals(m.getName()));
+    }
+    
+    private static Stream<Method> getSetters(Class<?> klass) {
+        return getNonTransientOrStaticMethods(klass)
+                .filter(m -> m.getParameterCount() == 1 && m.getName().startsWith("set"));
     }
     
     private static Field getFld(String fieldName, Class<?> klass) throws NoSuchFieldException {
@@ -294,10 +342,19 @@ public final class Reflections {
     
     private static Optional<Method> findSetter(String property, Class<?> klass) {
         String setterName = getSetterName(property);
-        return Stream.of(klass.getMethods())
+        return getNonTransientOrStaticMethods(klass)
             .filter(m -> m.getParameterCount() == 1 && m.getName().equals(setterName))
             .findFirst();
     }
+    
+    private static Stream<Method> getNonTransientOrStaticMethods(Class<?> klass) {
+        return Stream.of(klass.getMethods()).filter(isNotTransientAbstractOrStatic);
+    }
+    
+    private static Predicate<Method> isNotTransientAbstractOrStatic = m ->
+        !Modifier.isStatic(m.getModifiers()) && 
+        !Modifier.isAbstract(m.getModifiers()) &&
+        m.getAnnotation(Transient.class) == null;
     
     private static Pair<Method, Function<String, Object>> getSetterWithParser(String property, Class<?> klass) {
         return

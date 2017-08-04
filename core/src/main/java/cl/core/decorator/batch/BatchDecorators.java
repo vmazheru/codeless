@@ -73,7 +73,7 @@ import cl.core.decorator.Decorator;
  *          
  *          <p>In order for these methods to work correctly, the input collections
  *          must be sorted so that "related" elements are kept together.  Yet another additional
- *          parameter to these methods denotes weather the input collections are sorted or not.
+ *          parameter to these methods denotes whether the input collections are sorted or not.
  *          If a given collection is not sorted it will be sorted according to the given group function, 
  *          and the original order of elements in the collection will be lost. 
  *          
@@ -100,7 +100,7 @@ public interface BatchDecorators {
      * Apply batching with groups to a consumer of a collection.
      * 
      * @param batchSize      batch size
-     * @param inputSorted    indicates weather the input is sorted or not
+     * @param inputSorted    indicates whether the input is sorted or not
      * @param groupFunction  a group function
      * @param f              a consumer which accepts an {@code Iterable} object
      * @return               a consumer which applies batching with groups to the code of the original consumer
@@ -125,7 +125,7 @@ public interface BatchDecorators {
      * Apply batching with groups to a {@code BiConsumer} of a collection.
      * 
      * @param batchSize      batch size
-     * @param inputSorted    indicates weather the input is sorted or not
+     * @param inputSorted    indicates whether the input is sorted or not
      * @param groupFunction  a group function
      * @param f              a consumer which accepts an {@code Iterable} object and another additional parameter
      * @return               a consumer which applies batching with groups to the code of the original consumer
@@ -150,7 +150,7 @@ public interface BatchDecorators {
      * Apply batching with groups to a function which accepts a collection and returns a list.
      * 
      * @param batchSize      batch size
-     * @param inputSorted    indicates weather the input is sorted or not
+     * @param inputSorted    indicates whether the input is sorted or not
      * @param groupFunction  a group function
      * @param f              a function which accepts an {@code Iterable} object and returns a list
      * @return               a consumer which applies batching with groups to the code of the original function
@@ -176,7 +176,7 @@ public interface BatchDecorators {
      * and returns a list.
      * 
      * @param batchSize      batch size
-     * @param inputSorted    indicates weather the input is sorted or not
+     * @param inputSorted    indicates whether the input is sorted or not
      * @param groupFunction  a group function
      * @param f              a function which accepts an {@code Iterable} object and an additional parameter and returns a list
      * @return               a function which applies batching with groups to the code of the original function
@@ -204,7 +204,7 @@ public interface BatchDecorators {
      * 
      * @param batchSize       batch size
      * @param col             a collection of objects which will be passed to the consumer
-     * @param inputSorted     indicates weather the input collection is sorted or not
+     * @param inputSorted     indicates whether the input collection is sorted or not
      * @param groupFunction   a group function
      * @param f               a consumer which will be applied to each batch
      */
@@ -231,7 +231,7 @@ public interface BatchDecorators {
      * @param batchSize       batch size
      * @param col             a collection of objects which will be passed to the consumer
      * @param param           the second parameter to the consumer
-     * @param inputSorted     indicates weather the input collection is sorted or not
+     * @param inputSorted     indicates whether the input collection is sorted or not
      * @param groupFunction   a group function
      * @param f               a consumer which will be applied to each batch
      */
@@ -256,7 +256,7 @@ public interface BatchDecorators {
      * 
      * @param batchSize       batch size
      * @param col             a collection of objects which will be passed to the function
-     * @param inputSorted     indicates weather the input collection is sorted or not
+     * @param inputSorted     indicates whether the input collection is sorted or not
      * @param groupFunction   a group function
      * @param f               a function which will be applied to each batch
      */
@@ -283,7 +283,7 @@ public interface BatchDecorators {
      * @param batchSize       batch size
      * @param col             a collection of objects which will be passed to the function
      * @param param           the second parameter to the function
-     * @param inputSorted     indicates weather the input collection is sorted or not
+     * @param inputSorted     indicates whether the input collection is sorted or not
      * @param groupFunction   a group function
      * @param f               a function which will be applied to each batch
      */

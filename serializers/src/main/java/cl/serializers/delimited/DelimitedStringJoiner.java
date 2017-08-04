@@ -13,7 +13,7 @@ import cl.core.configurable.Key;
  * <ul>
  * 	<li>{@code delimiter} is a character which will be used to join the objects. The default value is comma.</li>
  *  <li>{@code encloser} is a character which will be used to enclose the values whenever necessary. The default value is a double quote</li>
- *  <li>{@code trim} of type boolean, denotes weather the values need to be trimmed or not. The default value is FALSE</li>
+ *  <li>{@code trim} of type boolean, denotes whether the values need to be trimmed or not. The default value is FALSE</li>
  *  <li>{@code alwaysEnclose} of type boolean, may be used when enclosing all values is desired. The default value is FALSE</li>
  *  <li>{@code checkForNewLines} of type boolean, if set, will replace new lines with spaces. The default value is FALSE</li>
  * </ul>

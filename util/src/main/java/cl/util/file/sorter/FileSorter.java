@@ -98,7 +98,7 @@ public interface FileSorter<T> extends Configurable<FileSorter<T>> {
      *                           This value has to be passed separately, because
      *                           there is no an easy way to get the underlying file size from the given
      *                           serializer object.
-     * @param lockConfiguration  specifies weather the configuration of the file sorter should be
+     * @param lockConfiguration  specifies whether the configuration of the file sorter should be
      *                           locked  or not. Use {@code false} when you need to pass more configuration
      *                           settings to the file sorter after it has been created.
      * @return a file sorter instance

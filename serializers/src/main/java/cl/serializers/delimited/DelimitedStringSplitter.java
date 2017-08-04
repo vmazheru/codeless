@@ -19,18 +19,18 @@ import cl.core.configurable.Key;
  *      Double quote is the default value.
  *    </li>
  *    <li>
- *    	{@code trim} of type Boolean specifies weather the values should be trimmed. If set alone, it will not trim
+ *    	{@code trim} of type Boolean specifies whether the values should be trimmed. If set alone, it will not trim
  *      values when they are enclosed.  For example, it'll trim value 'two' in {@code 'one,   two, three'} but not in
  *      {@code one, "   two  ", three'}.
  *      The default value is {@code false} (no trimming).
  *    </li>
  *    <li>
- *    	{@code trimEnclosed} of type Boolean specifies weather the values should be trimmed if they are the leading/trailing
+ *    	{@code trimEnclosed} of type Boolean specifies whether the values should be trimmed if they are the leading/trailing
  *      spaces appear in the string which is enclosed. For example, it will trim value 'two' in {@code one, "   two  ", three'}.
  *      The default value is {@code false} (no trimming). 
  *    </li>
  *    <li>
- *    	{@code alwaysEnclosed} of type Boolean specifies weather the values in the string are guaranteed to be always inclosed.
+ *    	{@code alwaysEnclosed} of type Boolean specifies whether the values in the string are guaranteed to be always inclosed.
  *      If this is set, parsing of such lines may be more efficient.
  *    </li>
  *    <li>
@@ -52,17 +52,17 @@ public interface DelimitedStringSplitter extends Configurable<DelimitedStringSpl
     public Key<Character> encloser  = new Key<>(() -> '"');
     
     /**
-     * Specify weather to trim values or not. The default value is {@code false}.
+     * Specify whether to trim values or not. The default value is {@code false}.
      */
     public Key<Boolean> trim = new Key<>(() -> Boolean.FALSE);
     
     /**
-     * Specify weather to trim enclosed values or not.  The default value is {@code false}.
+     * Specify whether to trim enclosed values or not.  The default value is {@code false}.
      */
     public Key<Boolean> trimEnclosed = new Key<>(() -> Boolean.FALSE);
     
     /**
-     * Specify weather the values in the string are guaranteed to be always inclosed.
+     * Specify whether the values in the string are guaranteed to be always inclosed.
      */
     public Key<Boolean> alwaysEnclosed = new Key<>(() -> Boolean.FALSE);
     

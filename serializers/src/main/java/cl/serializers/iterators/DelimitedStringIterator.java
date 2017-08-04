@@ -176,8 +176,13 @@ public class DelimitedStringIterator<T> extends TextIterator<T> {
         Map<Integer, String> columnIndexToProperty = 
                 new HashMap<>(get(SerializerConfiguration.columnIndexToProperty));
         
+        boolean useSetters = get(SerializerConfiguration.useSetters);
+        
         parser = DelimitedStringParser.get(
-                klass, columnIndexToProperty, get(SerializerConfiguration.valueParsers));
+                klass, columnIndexToProperty, get(SerializerConfiguration.valueParsers), false)
+                .with(DelimitedStringParser.useSetters, useSetters)
+                .with(DelimitedStringParser.onPropertySetError, get(SerializerConfiguration.onPropertySetError))
+                .locked();
         
         splitter = get(SerializerConfiguration.delimitedStringSplitter);
         
@@ -196,7 +201,7 @@ public class DelimitedStringIterator<T> extends TextIterator<T> {
             onHeader.accept(i, line);
             
             if (i == 0) {
-                Predicate<String> propertyChecker = parser.get(DelimitedStringParser.useSetters) ?
+                Predicate<String> propertyChecker = useSetters ?
                             p -> Reflections.setterExists(p, klass) :
                             p -> Reflections.fieldExists(p, klass);
                 

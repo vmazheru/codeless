@@ -82,6 +82,19 @@ public final class Strings {
         return delimitedToCamel(s, ch -> Character.isWhitespace(ch), true);
     }
     
+    /**
+     * Convert a Pascal case string into a Camel case string. It returns
+     * the same string as input but with the first character in lower case.
+     */
+    public static String pascalToCamel(CharSequence s) {
+        if (s == null) return null;
+        if (s.length() == 0) return "";
+        return new StringBuilder()
+                .append(Character.toLowerCase(s.charAt(0)))
+                .append(s.subSequence(1, s.length()))
+                .toString();
+    }
+    
     private static String delimitedToCamel(
             CharSequence s, IntPredicate delimiterTest, boolean forceLowercase) {
         if (s == null) return null;

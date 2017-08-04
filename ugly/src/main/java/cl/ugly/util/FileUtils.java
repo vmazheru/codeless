@@ -348,7 +348,7 @@ public final class FileUtils {
                 if(compResult < 0) {
                     dWriter.println(mLine);
                     mLine = mReader.readLine();
-                // (M-line > S-line) => we don't know weather we should write this line to result
+                // (M-line > S-line) => we don't know whether we should write this line to result
                 // but we have to advance S file
                 } else if (compResult > 0) {
                     sLine = sReader.readLine();

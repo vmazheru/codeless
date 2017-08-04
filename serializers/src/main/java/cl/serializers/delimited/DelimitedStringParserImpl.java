@@ -25,7 +25,7 @@ class DelimitedStringParserImpl<T> extends ConfigurableObject<DelimitedStringPar
             Map<Integer, String> indexToProperty,
             Map<String, Function<String, Object>> valueParsers) {
         this.objectFactory = objectFactory;
-        this.indexToProperty = indexToProperty;
+        this.indexToProperty = new HashMap<>(indexToProperty);
         this.valueParsers = new HashMap<>(valueParsers);
     }
     

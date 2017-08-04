@@ -23,7 +23,7 @@ import cl.jdbc.DBClientImpl;
  * If no connection is open explicitly, the client will open a connection per each SQL statement.  If it
  * is necessary to execute many SQL statements with the same connection, it can be open by calling 
  * {@code openConnecttion() } method and closed (preferably in finally block) by calling 
- * {@code closeConnection() }. Weather the connection is actually closed or released and returned to a 
+ * {@code closeConnection() }. Whether the connection is actually closed or released and returned to a 
  * connection pool is entirely up to the underlying data source.
  */
 public interface DBClient {

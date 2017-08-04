@@ -84,7 +84,7 @@ public interface Configurable<C extends Configurable<C>> {
     <T> T get(Key<T> key);
     
     /**
-     * Return a set of keys for this configurable object.  Calling this method does not depend on weather
+     * Return a set of keys for this configurable object.  Calling this method does not depend on whether
      * the object is locked or unlocked.
      */
     Set<Key<?>> keys();

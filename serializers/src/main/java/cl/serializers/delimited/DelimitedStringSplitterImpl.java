@@ -54,7 +54,7 @@ class DelimitedStringSplitterImpl extends ConfigurableObject<DelimitedStringSpli
             	
             	// 1) The encloser came either at the beginning of the entire string or after a delimiter. That means
             	// we are at the beginning of the value, which may or may not be enclosed.
-            	// We need to figure out weather this is enclosed value, or the encloser is just a character, which
+            	// We need to figure out whether this is enclosed value, or the encloser is just a character, which
             	// needs to be put in the result.  We assume, that if the value ends with encloser, too, than this
             	// character is an encloser.  For that, we scan forward, until we reach the next delimiter.
             	
