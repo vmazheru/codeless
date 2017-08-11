@@ -172,8 +172,8 @@ or as complex as :
 
 ### More detailed list of features
 
-* [Decorators](../core/src/main/java/cl/core/decorator/package-info.java)
-* [Decorators](../core/src/main/java/cl/core/decorator)
+* [Decorators](core/src/main/java/cl/core/decorator/package-info.java)
+* [Decorators](core/src/main/java/cl/core/decorator)
 
 
  
