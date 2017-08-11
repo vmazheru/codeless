@@ -183,7 +183,7 @@ or as complex as :
 * JDBC Client and SQLiteDB [cl.jdbc](jdbc/src/main/java/cl/jdbc)
 * JSON Mapper [cl.json](json/src/main/java/cl/json)
 * Logging Wrappers (currently console, Java logging, and Log4j supported) [cl.logging](logging/src/main/java/cl/logging)
-* Serializers, Object Iterators, Object Writers [cl.serializers](serializers/src/main/java/cl)
+* Serializers, Object Iterators, Object Writers [cl.serializers](serializers/src/main/java/cl/serializers)
 * File Sorter [cl.util.file.sorter](util/src/main/java/cl/util/file/sorter)
 
 
