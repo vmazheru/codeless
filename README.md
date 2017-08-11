@@ -136,7 +136,7 @@ dump them as plain strings you would do
     {
         s.filterAndMap(c -> c.getPhones() == null, Customer::getName);
     }
-``
+```
 
 #### File sorter
 
