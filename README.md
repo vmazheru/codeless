@@ -172,8 +172,22 @@ or as complex as :
 
 ### More detailed list of features
 
-* [Decorators](core/src/main/java/cl/core/decorator/package-info.java)
-* [Decorators](core/src/main/java/cl/core/decorator)
+* Functional interfaces with exceptions and conversions of functional interfaces [cl.core.function](core/src/main/java/cl/core/function) 
+* Decorators [cl.core.decorator](core/src/main/java/cl/core/decorator)
+    * Retry [cl.core.decorator.retry](core/src/main/java/cl/core/decorator/retry)
+    * Un-check [cl.core.decorator.exception](core/src/main/java/cl/core/decorator/exception)
+    * Batch [cl.core.decorator.batch](core/src/main/java/cl/core/decorator/batch)
+* Configurable objects [cl.core.configurable](core/src/main/java/cl/core/configurable)
+* Basic utilities [cl.core.util](core/src/main/java/cl/core/util)
+* Configurable objects [cl.core.configurable](core/src/main/java/cl/core/configurable)
+* Configuration (reading property files easily) [cl.cfg](cfg/src/main/java/cl/cfg)
+* JDBC Client and SQLiteDB [cl.jdbc](jdbc/src/main/java/cl/jdbc)
+* JSON Mapper [cl.json](json/src/main/java/cl/json)
+* Logging Wrappers (currently console, Java logging, and Log4j supported) [cl.logging](jdbc/src/main/java/cl/logging)
+* Serializers, Object Iterators and Object Writers [cl.serializers](serializers/src/main/java)
+* File Sorter [cl.util](util/src/main/java/cl/util/file/sorter)
+
+
 
 
  
