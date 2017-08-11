@@ -1,7 +1,13 @@
-# Code lEss
+# Code Less
 ##### Tools for the busy Java developer
 
+## Highlights
 
+* Help remove boilerplate code from Java programs
+* Make trivial things simple, not so trivial not so simple
+* Tune the behavior of any component
+* Java interfaces, but implementations are in any JVM language (currently Scala and Java)
+* Test with Scala Spec and JUnit
 
 ## What's in the package?
 
@@ -47,7 +53,7 @@ Suppose, you need to convert your customer data to JSON. Here is your customer:
     Customer customer = new Customer("John Doe", new String[] {"212-111-9999"});
 ```
 
-JsonMapper` will help.  It's use may be as simple as
+JsonMapper will help.  It's use may be as simple as
 
 ```Java
     JsonMapper mapper = JsonMapper.getJsonMapper();
@@ -111,7 +117,7 @@ configuration settings. Use them when you need to read objects from a file, proc
 put the results of processing back into a different file. For example,
 
 ```Java
-    // generate a file of customer names who don't have phones
+    // generate a file of customer names for those customers who don't have phones
     try (Serializer<Customer, String> s = Serializer.jsonSerializer(inFile, outFile, Customer.class)) {
         s.filterAndMap(c -> c.getPhones() == null, Customer::getName);
     }
@@ -131,5 +137,43 @@ dump them as plain strings you would do
         s.filterAndMap(c -> c.getPhones() == null, Customer::getName);
     }
 ``
+
+#### File sorter
+
+File sorter makes use of **serializers** to sort files of any size.  File sorter may sort them in 
+memory or it may sort them by using "external merge sort" if files are very large. There is a file size
+threshold (configurable!) which is used by the file sorter to switch from "in-memory" sorting to
+"external merge" sorting.
+
+Additionally, file sorter can:
+
+    * remove duplicates while sorting
+    * skip one ore more header lines (when for example sorting CSV files)
+
+
+The use file sorter may be as simple as:
+
+```Java
+    FileSorter.sort(myFile);
+```
+
+or as complex as :
+
+```Java
+    FileSorter<Customer> fileSorter = FileSorter.getFileSorter(
+                inFile,                      // input file 
+                outFile,                     // output (sorted) file
+                SerializationType.JSON,      // what is the serialization scheme (file format)
+                Customer.class,              // object class (needed by JSONMapper)
+                Comparator.reverseOrder(),   // sort in descending order. 
+                true);                       // remove duplicates
+    fileSorter.sort();
+```
+
+### More detailed list of features
+
+* [Decorators](../core/src/main/java/cl/core/decorator/package-info.java)
+* [Decorators](../core/src/main/java/cl/core/decorator)
+
 
  
