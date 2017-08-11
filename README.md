@@ -179,13 +179,12 @@ or as complex as :
     * Batch [cl.core.decorator.batch](core/src/main/java/cl/core/decorator/batch)
 * Configurable objects [cl.core.configurable](core/src/main/java/cl/core/configurable)
 * Basic utilities [cl.core.util](core/src/main/java/cl/core/util)
-* Configurable objects [cl.core.configurable](core/src/main/java/cl/core/configurable)
 * Configuration (reading property files easily) [cl.cfg](cfg/src/main/java/cl/cfg)
 * JDBC Client and SQLiteDB [cl.jdbc](jdbc/src/main/java/cl/jdbc)
 * JSON Mapper [cl.json](json/src/main/java/cl/json)
-* Logging Wrappers (currently console, Java logging, and Log4j supported) [cl.logging](jdbc/src/main/java/cl/logging)
-* Serializers, Object Iterators and Object Writers [cl.serializers](serializers/src/main/java)
-* File Sorter [cl.util](util/src/main/java/cl/util/file/sorter)
+* Logging Wrappers (currently console, Java logging, and Log4j supported) [cl.logging](logging/src/main/java/cl/logging)
+* Serializers, Object Iterators, Object Writers [cl.serializers](serializers/src/main/java/cl)
+* File Sorter [cl.util.file.sorter](util/src/main/java/cl/util/file/sorter)
 
 
 
