@@ -178,12 +178,6 @@ public class DelimitedStringIterator<T> extends TextIterator<T> {
         
         boolean useSetters = get(SerializerConfiguration.useSetters);
         
-        parser = DelimitedStringParser.get(
-                klass, columnIndexToProperty, get(SerializerConfiguration.valueParsers), false)
-                .with(DelimitedStringParser.useSetters, useSetters)
-                .with(DelimitedStringParser.onPropertySetError, get(SerializerConfiguration.onPropertySetError))
-                .locked();
-        
         splitter = get(SerializerConfiguration.delimitedStringSplitter);
         
         Function<String, String> columnToProperty = get(SerializerConfiguration.columnToProperty);
@@ -221,6 +215,12 @@ public class DelimitedStringIterator<T> extends TextIterator<T> {
             throw new ConfigurableException("Cannot figure out column index to property mappings. "
                     + "Either a header should exist in the file or 'columnIndexToProperty' should be set.");
         }
+        
+        parser = DelimitedStringParser.get(
+                klass, columnIndexToProperty, get(SerializerConfiguration.valueParsers), false)
+                .with(DelimitedStringParser.useSetters, useSetters)
+                .with(DelimitedStringParser.onPropertySetError, get(SerializerConfiguration.onPropertySetError))
+                .locked();
     }
 
 }

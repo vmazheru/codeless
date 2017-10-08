@@ -145,7 +145,7 @@ public class Person implements Serializable, Comparable<Person> {
                 .append(name).append("|")
                 .append(dob).append("|")
                 .append(gender).append("|")
-                .append(jsonMapper.toJson(address)).append("|")
+                .append(jsonMapper.toJson(address))
                 .toString();
     }
 

@@ -134,14 +134,14 @@ class ObjectIteratorSpec extends FlatSpec with Matchers {
   private def forAllIterators[T](test: ObjectIterator[T] => Unit) {
     testIterators(javaInputFile, javaIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
     testIterators(jsonInputFile, jsonIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
-    testIterators(psvInputFile, csvIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
+    testIterators(psvInputFile, psvIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
     testIterators(stringInputFile, stringIterators) (test.asInstanceOf[ObjectIterator[String] => Unit])
   }
   
   private def forAllIteratorsWithEmptyFile[T](test: ObjectIterator[T] => Unit) {
     testIterators(emptyFile, javaIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
     testIterators(emptyFile, jsonIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
-    testIterators(emptyFile, csvIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
+    testIterators(emptyFile, psvIterators) (test.asInstanceOf[ObjectIterator[Person] => Unit])
     testIterators(emptyFile, stringIterators) (test.asInstanceOf[ObjectIterator[String] => Unit])
   }
   
@@ -167,7 +167,7 @@ class ObjectIteratorSpec extends FlatSpec with Matchers {
   }
   private def jsonIterators(file: File): List[ObjectIterator[Person]] = jsonIterators(file, true)
   
-  private def csvIterators(file: File, lockConfiguration: Boolean) = {
+  private def psvIterators(file: File, lockConfiguration: Boolean) = {
     val valueParsers = new java.util.HashMap[String, java.util.function.Function[String, Object]]
     val jsonMapper = JsonMapper.getJsonMapper
     valueParsers.put("address", (s: String) => jsonMapper.fromJson(s, classOf[Person.Address]))
@@ -186,7 +186,7 @@ class ObjectIteratorSpec extends FlatSpec with Matchers {
     
     List(iterFromFile, iterFromStream)
   }
-  private def csvIterators(file: File): List[ObjectIterator[Person]] = csvIterators(file, true)
+  private def psvIterators(file: File): List[ObjectIterator[Person]] = psvIterators(file, true)
   
   private def stringIterators(file: File, lockConfiguration: Boolean) = {
     List[ObjectIterator[String]](
