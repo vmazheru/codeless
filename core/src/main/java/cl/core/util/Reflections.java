@@ -260,6 +260,20 @@ public final class Reflections {
     public static Function<String, Object> findStringParserForSetter(String property, Class<?> klass) {
         return getSetterWithParser(property, klass)._2();
     }
+
+    /**
+     * Return true if a getter exists for the given property in the given object.
+     */
+    public static boolean getterExists(String property, Object object) {
+        return getterExists(property, object.getClass());
+    }
+    
+    /**
+     * Return true if a getter exists for the given property in the given class.
+     */
+    public static boolean getterExists(String property, Class<?> klass) {
+        return findGetter(property, klass).isPresent();
+    }
     
     /**
      * Return true if a setter exists for the given property in the given object.
@@ -304,8 +318,10 @@ public final class Reflections {
         Predicate<Field> isSerializableField = f ->
             !Modifier.isStatic(f.getModifiers()) && 
             !Modifier.isTransient(f.getModifiers()) && 
-            f.getAnnotation(Transient.class) == null;
-        
+            f.getAnnotation(Transient.class) == null &&
+            f.getName().charAt(0) != '$' &&  // reference to the outer object in inner classes in Scala
+            !f.getName().startsWith("this"); // reference to the outer object in inteer classes in Java
+            
         return Stream.of(klass.getDeclaredFields()).filter(isSerializableField);
     }
     
@@ -338,6 +354,13 @@ public final class Reflections {
     
     private static String getGetterName(String propertyName) {
         return "get" + Strings.capitalize(propertyName);
+    }
+    
+    private static Optional<Method> findGetter(String property, Class<?> klass) {
+        String getterName = getGetterName(property);
+        return getNonTransientOrStaticMethods(klass)
+                .filter(m -> m.getParameterCount() == 0 && m.getName().equals(getterName))
+                .findFirst();
     }
     
     private static Optional<Method> findSetter(String property, Class<?> klass) {

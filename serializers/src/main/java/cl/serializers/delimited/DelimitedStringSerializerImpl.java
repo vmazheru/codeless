@@ -114,7 +114,7 @@ class DelimitedStringSerializerImpl<T> extends ConfigurableObject<DelimitedStrin
             finalProperties[idx++] = prop;
         }
         
-        // now that we figure out the properties, lets build serializers
+        // now that we figure out the properties, let's build serializers
         // for these properties and put them in array in the same order
         
         @SuppressWarnings("unchecked")

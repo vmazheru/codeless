@@ -261,6 +261,17 @@ public class ReflectionsTest {
     }
     
     @Test
+    public void testGetterExists() {
+        AllFieldTypesObject obj = new AllFieldTypesObject();
+        try {
+            assertTrue(getterExists("primByte", obj));
+            assertFalse(fieldExists("primbyte", obj));
+        } catch (Exception e) {
+            fail("should not get any exceptions while checking setter existsence");
+        }
+    }
+    
+    @Test
     public void testSetterExists() {
         AllFieldTypesObject obj = new AllFieldTypesObject();
         try {
@@ -336,6 +347,9 @@ public class ReflectionsTest {
         
         public void setString(String string) {
             this.string = string;
+        }
+        public byte getPrimByte() {
+            return primByte;
         }
         public void setPrimByte(byte primByte) {
             this.primByte = primByte;

@@ -52,7 +52,7 @@ class DelimitedStringJoinerImpl extends ConfigurableObject<DelimitedStringJoiner
                 if (ch == enc) {
                     encloseBecauseOfEnc = true;
                     output.append(enc).append(enc);
-                // if it is a delimiter, make suer the value is enclosed in the end, and just append it
+                // if it is a delimiter, make sure the value is enclosed in the end, and just append it
                 } else if (ch == delim) {
                     encloseBecauseOfDelim = true;
                     output.append(ch);

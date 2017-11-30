@@ -50,6 +50,13 @@ public final class Strings {
     }
     
     /**
+     * Convert a string in Camel case into a string in snake case.
+     */
+    public static String camelToSnake(CharSequence s) {
+        return camelToDelimited(s, '_');
+    }
+    
+    /**
      * Convert a dash-separated string (f.e. this-is-my-dash-separated-string)
      * into a string in Camel case.
      * 
@@ -59,6 +66,13 @@ public final class Strings {
      */
     public static String dashedToCamel(CharSequence s) {
         return delimitedToCamel(s, ch -> ch == '-', false);
+    }
+    
+    /**
+     * Convert a string in Camel case into a string where words are separated by dashes.
+     */
+    public static String camelToDashed(CharSequence s) {
+        return camelToDelimited(s, '-');
     }
     
     /**
@@ -74,12 +88,26 @@ public final class Strings {
     }
     
     /**
+     * Convert a string in Camel case into a string where words are separated by dots.
+     */
+    public static String camelToDotted(CharSequence s) {
+        return camelToDelimited(s, '.');
+    }
+    
+    /**
      * Convert a whitespace-separated string into a string in Camel case.
      * The characters which follow white space characters will be capitalized,
      * while the rest of the characters will be brought to lower case.
      */
     public static String spacedToCamel(CharSequence s) {
         return delimitedToCamel(s, ch -> Character.isWhitespace(ch), true);
+    }
+    
+    /**
+     * Convert a string in Camel case into a string where words are separated by spaces.
+     */
+    public static String camelToSpaced(CharSequence s) {
+        return camelToDelimited(s, ' ');
     }
     
     /**
@@ -112,6 +140,22 @@ public final class Strings {
                 } else {
                     sb.append(forceLowercase ? Character.toLowerCase(ch) : ch);
                 }
+            }
+        }
+        return sb.toString();
+    }
+    
+    private static String camelToDelimited(CharSequence s, char delimiter) {
+        if (s == null) return null;
+        if (s.length() == 0) return "";
+        
+        StringBuilder sb = new StringBuilder();
+        for (char ch : s.toString().toCharArray()) {
+            if (Character.isUpperCase(ch)) {
+                sb.append(delimiter);
+                sb.append(Character.toLowerCase(ch));
+            } else {
+                sb.append(ch);
             }
         }
         return sb.toString();

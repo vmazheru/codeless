@@ -218,9 +218,9 @@ public class DelimitedStringIterator<T> extends TextIterator<T> {
         
         parser = DelimitedStringParser.get(
                 klass, columnIndexToProperty, get(SerializerConfiguration.valueParsers), false)
-                .with(DelimitedStringParser.useSetters, useSetters)
-                .with(DelimitedStringParser.onPropertySetError, get(SerializerConfiguration.onPropertySetError))
-                .locked();
+                    .with(DelimitedStringParser.useSetters, useSetters)
+                    .with(DelimitedStringParser.onPropertySetError, get(SerializerConfiguration.onPropertySetError))
+                    .locked();
     }
 
 }

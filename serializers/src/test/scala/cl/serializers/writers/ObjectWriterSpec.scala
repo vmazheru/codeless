@@ -13,6 +13,12 @@ import cl.serializers.iterators.ObjectIterator
 import cl.serializers.iterators.JsonIterator
 import cl.serializers.iterators.StringIterator
 import java.util.Collections
+import cl.serializers.iterators.DelimitedStringIterator
+import cl.serializers.SerializerConfiguration
+import java.util.HashMap
+import cl.json.JsonMapper
+import cl.serializers.delimited.DelimitedStringJoiner
+import cl.serializers.delimited.DelimitedStringSplitter
 
 @RunWith(classOf[org.scalatest.junit.JUnitRunner])
 class ObjectWriterSpec  extends FlatSpec with Matchers {
@@ -87,6 +93,7 @@ class ObjectWriterSpec  extends FlatSpec with Matchers {
   private def forObjectWriters[T](test: ObjectWriter[T] => Unit) (verification: ObjectIterator[T] => Unit) {
     testWriters(emptyFile, javaWriters, javaIterator) (test.asInstanceOf[ObjectWriter[Person] => Unit]) (verification.asInstanceOf[ObjectIterator[Person] => Unit])
     testWriters(emptyFile, jsonWriters, jsonIterator) (test.asInstanceOf[ObjectWriter[Person] => Unit]) (verification.asInstanceOf[ObjectIterator[Person] => Unit])
+    testWriters(emptyFile, psvWriters, psvIterator) (test.asInstanceOf[ObjectWriter[Person] => Unit]) (verification.asInstanceOf[ObjectIterator[Person] => Unit])
   }
   
   private def forStringWriters[T](test: ObjectWriter[String] => Unit) (verification: ObjectIterator[String] => Unit) {
@@ -119,6 +126,67 @@ class ObjectWriterSpec  extends FlatSpec with Matchers {
   }
   private def jsonWriters(file: File): List[ObjectWriter[Person]] = jsonWriters(file, true)
   private def jsonIterator(file: File) = JsonIterator.fromFile(file, classOf[Person])
+  
+  private def psvWriters(file: File, lockConfiguration: Boolean) = {
+    import scala.collection.JavaConversions.mapAsJavaMap
+    import cl.core.function.ScalaToJava._
+    
+    val columnIndexToProperty: java.util.Map[Integer, String] = Map(
+        new Integer(0) -> "name", 
+        new Integer(1) -> "dob", 
+        new Integer(2) -> "gender", 
+        new Integer(3) -> "address")
+    
+    val jsonMapper = JsonMapper.getJsonMapper
+        
+    val addressSerializer: java.util.function.Function[Object, String] = 
+      (address: Object) => jsonMapper.toJson(address)
+        
+    val valueSerializers: java.util.Map[String, java.util.function.Function[Object, String]] = 
+      Map("address" -> addressSerializer)
+        
+    val fWriter = DelimitedStringWriter.toFile(file, classOf[Person], false)
+        .`with`(SerializerConfiguration.columnIndexToProperty, columnIndexToProperty)
+        .`with`(SerializerConfiguration.valueSerializers, valueSerializers)
+        .`with`(SerializerConfiguration.delimitedStringJoiner, DelimitedStringJoiner.pipe())
+    val sWriter = DelimitedStringWriter.toOutputStream(new FileOutputStream(file), classOf[Person], false)
+        .`with`(SerializerConfiguration.columnIndexToProperty, columnIndexToProperty)
+        .`with`(SerializerConfiguration.valueSerializers, valueSerializers)
+        .`with`(SerializerConfiguration.delimitedStringJoiner, DelimitedStringJoiner.pipe())
+        
+    if (lockConfiguration) {
+      fWriter.locked()
+      sWriter.locked()
+    }
+    
+    List[ObjectWriter[Person]](fWriter, sWriter)
+  }
+  private def psvWriters(file: File): List[ObjectWriter[Person]] = psvWriters(file, true)
+  private def psvIterator(file: File) = {
+    import scala.collection.JavaConversions.mapAsJavaMap
+    import cl.core.function.ScalaToJava._
+    
+    val columnIndexToProperty: java.util.Map[Integer, String] = Map(
+        new Integer(0) -> "name", 
+        new Integer(1) -> "dob", 
+        new Integer(2) -> "gender", 
+        new Integer(3) -> "address")
+        
+    val jsonMapper = JsonMapper.getJsonMapper
+        
+    val addressParser: java.util.function.Function[String, Object] = 
+      (address: String) => jsonMapper.fromJson(address, classOf[Person.Address])
+        
+    val valueParsers: java.util.Map[String, java.util.function.Function[String, Object]] = 
+      Map("address" -> addressParser)
+    
+    DelimitedStringIterator.fromFile(file, classOf[Person], false)
+      .`with`(SerializerConfiguration.columnIndexToProperty, columnIndexToProperty)
+      .`with`(SerializerConfiguration.valueParsers, valueParsers)
+      .`with`(SerializerConfiguration.numHeaderLines, new Integer(0))
+      .`with`(SerializerConfiguration.delimitedStringSplitter, DelimitedStringSplitter.pipe())
+      .locked()
+  }
   
   private def stringWriters(file: File, lockConfiguration: Boolean) = {
     List[ObjectWriter[String]](

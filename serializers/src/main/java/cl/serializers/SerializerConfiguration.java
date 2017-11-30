@@ -17,6 +17,7 @@ import cl.core.util.Strings;
 import cl.json.JsonMapper;
 import cl.serializers.delimited.DelimitedStringJoiner;
 import cl.serializers.delimited.DelimitedStringParser;
+import cl.serializers.delimited.DelimitedStringSerializer;
 import cl.serializers.delimited.DelimitedStringSplitter;
 import cl.serializers.delimited.DelimitedStringParser.PropertySetException;
 import cl.serializers.iterators.DelimitedStringIterator;
@@ -81,8 +82,8 @@ public class SerializerConfiguration {
             new Key<>(() -> DelimitedStringSplitter.csv());
     
     /**
-     * Used by {@link DelimitedStringIterator}. This key sets a strategy
-     * for parsing file header in order to establish mappings between
+     * Used by {@link DelimitedStringIterator} and {@DelimitedStringWriter}. 
+     * This key sets a strategy for parsing file header in order to establish mappings between
      * columns and object properties.
      * 
      * <p>Converting strings with spaces to camel case is the default strategy.
@@ -96,10 +97,11 @@ public class SerializerConfiguration {
             new Key<>(() -> s -> Strings.spacedToCamel(s));
     
     /**
-     * Used by {@link DelimitedStringIterator}. This key sets a mapping
-     * between columns and object properties. It does not have to cover all
-     * columns in the delimited file. The missing mappings will be filled by
-     * applying the 'columnToProperty' setting. It is zero based.
+     * Used by {@link DelimitedStringIterator} and {@DelimitedStringWriter}.
+     * This key sets a mapping between columns and object properties. 
+     * It does not have to cover all columns in the delimited file. 
+     * The missing mappings will be filled by applying the 'columnToProperty' setting. 
+     * It is zero based.
      * 
      * <p>An empty map is the default value.
      * 
@@ -113,7 +115,7 @@ public class SerializerConfiguration {
      * parsers for certain object properties.  
      * 
      * <p>By default, a delimited
-     * string parsers is able to parse strings, all primitive types, dates, 
+     * string parser is able to parse strings, all primitive types, dates, 
      * big integers, and big decimals. But if a property is of some other type,
      * a custom parser is required.
      * 
@@ -127,28 +129,79 @@ public class SerializerConfiguration {
             new Key<>(() -> Collections.emptyMap());
     
     /**
+     * Used by {@link DelimitedStringWriter}. This key sets custom serializers for
+     * certain object properties.
+     * 
+     * <p>By default, a delimited string serializer calls object's {$code toString()} method
+     * to convert an object to a string, which may not be sufficient in all cases.  For such
+     * cases, use custom value serializers.
+     */
+    public final static Key<Map<String, Function<Object, String>>> valueSerializers = 
+            new Key<>(() -> Collections.emptyMap());
+    
+    /**
      * Used by {@link DelimitedStringIterator}. This key indicates the use of
      * setters versus fields when parsing a delimited string into an object.
      * 
-     * @see cl.serializers.delimited.DelimitedStringParser
+     * @see cl.serializers.delimited.DelimitedStringParser#useSetters
      */
     public final static Key<Boolean> useSetters = DelimitedStringParser.useSetters;
+    
+    /**
+     * Used by {@link DelimitedStringSerializer}. This key indicates the use of
+     * getters versus fields when serializing an object
+     * 
+     * @see cl.serializers.delimited.DelimitedStringSerializer#useGetters
+     */
+    public final static Key<Boolean> useGetters = DelimitedStringSerializer.useGetters;
+    
+    /**
+     * Used by {@link DelimitedStringSerializer}. Whenever it is set to TRUE, only
+     * properties defined in the 'index to property map' will be serialized. Otherwise
+     * all properties of the objects will be serialized. That includes also properties
+     * which are set to null, in which case the serializer will produce empty strings.
+     * 
+     * @see cl.serializers.delimited.DelimitedStringSerializer#exactProperties
+     */
+    public final static Key<Boolean> exactProperties = DelimitedStringSerializer.exactProperties;
+    
+    /**
+     * Used by {@link DelimitedStringWriter}. If during delimited file creation a header
+     * is not given, the writer will generate a header from object properties, if
+     * this key is set to TRUE (which is default).
+     * The strategy of generating column names is defined by {@code propertyToColumn}
+     * configuration key.
+     * 
+     * @see SerializerConfiguration#propertyToColumn
+     */
+    public final static Key<Boolean> generateHeaderIfAbsent = new Key<>(() -> Boolean.TRUE);
+    
+    /**
+     * Used by {@Link DelimitedStringWriter}. It defines a function which is used
+     * to generate the file header if no explicit header is given. This configuration
+     * key is used only when {@code generateHeaderIfAbsent} key is set to TRUE.
+     * 
+     * @see SerializerConfiguration#generateHeaderIfAbsent
+     */
+    public final static Key<Function<String, String>> propertyToColumn =
+            new Key<>(() -> s -> Strings.camelToSpaced(s));
     
     /**
      * Used by {@link DelimitedStringIterator}. This key supplies a callback
      * which is executed whenever setting an object property (by setting a field
      * or using a setter) results in exception.
      * 
-     * @see cl.serializers.delimited.DelimitedStringParser
+     * @see cl.serializers.delimited.DelimitedStringParser#onPropertySetError
      */
     public static Key<Consumer<PropertySetException>> onPropertySetError = 
             DelimitedStringParser.onPropertySetError;
 
-    
-    
-    
-    // TODO: comment
-    
+    /**
+     * Used by {@link DelimitedStringSerializer}. The joiner will concatenate
+     * array of strings produced by it.
+     * 
+     * @see cl.serializers.delimited.DelimitedStringSerializer
+     */
     public final static Key<DelimitedStringJoiner> delimitedStringJoiner = 
             new Key<>(() -> DelimitedStringJoiner.csv());
     
