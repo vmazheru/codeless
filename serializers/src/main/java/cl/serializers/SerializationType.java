@@ -17,6 +17,12 @@ public enum SerializationType {
     JSON,
     
     /**
+     * Serialization type which uses delimited string format (CSV etc) to
+     * serialize objects.
+     */
+    DELIMITED,
+    
+    /**
      * Serializers of this type operate on strings, and can be used to read/write plain
      * text files. 
      */

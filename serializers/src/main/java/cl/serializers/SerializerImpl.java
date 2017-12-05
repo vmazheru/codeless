@@ -5,16 +5,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import cl.core.configurable.Configurable;
 import cl.core.util.FileUtils;
+import cl.serializers.iterators.DelimitedStringIterator;
 import cl.serializers.iterators.JavaIterator;
 import cl.serializers.iterators.JsonIterator;
 import cl.serializers.iterators.ObjectIterator;
 import cl.serializers.iterators.StringIterator;
+import cl.serializers.writers.DelimitedStringWriter;
 import cl.serializers.writers.JavaWriter;
 import cl.serializers.writers.JsonWriter;
 import cl.serializers.writers.ObjectWriter;
@@ -118,7 +121,8 @@ final class SerializerImpl<T,R> implements Serializer<T,R> {
                     inputStream != null && outputStream != null && outputFile   == null;
 
             if (!inputOutputGood) {
-                throw new SerializerBuildException("Serializer may have only one input (file or input stream) and one output (file or output stream)");
+                throw new SerializerBuildException("Serializer may have only "
+                        + "one input (file or input stream) and one output (file or output stream)");
             }
             
             if (inputSerializationType == null || outputSerializationType == null) {
@@ -126,7 +130,8 @@ final class SerializerImpl<T,R> implements Serializer<T,R> {
             }
             
             if (inputSerializationType == SerializationType.JSON && !iteratorClass.isPresent()) {
-                throw new SerializerBuildException("Object iterator class must be set when serialization type is " + inputSerializationType);
+                throw new SerializerBuildException(
+                        "Object iterator class must be set when serialization type is " + inputSerializationType);
             }
             
             // create object iterator and object writer for the given input and output serialization types 
@@ -134,14 +139,15 @@ final class SerializerImpl<T,R> implements Serializer<T,R> {
             ObjectIterator<T> objectIterator = getIterator();
             ObjectWriter<R> objectWriter = getWriter();
             
-            // copy configuration from serializer to its object iterator and writer and lock configurations
+            // copy configuration from serializer to its object iterator and writer, and lock configurations
             
             configuration.ifPresent(config -> {
                 objectIterator.withConfigurationFrom(config);
                 objectWriter.withConfigurationFrom(config);
             });
             
-            if (inputSerializationType == SerializationType.STRING && outputSerializationType == SerializationType.STRING) {
+            EnumSet<SerializationType> typesWithHeader = EnumSet.of(SerializationType.DELIMITED, SerializationType.STRING);
+            if (typesWithHeader.contains(inputSerializationType) && typesWithHeader.contains(outputSerializationType)) {
                 List<String> headerLines = new ArrayList<>(objectIterator.get(SerializerConfiguration.numHeaderLines));
                 BiConsumer<Integer, String> existingOnHeader = objectIterator.get(SerializerConfiguration.onHeader);
                 BiConsumer<Integer, String> newOnHeader = (i, s) -> {
@@ -185,6 +191,9 @@ final class SerializerImpl<T,R> implements Serializer<T,R> {
                 case JSON: return inputFile != null ?
                         JsonIterator.fromFile(inputFile, iteratorClass.get(), false) :
                         JsonIterator.fromInputStream(inputStream, iteratorClass.get(), false);
+                case DELIMITED: return inputFile != null ?
+                        (ObjectIterator<T>)DelimitedStringIterator.fromFile(inputFile, iteratorClass.get(), false) :
+                        (ObjectIterator<T>)DelimitedStringIterator.fromInputStream(inputStream, iteratorClass.get(), false);
                 case JAVA: 
                 default:  {
                     @SuppressWarnings("unchecked")
@@ -211,6 +220,13 @@ final class SerializerImpl<T,R> implements Serializer<T,R> {
                 case JSON: return outputFile != null ?
                         JsonWriter.toFile(outputFile, false) :
                         JsonWriter.toOutputStream(outputStream, false);
+                case DELIMITED: {
+                    @SuppressWarnings("unchecked")
+                    ObjectWriter<R> writer = outputFile != null ? 
+                        (ObjectWriter<R>)DelimitedStringWriter.toFile(outputFile, iteratorClass.get(), false) :
+                        (ObjectWriter<R>)DelimitedStringWriter.toOutputStream(outputStream, iteratorClass.get(), false);
+                    return writer;
+                }
                 case JAVA:
                 default: {
                     @SuppressWarnings("unchecked")

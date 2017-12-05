@@ -31,6 +31,9 @@ import cl.serializers.writers.JsonWriter
 import cl.serializers.writers.ObjectWriter
 import cl.serializers.writers.StringWriter
 import cl.serializers.Person.Gender;
+import cl.serializers.writers.DelimitedStringWriter
+import cl.serializers.iterators.DelimitedStringIterator
+import java.util.Arrays
 
 @RunWith(classOf[org.scalatest.junit.JUnitRunner])
 class SerializerSpec extends FlatSpec with Matchers {
@@ -54,7 +57,14 @@ class SerializerSpec extends FlatSpec with Matchers {
       testSerializer(Person.peopleDBStrings(), numObjects, file,
         StringWriter.toFile(file), StringIterator.fromFile(file),SerializationType.STRING)
     }
-    
+   
+    withFile(newFile) { file =>
+      testSerializer(Person.peopleDB(), numObjects, file,
+        DelimitedStringWriter.toFile(file, classOf[Person], false)
+        .`with`(SerializerConfiguration.headerLines, Arrays.asList("name,dob,gender"))
+        .locked, 
+        DelimitedStringIterator.fromFile(file, classOf[Person]),SerializationType.DELIMITED)
+    }
   }
   
   it can "copy data from one file to another while possilby switching to a different serialization type" in {

@@ -70,7 +70,6 @@ public class SerializerConfiguration {
      */
     public final static Key<JsonMapper> jsonMapper = new Key<>(() -> JsonMapper.getJsonMapper());
     
-
     /**
      * Used by {@link DelimitedStringIterator}. This key sets an object
      * responsible for splitting lines by delimiters. CSV splitter is the 
@@ -239,6 +238,39 @@ public class SerializerConfiguration {
      */
     public static Configurable<?> stringSerializerDefaultConfiguration() {
         return configurationWith(skipEmptyLines, charset, numHeaderLines, headerLines, onHeader);
+    }
+    
+    /**
+     * Return default configuration settings for delimited string serializers.
+     * <p>The following configuration settings are available:
+     * <ul>
+     *   <li>{@link SerializerConfiguration#skipEmptyLines}</li>
+     *   <li>{@link SerializerConfiguration#charset}</li>
+     *   <li>{@link SerializerConfiguration#numHeaderLines}</li>
+     *   <li>{@link SerializerConfiguration#headerLines}</li>
+     *   <li>{@link SerializerConfiguration#onHeader}</li>
+     *   <li>{@link SerializerConfiguration#generateHeaderIfAbsent}</li>
+     *   <li>{@link SerializerConfiguration#delimitedStringSplitter}</li>
+     *   <li>{@link SerializerConfiguration#delimitedStringJoiner}</li>
+     *   <li>{@link SerializerConfiguration#valueParsers}</li>
+     *   <li>{@link SerializerConfiguration#valueSerializers}</li>
+     *   <li>{@link SerializerConfiguration#columnToProperty}</li>
+     *   <li>{@link SerializerConfiguration#columnIndexToProperty}</li>
+     *   <li>{@link SerializerConfiguration#propertyToColumn}</li>
+     *   <li>{@link SerializerConfiguration#useGetters}</li>
+     *   <li>{@link SerializerConfiguration#useSetters}</li>
+     *   <li>{@link SerializerConfiguration#exactProperties}</li>
+     *   <li>{@link SerializerConfiguration#onPropertySetError}</li>
+     * </ul>
+     */
+    public static Configurable<?> delimitedSerializerDefaultConfiguration() {
+        return configurationWith(
+                skipEmptyLines, charset,
+                numHeaderLines, headerLines, onHeader, generateHeaderIfAbsent, 
+                delimitedStringSplitter, delimitedStringJoiner,
+                valueParsers, valueSerializers,
+                columnToProperty, columnIndexToProperty, propertyToColumn,
+                useGetters, useSetters, exactProperties, onPropertySetError);
     }
     
 }
