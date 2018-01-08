@@ -1,6 +1,6 @@
 package cl.serializers;
 
-import static cl.core.decorator.exception.ExceptionDecorators.*;
+import static cl.core.decorator.exception.ExceptionDecorators.uncheck;
 import static cl.serializers.SerializerConfiguration.*;
 
 import java.io.Closeable;
@@ -17,6 +17,8 @@ import java.util.stream.Stream;
 
 import cl.core.configurable.Configurable;
 import cl.serializers.SerializerImpl.SerializerBuilder;
+import cl.serializers.delimited.DelimitedStringJoiner;
+import cl.serializers.delimited.DelimitedStringSplitter;
 import cl.serializers.iterators.ObjectIterator;
 import cl.serializers.writers.ObjectWriter;
 
@@ -784,6 +786,76 @@ public interface Serializer<T,R> extends Closeable {
             File inputFile,
             File outputFile) {
         return stringSerializer(inputFile, outputFile, stringSerializerDefaultConfiguration());
+    }
+    
+    /**
+     * Generate {@code SerializationType.DELIMITED} serializer, which operates on files.
+     * Comma is used as a delimiter (CSV serializer).
+     * 
+     * @param inputFile      input file
+     * @param outputFile     output file
+     * @param configuration  configuration object, which contains keys for both iterator and writer
+     * @return a serializer object with locked configuration
+     */
+    static <T,R> Serializer<T,R> csvSerializer(
+            File inputFile,
+            File outputFile,
+            Class<T> iteratorClass,
+            Configurable<?> configuration) {
+        return serializer(inputFile, outputFile, SerializationType.DELIMITED, SerializationType.DELIMITED, 
+                Optional.of(iteratorClass), Optional.of(configuration));        
+    }
+    
+    /**
+     * Generate {@code SerializationType.DELIMITED} serializer with default configuration settings, which operates on files.
+     * Comma is used as a delimiter (CSV serializer).
+     * 
+     * @param inputFile   input file
+     * @param outputFile  output file
+     * @return a serializer object with locked configuration
+     */
+    static <T,R> Serializer<T,R> csvSerializer(
+            File inputFile,
+            File outputFile,
+            Class<T> iteratorClass) {
+        return csvSerializer(inputFile, outputFile, iteratorClass, delimitedSerializerDefaultConfiguration());        
+    }
+    
+    /**
+     * Generate {@code SerializationType.DELIMITED} serializer, which operates on files.
+     * Pipe (|) is used as a delimiter.
+     * 
+     * @param inputFile      input file
+     * @param outputFile     output file
+     * @param configuration  configuration object, which contains keys for both iterator and writer
+     * @return a serializer object with locked configuration
+     */
+    static <T,R> Serializer<T,R> psvSerializer(
+            File inputFile,
+            File outputFile,
+            Class<T> iteratorClass,
+            Configurable<?> configuration) {
+        Configurable<?> psvConfiguration = Configurable.empty()
+            .withConfigurationFrom(configuration)
+            .with(SerializerConfiguration.delimitedStringSplitter, DelimitedStringSplitter.pipe())
+            .with(SerializerConfiguration.delimitedStringJoiner, DelimitedStringJoiner.pipe());
+        return serializer(inputFile, outputFile, SerializationType.DELIMITED, SerializationType.DELIMITED, 
+                Optional.of(iteratorClass), Optional.of(psvConfiguration));        
+    }
+    
+    /**
+     * Generate {@code SerializationType.DELIMITED} serializer with default configuration settings, which operates on files.
+     * Pipe (|) is used as a delimiter.
+     * 
+     * @param inputFile   input file
+     * @param outputFile  output file
+     * @return a serializer object with locked configuration
+     */
+    static <T,R> Serializer<T,R> psvSerializer(
+            File inputFile,
+            File outputFile,
+            Class<T> iteratorClass) {
+        return psvSerializer(inputFile, outputFile, iteratorClass, delimitedSerializerDefaultConfiguration());        
     }
     
     

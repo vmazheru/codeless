@@ -100,6 +100,15 @@ object SerializersTestSupport {
     file
   }
   
+  def psvInputFileWithEmptyLines() = {
+    val file = File.createTempFile("txt", "")
+    using(new PrintWriter(new FileOutputStream(file))) { out =>
+      out.println("name|dob|gender|address")
+      Person.peopleDB().forEach((p: Person) => { out.println(p.toPsv()); out.println() })
+    }
+    file
+  }
+  
   def psvInputFileRussian() = {
     val file = File.createTempFile("txt", "")
     using(new PrintWriter(file, "Windows-1251")) { out =>
@@ -108,6 +117,17 @@ object SerializersTestSupport {
     }
     file
   }
+  
+  def psvInputFileWithAdditionalHeaderLines() = {
+    val file = File.createTempFile("txt", "")
+    using(new PrintWriter(new FileOutputStream(file))) { out =>
+      out.println("name|dob|gender|address")
+      out.println("Header 1");
+      out.println("Header 2");
+      Person.peopleDB().forEach((p: Person) => out.println(p.toPsv()))
+    }
+    file
+  }  
   
   def stringInputFile() = {
     val file = File.createTempFile("txt", "")

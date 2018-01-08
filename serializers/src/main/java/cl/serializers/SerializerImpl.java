@@ -129,7 +129,8 @@ final class SerializerImpl<T,R> implements Serializer<T,R> {
                 throw new SerializerBuildException("Eigher input or output serialization type is not set");
             }
             
-            if (inputSerializationType == SerializationType.JSON && !iteratorClass.isPresent()) {
+            if ((inputSerializationType == SerializationType.JSON || inputSerializationType == SerializationType.DELIMITED) && 
+                !iteratorClass.isPresent()) {
                 throw new SerializerBuildException(
                         "Object iterator class must be set when serialization type is " + inputSerializationType);
             }
@@ -146,9 +147,12 @@ final class SerializerImpl<T,R> implements Serializer<T,R> {
                 objectWriter.withConfigurationFrom(config);
             });
             
-            EnumSet<SerializationType> typesWithHeader = EnumSet.of(SerializationType.DELIMITED, SerializationType.STRING);
-            if (typesWithHeader.contains(inputSerializationType) && typesWithHeader.contains(outputSerializationType)) {
-                List<String> headerLines = new ArrayList<>(objectIterator.get(SerializerConfiguration.numHeaderLines));
+            EnumSet<SerializationType> typesWithHeader = 
+                    EnumSet.of(SerializationType.DELIMITED, SerializationType.STRING);
+            
+            if (typesWithHeader.contains(inputSerializationType) && 
+                typesWithHeader.contains(outputSerializationType)) {
+                List<String> headerLines = new ArrayList<>(objectIterator.get(SerializerConfiguration.headerLines));
                 BiConsumer<Integer, String> existingOnHeader = objectIterator.get(SerializerConfiguration.onHeader);
                 BiConsumer<Integer, String> newOnHeader = (i, s) -> {
                   existingOnHeader.accept(i,s);

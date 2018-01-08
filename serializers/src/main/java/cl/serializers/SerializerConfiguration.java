@@ -241,7 +241,7 @@ public class SerializerConfiguration {
     }
     
     /**
-     * Return default configuration settings for delimited string serializers.
+     * Return default configuration settings for delimited serializers.
      * <p>The following configuration settings are available:
      * <ul>
      *   <li>{@link SerializerConfiguration#skipEmptyLines}</li>
@@ -266,11 +266,12 @@ public class SerializerConfiguration {
     public static Configurable<?> delimitedSerializerDefaultConfiguration() {
         return configurationWith(
                 skipEmptyLines, charset,
-                numHeaderLines, headerLines, onHeader, generateHeaderIfAbsent, 
+                new Key<>(() -> 1),
+                headerLines, onHeader, generateHeaderIfAbsent, 
                 delimitedStringSplitter, delimitedStringJoiner,
                 valueParsers, valueSerializers,
                 columnToProperty, columnIndexToProperty, propertyToColumn,
                 useGetters, useSetters, exactProperties, onPropertySetError);
     }
-    
+
 }
