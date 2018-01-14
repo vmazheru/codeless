@@ -148,6 +148,16 @@ public class Person implements Serializable, Comparable<Person> {
                 .append(jsonMapper.toJson(address))
                 .toString();
     }
+    
+    public String toTsv() {
+        JsonMapper jsonMapper = JsonMapper.getJsonMapper();
+        return new StringBuilder()
+                .append(name).append("\t")
+                .append(dob).append("\t")
+                .append(gender).append("\t")
+                .append(jsonMapper.toJson(address))
+                .toString();
+    }
 
     public static List<Person> peopleDB() {
         return Arrays.asList(

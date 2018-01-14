@@ -127,7 +127,16 @@ object SerializersTestSupport {
       Person.peopleDB().forEach((p: Person) => out.println(p.toPsv()))
     }
     file
-  }  
+  }
+  
+  def tsvInputFile() = {
+    val file = File.createTempFile("txt", "")
+    using(new PrintWriter(new FileOutputStream(file))) { out =>
+      out.println("name\tdob\tgender\taddress")
+      Person.peopleDB().forEach((p: Person) => out.println(p.toTsv()))
+    }
+    file
+  }
   
   def stringInputFile() = {
     val file = File.createTempFile("txt", "")
