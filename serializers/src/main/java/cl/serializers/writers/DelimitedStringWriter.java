@@ -160,8 +160,9 @@ public class DelimitedStringWriter<T> extends TextWriter<T> {
                 
                 Set<String> missedProperties = Sets.difference(
                         propertiesFromObject, indexToProperty.values());
-                
                 for (String p : missedProperties) columnNames.add(p);
+                
+                writer.println(joiner.join(columnNames.toArray(new String[columnNames.size()])));
             }
         }
         

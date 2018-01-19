@@ -81,7 +81,7 @@ public class SerializerConfiguration {
             new Key<>(() -> DelimitedStringSplitter.csv());
     
     /**
-     * Used by {@link DelimitedStringIterator} and {@DelimitedStringWriter}. 
+     * Used by {@link DelimitedStringIterator} and {@link cl.serializers.writers.DelimitedStringWriter}. 
      * This key sets a strategy for parsing file header in order to establish mappings between
      * columns and object properties.
      * 
@@ -96,11 +96,12 @@ public class SerializerConfiguration {
             new Key<>(() -> s -> Strings.spacedToCamel(s));
     
     /**
-     * Used by {@link DelimitedStringIterator} and {@DelimitedStringWriter}.
+     * Used by {@link DelimitedStringIterator} and {@link cl.serializers.writers.DelimitedStringWriter}.
      * This key sets a mapping between columns and object properties. 
      * It does not have to cover all columns in the delimited file. 
      * The missing mappings will be filled by applying the 'columnToProperty' setting. 
-     * It is zero based.
+     * 
+     * <p>It is zero based.
      * 
      * <p>An empty map is the default value.
      * 
@@ -110,7 +111,7 @@ public class SerializerConfiguration {
             new Key<>(() -> Collections.emptyMap());
     
     /**
-     * Used by {@link DelimitedStringIterator}. This key sets custom
+     * Used by {@link cl.serializers.iterators.DelimitedStringIterator}. This key sets custom
      * parsers for certain object properties.  
      * 
      * <p>By default, a delimited
@@ -128,7 +129,7 @@ public class SerializerConfiguration {
             new Key<>(() -> Collections.emptyMap());
     
     /**
-     * Used by {@link DelimitedStringWriter}. This key sets custom serializers for
+     * Used by {@link cl.serializers.writers.DelimitedStringWriter}. This key sets custom serializers for
      * certain object properties.
      * 
      * <p>By default, a delimited string serializer calls object's {$code toString()} method
@@ -139,7 +140,7 @@ public class SerializerConfiguration {
             new Key<>(() -> Collections.emptyMap());
     
     /**
-     * Used by {@link DelimitedStringIterator}. This key indicates the use of
+     * Used by {@link cl.serializers.iterators.DelimitedStringIterator}. This key indicates the use of
      * setters versus fields when parsing a delimited string into an object.
      * 
      * @see cl.serializers.delimited.DelimitedStringParser#useSetters
@@ -156,7 +157,7 @@ public class SerializerConfiguration {
     
     /**
      * Used by {@link DelimitedStringSerializer}. Whenever it is set to TRUE, only
-     * properties defined in the 'index to property map' will be serialized. Otherwise
+     * properties defined in the 'columnIndexToProperty' will be serialized. Otherwise
      * all properties of the objects will be serialized. That includes also properties
      * which are set to null, in which case the serializer will produce empty strings.
      * 
@@ -165,7 +166,7 @@ public class SerializerConfiguration {
     public final static Key<Boolean> exactProperties = DelimitedStringSerializer.exactProperties;
     
     /**
-     * Used by {@link DelimitedStringWriter}. If during delimited file creation a header
+     * Used by {@link cl.serializers.writers.DelimitedStringWriter}. If during delimited file creation a header
      * is not given, the writer will generate a header from object properties, if
      * this key is set to TRUE (which is default).
      * The strategy of generating column names is defined by {@code propertyToColumn}
@@ -176,7 +177,7 @@ public class SerializerConfiguration {
     public final static Key<Boolean> generateHeaderIfAbsent = new Key<>(() -> Boolean.TRUE);
     
     /**
-     * Used by {@Link DelimitedStringWriter}. It defines a function which is used
+     * Used by {@link cl.serializers.writers.DelimitedStringWriter}. It defines a function which is used
      * to generate the file header if no explicit header is given. This configuration
      * key is used only when {@code generateHeaderIfAbsent} key is set to TRUE.
      * 
@@ -186,13 +187,13 @@ public class SerializerConfiguration {
             new Key<>(() -> s -> Strings.camelToSpaced(s));
     
     /**
-     * Used by {@link DelimitedStringIterator}. This key supplies a callback
+     * Used by {@link cl.serializers.iterators.DelimitedStringIterator}. This key supplies a callback
      * which is executed whenever setting an object property (by setting a field
      * or using a setter) results in exception.
      * 
      * @see cl.serializers.delimited.DelimitedStringParser#onPropertySetError
      */
-    public static Key<Consumer<PropertySetException>> onPropertySetError = 
+    public final static Key<Consumer<PropertySetException>> onPropertySetError = 
             DelimitedStringParser.onPropertySetError;
 
     /**
@@ -270,8 +271,10 @@ public class SerializerConfiguration {
                 headerLines, onHeader, generateHeaderIfAbsent, 
                 delimitedStringSplitter, delimitedStringJoiner,
                 valueParsers, valueSerializers,
-                columnToProperty, columnIndexToProperty, propertyToColumn,
-                useGetters, useSetters, exactProperties, onPropertySetError);
+                columnIndexToProperty,
+                columnToProperty, propertyToColumn,
+                useGetters, useSetters,
+                exactProperties, onPropertySetError);
     }
 
 }

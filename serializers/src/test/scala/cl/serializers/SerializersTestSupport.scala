@@ -100,6 +100,15 @@ object SerializersTestSupport {
     file
   }
   
+  def psvInputFileWithCapitalizedHeader() = {
+    val file = File.createTempFile("txt", "")
+    using(new PrintWriter(new FileOutputStream(file))) { out =>
+      out.println("NAME|DOB|GENDER|ADDRESS")
+      Person.peopleDB().forEach((p: Person) => out.println(p.toPsv()))
+    }
+    file
+  }
+  
   def psvInputFileWithEmptyLines() = {
     val file = File.createTempFile("txt", "")
     using(new PrintWriter(new FileOutputStream(file))) { out =>
@@ -124,6 +133,14 @@ object SerializersTestSupport {
       out.println("name|dob|gender|address")
       out.println("Header 1");
       out.println("Header 2");
+      Person.peopleDB().forEach((p: Person) => out.println(p.toPsv()))
+    }
+    file
+  }
+  
+  def psvInputFileWithNoHeader() = {
+    val file = File.createTempFile("txt", "")
+    using(new PrintWriter(new FileOutputStream(file))) { out =>
       Person.peopleDB().forEach((p: Person) => out.println(p.toPsv()))
     }
     file

@@ -81,8 +81,8 @@ class DelimitedStringJoinerImpl extends ConfigurableObject<DelimitedStringJoiner
 				// and if yes, enclose the value.
 				// Avoid calling isWhitespace() if isAlwaysEnclose is set to true, for we're going to enclose anyways
 			    encloseBecauseOfLeadingTrailingSpaces = isAlwaysEnclose || 
-			    										Character.isWhitespace(output.charAt(0)) ||
-			                                            Character.isWhitespace(output.charAt(output.length()-1));
+			            (output.length() > 0 && (Character.isWhitespace(output.charAt(0)) ||
+			                                     Character.isWhitespace(output.charAt(output.length()-1))));
 			    outputStr = output;
 			}
 			
