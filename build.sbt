@@ -78,10 +78,3 @@ lazy val util = project.
   settings(
     name := "cl.util"
   )
-
-lazy val ugly = project.
-  dependsOn(core).
-  settings(commonSettings: _*).
-  settings(
-    name := "cl.ugly"
-  )
