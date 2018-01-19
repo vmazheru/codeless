@@ -183,7 +183,6 @@ class ObjectWriterSpec  extends FlatSpec with Matchers {
     DelimitedStringIterator.fromFile(file, classOf[Person], false)
       .`with`(SerializerConfiguration.columnIndexToProperty, columnIndexToProperty)
       .`with`(SerializerConfiguration.valueParsers, valueParsers)
-      .`with`(SerializerConfiguration.numHeaderLines, new Integer(0))
       .`with`(SerializerConfiguration.delimitedStringSplitter, DelimitedStringSplitter.pipe())
       .locked()
   }
