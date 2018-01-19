@@ -35,11 +35,11 @@ import cl.core.function.SupplierWithException;
  *      Methods which "decorate" functions without actually executing them, for
  *      example {@code unchecked()}, {@code safe()}.
  *   </li>
+ *   <li>
  *      Methods which "decorate" functions and execute them with or without returning
  *      the result, for example {@code uncheck()}, {@code safely()}.  Methods in 
  *      this group, usually, only apply to functions which take not parameters, that is
  *      {@code Runnable} and {@code Supplier}.
- *   <li>
  *   </li>
  * </ul>
  * 
