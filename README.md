@@ -9,6 +9,14 @@
 * Java interfaces, but implementations are in any JVM language (currently Scala and Java)
 * Test with Scala Spec and JUnit
 
+## Maven dependency
+
+<dependency>
+  <groupId>com.github.vmazheru.codeless</groupId>
+  <artifactId>cl-util</artifactId>
+  <version>0.9.0</version>
+</dependency>
+
 ## What's in the package?
 
 ### Decorators
