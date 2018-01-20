@@ -11,6 +11,7 @@ lazy val commonSettings = Seq(
   developers := List(Developer(id="vmazheru", name="Vladimir Mazheru", email="v_mazheru@yahoo.com", url=url("https://github.com/vmazheru"))),
   publishMavenStyle := true,
   publishTo := Some(sonatypeDefaultResolver.value),
+  sonatypeProfileName := "com.github.vmazheru",
   version := "0.9.0",
   scalaVersion := "2.11.8",
   crossPaths := false, //remove scala version suffix from porject name
@@ -24,6 +25,13 @@ lazy val commonSettings = Seq(
   ),
   testOptions += Tests.Argument(TestFrameworks.JUnit, "-q", "-v", "-a")
 )
+
+lazy val codeless = (project in file("."))
+  .settings(commonSettings: _*)
+  .settings(
+    publishArtifact := false
+  )
+  .aggregate(core,cfg,jdbc,json,logging,logging_log4j,serializers,util)
 
 lazy val core = project.
   settings(commonSettings: _*).
