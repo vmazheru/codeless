@@ -11,11 +11,13 @@
 
 ## Maven dependency
 
+```xml
 <dependency>
   <groupId>com.github.vmazheru.codeless</groupId>
   <artifactId>cl-util</artifactId>
   <version>0.9.0</version>
 </dependency>
+```
 
 ## What's in the package?
 
