@@ -1,5 +1,12 @@
 lazy val commonSettings = Seq(
   organization := "com.github.vmazheru.codeless",
+  description := "Tools for the busy Java developer",
+  homepage := Some(url("https://github.com/vmazheru/codeless/blob/master/README.md")),
+  scmInfo := Some(ScmInfo("https://github.com/vmazheru/codeless")),
+  licenses += "MIT License" -> "https://opensource.org/licenses/MIT",
+  developers := List(Developer(id="vmazheru", name="Vladimir Mazheru", email="v_mazheru@yahoo.com")),
+  publishMavenStyle := true,
+  publishTo := Some(sonatypeDefaultResolver.value),
   version := "0.9.0",
   scalaVersion := "2.11.8",
   crossPaths := false, //remove scala version suffix from porject name
