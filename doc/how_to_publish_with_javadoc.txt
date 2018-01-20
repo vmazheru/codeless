@@ -1,0 +1,35 @@
+When SBT finds Scala source files in a sub project, it fires scaladoc not javadoc. In order to run javadoc,
+it is possible to change list of souces in an SBT session, and then run publishM2 command.
+
+So, in order to publish to M2 repository, run in SBT shell:
+
+clean
+compile
+package
+
+project core
+set sources in (Compile, doc) <<= sources in (Compile, doc) map { _.filterNot(_.getName endsWith ".scala") }
+
+project cfg
+set sources in (Compile, doc) <<= sources in (Compile, doc) map { _.filterNot(_.getName endsWith ".scala") }
+
+project util
+set sources in (Compile, doc) <<= sources in (Compile, doc) map { _.filterNot(_.getName endsWith ".scala") }
+
+project serializers
+set sources in (Compile, doc) <<= sources in (Compile, doc) map { _.filterNot(_.getName endsWith ".scala") }
+
+project jdbc
+set sources in (Compile, doc) <<= sources in (Compile, doc) map { _.filterNot(_.getName endsWith ".scala") }
+
+project json
+set sources in (Compile, doc) <<= sources in (Compile, doc) map { _.filterNot(_.getName endsWith ".scala") }
+
+project logging
+set sources in (Compile, doc) <<= sources in (Compile, doc) map { _.filterNot(_.getName endsWith ".scala") }
+
+project logging_log4j
+set sources in (Compile, doc) <<= sources in (Compile, doc) map { _.filterNot(_.getName endsWith ".scala") }
+
+project codeless
+publishM2
