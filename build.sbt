@@ -1,5 +1,5 @@
 lazy val commonSettings = Seq(
-  organization := "vmazheru.codeless",
+  organization := "com.github.vmazheru.codeless",
   version := "0.9.0",
   scalaVersion := "2.11.8",
   crossPaths := false, //remove scala version suffix from porject name
