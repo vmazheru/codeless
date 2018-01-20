@@ -32,4 +32,5 @@ project logging_log4j
 set sources in (Compile, doc) <<= sources in (Compile, doc) map { _.filterNot(_.getName endsWith ".scala") }
 
 project codeless
-publishM2
+
+<your publish command here (publishM2, publishSigned)>

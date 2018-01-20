@@ -1,0 +1,9 @@
+-- instructions on how to release to Maven central with SBT
+http://central.sonatype.org/pages/working-with-pgp-signatures.html#generating-a-key-pair
+https://swsnr.de/posts/maven-central-releases-with-sbt
+http://www.scala-sbt.org/release/docs/Using-Sonatype.html
+
+-- sonatype maven repository URL and JIRA ticket
+https://oss.sonatype.org/content/groups/public/com/github/vmazheru/codeless/
+https://issues.sonatype.org/browse/OSSRH-37307
+
