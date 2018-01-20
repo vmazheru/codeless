@@ -12,6 +12,7 @@ lazy val commonSettings = Seq(
   publishMavenStyle := true,
   publishTo := Some(sonatypeDefaultResolver.value),
   sonatypeProfileName := "com.github.vmazheru",
+  useGpg := true,
   version := "0.9.0",
   scalaVersion := "2.11.8",
   crossPaths := false, //remove scala version suffix from porject name
