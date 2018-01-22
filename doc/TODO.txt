@@ -1,0 +1,4 @@
+fix creating directories if file does not exists in SQLiteDB
+add static retry(int, int, Consumer<Exception>, Runnable)
+add conversions for functions thowing IOException
+
